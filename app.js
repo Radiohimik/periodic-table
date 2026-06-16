@@ -188,8 +188,12 @@ function buildPeriodicTable() {
     tile.innerHTML = `
       <div class="tile-num">${el.Z}</div>
       <div class="tile-symbol">${el.symbol}</div>
-      <div class="tile-name">${el.name}</div>
-      <div class="tile-mass">${el.standard_weight ? el.standard_weight.toFixed(el.standard_weight % 1 === 0 ? 0 : 3) : `[${heaviestIsotope(el)}]`}</div>
+      <div class="tile-bottom">
+        <div class="tile-name">${el.name}</div>
+        <div class="tile-mass">${el.standard_weight
+          ? (Number.isInteger(el.standard_weight) ? el.standard_weight : el.standard_weight.toFixed(3))
+          : `[${heaviestIsotope(el)}]`}</div>
+      </div>
       <div class="tile-decay-strip">${stripSegments}</div>
     `;
     tile.addEventListener('click', () => selectElement(el.Z));
@@ -216,7 +220,7 @@ function buildPeriodicTable() {
   const spacer = document.createElement('div');
   spacer.style.gridRow = 8;
   spacer.style.gridColumn = '1 / -1';
-  spacer.style.height = '6px';
+  spacer.style.height = '3px';
   grid.appendChild(spacer);
 }
 
@@ -306,8 +310,11 @@ function selectElement(Z) {
   detail.classList.remove('is-open');
   detail.innerHTML = `<div class="detail-empty">Select an isotope above to view half-life, decay modes, decay energies and specific activity.</div>`;
 
-  // scroll panel into view smoothly
-  panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  // Scroll just enough to show the isotope chip strip
+  setTimeout(() => {
+    const panelTop = panel.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: panelTop - 20, behavior: 'smooth' });
+  }, 50);
 }
 
 document.getElementById('isoPanelClose').addEventListener('click', () => {
@@ -542,6 +549,79 @@ function selectIsotope(iso, chipEl, isIsomer = false, parentIso = null) {
       </div>`;
     }
 
+    /* ---------- Gamma radiation card ---------- */
+    const gamma = iso.gamma_summary;
+    const gammaLines = iso.gamma_lines || [];
+    if (gamma && gammaLines.length > 0 && gamma.dominant_energy_keV != null) {
+      const topLines = gammaLines.slice(0, 8);
+      const allShown = gammaLines.length <= 8;
+      const domE = gamma.dominant_energy_keV ?? 0;
+      const domI = gamma.dominant_intensity_pct ?? 0;
+      const totI = gamma.total_intensity_pct ?? 0;
+      const meanE = gamma.mean_energy_keV ?? 0;
+
+      html += `
+        <div class="detail-card gamma-card">
+          <h3>Gamma radiation <span class="src-tag">IAEA ENSDF — ${gamma.n_lines} line${gamma.n_lines > 1 ? 's' : ''}</span></h3>
+          <div class="gamma-stats">
+            <div class="gamma-stat">
+              <span class="gs-label">Dominant line</span>
+              <span class="gs-value">${domE.toFixed(3)} <span class="gs-unit">keV</span></span>
+              <span class="gs-sub">${domI.toFixed(3)}% / decay</span>
+            </div>
+            <div class="gamma-stat">
+              <span class="gs-label">Sum of intensities</span>
+              <span class="gs-value">${totI.toFixed(2)}<span class="gs-unit">%</span></span>
+              <span class="gs-sub">over all ${gamma.n_lines} lines</span>
+            </div>
+            <div class="gamma-stat">
+              <span class="gs-label">Intensity-weighted mean E</span>
+              <span class="gs-value">${meanE.toFixed(2)} <span class="gs-unit">keV</span></span>
+              <span class="gs-sub">Σ(E·I) / Σ(I)</span>
+            </div>
+          </div>
+          <div class="gamma-table-wrap">
+            <table class="gamma-table">
+              <thead>
+                <tr>
+                  <th>Energy (keV)</th>
+                  <th>Intensity (%/decay)</th>
+                  <th>Uncertainty</th>
+                  <th class="gamma-bar-col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                ${topLines.map(g => {
+                  const e = g.e ?? g.energy_keV ?? 0;
+                  const i = g.i ?? g.intensity_pct ?? 0;
+                  const u = g.u ?? g.unc_pct ?? null;
+                  const barW = domI > 0 ? Math.max(2, (i / domI) * 100).toFixed(1) : 2;
+                  const unc = u != null ? `± ${u < 0.01 ? u.toExponential(1) : u.toFixed(3)}` : '—';
+                  return `<tr>
+                    <td class="gamma-e">${e.toFixed(3)}</td>
+                    <td class="gamma-i">${i < 0.001 ? i.toExponential(3) : i.toFixed(4)}</td>
+                    <td class="gamma-u">${unc}</td>
+                    <td class="gamma-bar-cell"><div class="gamma-bar" style="width:${barW}%"></div></td>
+                  </tr>`;
+                }).join('')}
+              </tbody>
+            </table>
+            ${!allShown ? `<div class="gamma-more">+ ${gammaLines.length - 8} more lines not shown</div>` : ''}
+          </div>
+        </div>
+      `;
+    } else if (!stable && !hl.isResonance) {
+      html += `
+        <div class="detail-card">
+          <h3>Gamma radiation <span class="src-tag">IAEA ENSDF</span></h3>
+          <div style="font-size:12.5px; color:var(--text-dim); padding:8px 0;">
+            No significant gamma emission found in IAEA ENSDF for this nuclide —
+            it may be a pure β/α emitter, decay gammas are below detection, or ENSDF data not yet evaluated.
+          </div>
+        </div>
+      `;
+    }
+
     /* ---------- Isomer cross-reference card ---------- */
     if (isIsomer) {
       html += `
@@ -570,6 +650,14 @@ function selectIsotope(iso, chipEl, isIsomer = false, parentIso = null) {
   const detail = document.getElementById('detailPanel');
   detail.innerHTML = `<div class="detail-grid">${html}</div>`;
   detail.classList.add('is-open');
+
+  // Wait for browser to render the newly visible panel, then scroll to it
+  setTimeout(() => {
+    const panel = document.getElementById('isoPanel');
+    const panelTop = panel.getBoundingClientRect().top + window.scrollY;
+    // Scroll so the top of the iso-panel (header + chips + detail) is near top of viewport
+    window.scrollTo({ top: panelTop - 20, behavior: 'smooth' });
+  }, 50);
 }
 
 /* ============================================================
