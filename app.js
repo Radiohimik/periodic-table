@@ -1,685 +1,600 @@
 /* ============================================================
-   NUCLIDE EXPLORER — Application Logic
-   Loads elements/isotope dataset (derived from IAEA Live Chart
-   of Nuclides) and renders an interactive periodic table with
-   per-element isotope strips and full nuclear-data detail cards.
+   NUCLIDE EXPLORER — app.js
+   Medical isotope highlights integrated.
    ============================================================ */
 
-const NA_CONST = 6.02214076e23; // Avogadro's number
-
-let ELEMENT_DATA = null; // keyed by Z (string) -> element object
-let activeZ = null;
-let activeIsotope = null; // currently selected isotope object
-
-/* ---------- Decay mode -> visual category mapping ---------- */
-function decayCategory(modes, isStable) {
-  if (isStable) return 'stable';
-  if (!modes || modes.length === 0) return 'other';
-  const primary = modes[0].mode;
-  if (primary.includes('A')) return 'alpha';
-  if (primary.startsWith('B-')) return 'betam';
-  if (primary.startsWith('B+') || primary.startsWith('EC')) return 'betap';
-  if (primary === 'IT') return 'it';
-  if (primary.includes('SF')) return 'sf';
-  return 'other';
-}
-const DECAY_COLORS = {
-  stable: 'var(--decay-stable)',
-  alpha:  'var(--decay-alpha)',
-  betam:  'var(--decay-betam)',
-  betap:  'var(--decay-betap)',
-  it:     'var(--decay-it)',
-  sf:     'var(--decay-sf)',
-  other:  'var(--decay-other)'
+/* ============================================================
+   MEDICAL ISOTOPE DATABASE
+   ============================================================ */
+const MEDICAL_ISOTOPES = {
+  "43-99m": ["established","diagnostic","cardio","bone","general"],
+  "53-123": ["established","diagnostic","thyroid","neuro"],
+  "53-131": ["established","theranostic","thyroid"],
+  "53-124": ["development","diagnostic","theranostic","thyroid"],
+  "53-125": ["established","therapy","prostate","brain"],
+  "71-177": ["established","theranostic","neuro","prostate"],
+  "31-67":  ["established","diagnostic","lymphoma","general"],
+  "31-68":  ["established","diagnostic","neuro","prostate","lung"],
+  "9-18":   ["established","diagnostic","general"],
+  "39-90":  ["established","therapy","liver","lymphoma","neuro"],
+  "49-111": ["established","diagnostic","neuro","general"],
+  "38-89":  ["established","therapy","bone"],
+  "38-90":  ["established","therapy","bone"],
+  "62-153": ["established","therapy","bone"],
+  "75-186": ["established","theranostic","bone","liver"],
+  "75-188": ["development","theranostic","liver","bone"],
+  "88-223": ["established","therapy","bone","prostate"],
+  "89-225": ["development","therapy","prostate","neuro"],
+  "83-213": ["development","therapy","general","lymphoma"],
+  "85-211": ["development","therapy","thyroid","brain","general"],
+  "29-64":  ["development","theranostic","breast","colorectal","general"],
+  "29-67":  ["development","therapy","lymphoma","general"],
+  "40-89":  ["development","diagnostic","general"],
+  "21-44":  ["development","diagnostic","theranostic","general"],
+  "21-47":  ["development","therapy","general"],
+  "65-149": ["development","therapy","general"],
+  "65-152": ["development","diagnostic","general"],
+  "65-155": ["development","diagnostic","general"],
+  "65-161": ["development","therapy","general"],
+  "82-212": ["development","therapy","general","ovarian"],
+  "90-227": ["development","therapy","bone","general"],
+  "44-106": ["established","therapy","melanoma"],
+  "46-103": ["established","therapy","prostate"],
+  "77-192": ["established","therapy","general"],
+  "55-137": ["established","therapy","general"],
+  "68-169": ["established","therapy","synovitis"],
+  "66-165": ["established","therapy","synovitis"],
+  "67-166": ["development","therapy","liver","synovitis"],
+  "70-177": ["development","therapy","general"],
+  "50-117m":["development","therapy","bone","general"],
+  "7-13":   ["established","diagnostic","cardio"],
+  "8-15":   ["established","diagnostic","cardio","neuro"],
+  "6-11":   ["established","diagnostic","neuro","general"],
+  "37-82":  ["established","diagnostic","cardio"],
+  "81-201": ["established","diagnostic","cardio"],
+  "15-32":  ["established","therapy","bone","lymphoma"],
+  "79-198": ["established","therapy","prostate","general"],
 };
 
-/* ---------- Number formatting helpers ---------- */
-// Format a number in scientific notation as HTML: m.mm × 10^xx
-function sciHTML(value, sig = 3) {
-  if (value === null || value === undefined || isNaN(value)) return '—';
-  if (value === 0) return '0';
-  const exp = Math.floor(Math.log10(Math.abs(value)));
-  let mant = value / Math.pow(10, exp);
-  let mantR = parseFloat(mant.toFixed(sig - 1));
-  let e = exp;
-  if (Math.abs(mantR) >= 10) { mantR = mantR / 10; e += 1; }
-  const mantStr = mantR.toFixed(sig - 1);
-  if (e === 0) return mantStr;
-  return `${mantStr} × 10<span class="exp">${e}</span>`;
+const MEDICAL_TAG_META = {
+  established: { label:"Established",         color:"#22c55e", group:"status"  },
+  development: { label:"In Development",      color:"#f59e0b", group:"status"  },
+  diagnostic:  { label:"Diagnostic",          color:"#38bdf8", group:"app"     },
+  theranostic: { label:"Theranostic",         color:"#a78bfa", group:"app"     },
+  therapy:     { label:"Therapy",             color:"#fb923c", group:"app"     },
+  neuro:       { label:"Neuroendocrine/Brain",color:"#c084fc", group:"cancer"  },
+  prostate:    { label:"Prostate",            color:"#60a5fa", group:"cancer"  },
+  thyroid:     { label:"Thyroid",             color:"#34d399", group:"cancer"  },
+  liver:       { label:"Liver / HCC",         color:"#fbbf24", group:"cancer"  },
+  bone:        { label:"Bone Mets",           color:"#f87171", group:"cancer"  },
+  lymphoma:    { label:"Lymphoma",            color:"#818cf8", group:"cancer"  },
+  breast:      { label:"Breast",              color:"#f9a8d4", group:"cancer"  },
+  ovarian:     { label:"Ovarian",             color:"#a5f3fc", group:"cancer"  },
+  colorectal:  { label:"Colorectal",          color:"#86efac", group:"cancer"  },
+  lung:        { label:"Lung",                color:"#d1d5db", group:"cancer"  },
+  kidney:      { label:"Kidney / Renal",      color:"#6ee7b7", group:"cancer"  },
+  melanoma:    { label:"Melanoma",            color:"#7c3aed", group:"cancer"  },
+  brain:       { label:"Brain",               color:"#e879f9", group:"cancer"  },
+  pan:         { label:"Pancreatic",          color:"#fde68a", group:"cancer"  },
+  general:     { label:"General Oncology",    color:"#9ca3af", group:"cancer"  },
+  synovitis:   { label:"Synovitis",           color:"#2dd4bf", group:"cancer"  },
+  cardio:      { label:"Cardiac",             color:"#fb7185", group:"cancer"  },
+};
+
+let activeMedFilters = new Set();
+let medHighlightMode = false;
+
+function getMedTags(Z, A, isIsomer) {
+  const key = isIsomer ? `${Z}-${A}m` : `${Z}-${A}`;
+  return MEDICAL_ISOTOPES[key] || [];
 }
 
-// Plain-text scientific notation for clipboard copying, e.g. "1.95e+17" -> "1.95e17"
-// Uses the same rounding as sciHTML so the copied number matches what's displayed.
-function sciPlain(value, sig = 3) {
-  if (value === null || value === undefined || isNaN(value)) return '';
-  if (value === 0) return '0';
-  const exp = Math.floor(Math.log10(Math.abs(value)));
-  let mant = value / Math.pow(10, exp);
-  let mantR = parseFloat(mant.toFixed(sig - 1));
-  let e = exp;
-  if (Math.abs(mantR) >= 10) { mantR = mantR / 10; e += 1; }
-  const mantStr = mantR.toFixed(sig - 1);
-  if (e === 0) return mantStr;
-  return `${mantStr}e${e}`;
+function isMedMatch(tags) {
+  if (!medHighlightMode || tags.length === 0) return false;
+  if (activeMedFilters.size === 0) return true;
+  for (const f of activeMedFilters) { if (tags.includes(f)) return true; }
+  return false;
 }
 
-// Build a copy-button HTML snippet. `value` is the exact plain-text string
-// that will be placed on the clipboard when clicked.
-let copyBtnCounter = 0;
-function copyBtn(value, label) {
-  if (value === null || value === undefined || value === '') return '';
-  copyBtnCounter++;
-  const safeValue = String(value).replace(/"/g, '&quot;');
-  return `<button class="copy-btn" type="button" data-copy-value="${safeValue}" aria-label="Copy ${label || 'value'} to clipboard" title="Copy ${label || 'value'}">
-    <svg class="copy-icon-copy" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 10.5V3.5C3 2.67 3.67 2 4.5 2H10.5"/></svg>
-    <svg class="copy-icon-check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6 11.5L13 4.5"/></svg>
-  </button>`;
+function buildMedPanel() {
+  const panel = document.createElement('div');
+  panel.id = 'medPanel';
+  panel.className = 'med-panel';
+  const groups = [
+    { label:'Status',            key:'status' },
+    { label:'Application Type',  key:'app'    },
+    { label:'Cancer / Indication', key:'cancer'},
+  ];
+  const renderGroup = (key) => Object.entries(MEDICAL_TAG_META)
+    .filter(([,m]) => m.group === key)
+    .map(([tag,m]) =>
+      `<button class="med-filter-btn" data-tag="${tag}" style="--med-col:${m.color}" title="${m.label}">
+         <span class="med-filter-dot"></span>${m.label}</button>`
+    ).join('');
+
+  panel.innerHTML = `
+    <div class="med-hdr">
+      <span class="med-hdr-icon">⚕</span>
+      <span class="med-hdr-title">Medical Isotopes</span>
+      <label class="med-toggle" title="Toggle highlights">
+        <input type="checkbox" id="medMaster">
+        <span class="med-knob"></span>
+      </label>
+    </div>
+    <div class="med-body" id="medBody">
+      <p class="med-hint">Toggle ON, then use filters to narrow.<br>No filter = show all medical.</p>
+      ${groups.map(g=>`
+        <div class="med-sec">
+          <div class="med-sec-label">${g.label}</div>
+          ${renderGroup(g.key)}
+        </div>`).join('')}
+      <button class="med-clear" id="medClear">Clear all filters</button>
+      <div class="med-count" id="medCount"></div>
+    </div>`;
+  document.body.appendChild(panel);
+
+  document.getElementById('medMaster').addEventListener('change', e => {
+    medHighlightMode = e.target.checked;
+    document.getElementById('medBody').classList.toggle('is-on', medHighlightMode);
+    applyMedHighlights();
+  });
+  panel.querySelectorAll('.med-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const t = btn.dataset.tag;
+      if (activeMedFilters.has(t)) { activeMedFilters.delete(t); btn.classList.remove('is-on'); }
+      else                         { activeMedFilters.add(t);    btn.classList.add('is-on');    }
+      applyMedHighlights();
+    });
+  });
+  document.getElementById('medClear').addEventListener('click', () => {
+    activeMedFilters.clear();
+    panel.querySelectorAll('.med-filter-btn').forEach(b=>b.classList.remove('is-on'));
+    applyMedHighlights();
+  });
 }
 
-// Event delegation: handle clicks on any .copy-btn within the detail panel
-document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.copy-btn');
-  if (!btn) return;
-  const value = btn.dataset.copyValue;
-  if (value === undefined) return;
-
-  const doFeedback = () => {
-    btn.classList.add('is-copied');
-    setTimeout(() => btn.classList.remove('is-copied'), 1200);
-  };
-
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(value).then(doFeedback).catch(() => fallbackCopy(value, doFeedback));
-  } else {
-    fallbackCopy(value, doFeedback);
+function applyMedHighlights() {
+  // --- Element tiles ---
+  document.querySelectorAll('.element-tile').forEach(tile => {
+    const Z = parseInt(tile.dataset.z);
+    tile.classList.remove('med-glow','med-established','med-development',
+                          'med-diagnostic','med-theranostic','med-therapy');
+    if (!medHighlightMode) return;
+    const el = ELEMENT_DATA[Z]; if (!el) return;
+    let allTags = [];
+    for (const iso of el.isotopes) {
+      const t = getMedTags(Z, iso.A, false);
+      if (isMedMatch(t)) allTags.push(...t);
+      if (iso.isomers) {
+        const ti = getMedTags(Z, iso.A, true);
+        if (isMedMatch(ti)) allTags.push(...ti);
+      }
+    }
+    if (allTags.length) {
+      tile.classList.add('med-glow');
+      if      (allTags.includes('theranostic')) tile.classList.add('med-theranostic');
+      else if (allTags.includes('therapy'))     tile.classList.add('med-therapy');
+      else if (allTags.includes('diagnostic'))  tile.classList.add('med-diagnostic');
+      tile.classList.add(allTags.includes('established') ? 'med-established' : 'med-development');
+    }
+  });
+  // --- Isotope chips ---
+  document.querySelectorAll('.iso-chip').forEach(chip => {
+    const Z = parseInt(chip.dataset.z);
+    const A = parseInt(chip.dataset.a);
+    const isIso = chip.dataset.isomer === '1';
+    chip.classList.remove('med-chip','med-chip-established','med-chip-development',
+                          'med-chip-diag','med-chip-ther','med-chip-thera');
+    chip.querySelectorAll('.med-badge').forEach(b=>b.remove());
+    if (!medHighlightMode) return;
+    const tags = getMedTags(Z, A, isIso);
+    if (!isMedMatch(tags)) return;
+    chip.classList.add('med-chip');
+    if      (tags.includes('theranostic')) chip.classList.add('med-chip-thera');
+    else if (tags.includes('therapy'))     chip.classList.add('med-chip-ther');
+    else if (tags.includes('diagnostic'))  chip.classList.add('med-chip-diag');
+    chip.classList.add(tags.includes('established') ? 'med-chip-established' : 'med-chip-development');
+    const b = document.createElement('span'); b.className='med-badge';
+    b.textContent = tags.includes('theranostic')?'☯':tags.includes('therapy')?'⚡':'◎';
+    chip.appendChild(b);
+  });
+  // --- Count ---
+  const countEl = document.getElementById('medCount');
+  if (countEl) {
+    const n = Object.entries(MEDICAL_ISOTOPES).filter(([k,tags])=>isMedMatch(tags)).length;
+    countEl.textContent = medHighlightMode ? `${n} isotope${n!==1?'s':''} matching` : '';
   }
-});
-
-// Fallback clipboard method for browsers/contexts without navigator.clipboard
-function fallbackCopy(text, onDone) {
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.position = 'fixed';
-  ta.style.opacity = '0';
-  document.body.appendChild(ta);
-  ta.select();
-  try { document.execCommand('copy'); } catch (e) {}
-  document.body.removeChild(ta);
-  if (onDone) onDone();
-}
-
-// Format half-life nicely with original unit + seconds equivalent in sci notation
-function formatHalfLife(iso) {
-  if (iso.is_stable) return { primary: 'Stable', secondary: 'Does not decay', isResonance:false };
-  if (!iso.half_life_value) return { primary: 'Unknown', secondary: '—', isResonance:false };
-  const val = iso.half_life_value;
-  const unit = iso.half_life_unit || '';
-  const sec = iso.half_life_seconds;
-  const unc = iso.half_life_unc ? ` ± ${iso.half_life_unc}` : '';
-  const isResonance = ['MEV','KEV','EV'].includes(unit.toUpperCase());
-  if (isResonance) {
-    return {
-      primary: `${val}${unc} ${unit}`,
-      secondary: sec != null ? sciHTML(sec) : '—',
-      isResonance: true
-    };
-  }
-  const primary = `${val}${unc} ${unitLabel(unit)}`;
-  const secondary = sec != null ? sciHTML(sec) : '—';
-  return { primary, secondary, isResonance:false };
-}
-function unitLabel(u) {
-  const map = {
-    s:'s', ms:'ms', us:'µs', ns:'ns', ps:'ps', fs:'fs', as:'as', zs:'zs', ys:'ys',
-    m:'min', h:'h', d:'days', y:'years', Y:'years', ky:'kyr', My:'Myr', Gy:'Gyr',
-    Py:'Pyr', Ey:'Eyr', Ty:'Tyr'
-  };
-  return map[u] || u;
-}
-
-// Render a spin-parity string like "9/2+" or "(3/2-)" with the parity sign superscripted
-function spinParityHTML(jp) {
-  if (!jp) return '—';
-  const m = jp.match(/^(\(?[\d/]+\)?)\s*([+\-])$/);
-  if (!m) return jp;
-  return `${m[1]}<sup>${m[2]}</sup>`;
 }
 
 /* ============================================================
-   PERIODIC TABLE GRID RENDERING
+   MAIN APP — Data loading, grid, isotope panel, detail panel
    ============================================================ */
-function buildPeriodicTable() {
+let ELEMENT_DATA = {};
+let activeZ = null;
+let activeIsotope = null;
+
+/* ---- LAYOUT POSITIONS ---- */
+const PT_LAYOUT = {
+  1:{col:1,row:1}, 2:{col:18,row:1},
+  3:{col:1,row:2}, 4:{col:2,row:2},
+  5:{col:13,row:2},6:{col:14,row:2},7:{col:15,row:2},8:{col:16,row:2},9:{col:17,row:2},10:{col:18,row:2},
+  11:{col:1,row:3},12:{col:2,row:3},
+  13:{col:13,row:3},14:{col:14,row:3},15:{col:15,row:3},16:{col:16,row:3},17:{col:17,row:3},18:{col:18,row:3},
+  19:{col:1,row:4},20:{col:2,row:4},
+  21:{col:3,row:4},22:{col:4,row:4},23:{col:5,row:4},24:{col:6,row:4},25:{col:7,row:4},
+  26:{col:8,row:4},27:{col:9,row:4},28:{col:10,row:4},29:{col:11,row:4},30:{col:12,row:4},
+  31:{col:13,row:4},32:{col:14,row:4},33:{col:15,row:4},34:{col:16,row:4},35:{col:17,row:4},36:{col:18,row:4},
+  37:{col:1,row:5},38:{col:2,row:5},
+  39:{col:3,row:5},40:{col:4,row:5},41:{col:5,row:5},42:{col:6,row:5},43:{col:7,row:5},
+  44:{col:8,row:5},45:{col:9,row:5},46:{col:10,row:5},47:{col:11,row:5},48:{col:12,row:5},
+  49:{col:13,row:5},50:{col:14,row:5},51:{col:15,row:5},52:{col:16,row:5},53:{col:17,row:5},54:{col:18,row:5},
+  55:{col:1,row:6},56:{col:2,row:6},
+  72:{col:4,row:6},73:{col:5,row:6},74:{col:6,row:6},75:{col:7,row:6},
+  76:{col:8,row:6},77:{col:9,row:6},78:{col:10,row:6},79:{col:11,row:6},80:{col:12,row:6},
+  81:{col:13,row:6},82:{col:14,row:6},83:{col:15,row:6},84:{col:16,row:6},85:{col:17,row:6},86:{col:18,row:6},
+  87:{col:1,row:7},88:{col:2,row:7},
+  104:{col:4,row:7},105:{col:5,row:7},106:{col:6,row:7},107:{col:7,row:7},
+  108:{col:8,row:7},109:{col:9,row:7},110:{col:10,row:7},111:{col:11,row:7},112:{col:12,row:7},
+  113:{col:13,row:7},114:{col:14,row:7},115:{col:15,row:7},116:{col:16,row:7},117:{col:17,row:7},118:{col:18,row:7},
+  57:{col:3,row:9},58:{col:4,row:9},59:{col:5,row:9},60:{col:6,row:9},61:{col:7,row:9},
+  62:{col:8,row:9},63:{col:9,row:9},64:{col:10,row:9},65:{col:11,row:9},66:{col:12,row:9},
+  67:{col:13,row:9},68:{col:14,row:9},69:{col:15,row:9},70:{col:16,row:9},71:{col:17,row:9},
+  89:{col:3,row:10},90:{col:4,row:10},91:{col:5,row:10},92:{col:6,row:10},93:{col:7,row:10},
+  94:{col:8,row:10},95:{col:9,row:10},96:{col:10,row:10},97:{col:11,row:10},98:{col:12,row:10},
+  99:{col:13,row:10},100:{col:14,row:10},101:{col:15,row:10},102:{col:16,row:10},103:{col:17,row:10},
+};
+
+/* ---- CATEGORY CSS CLASSES ---- */
+const CAT_CLASS = {
+  'alkali metal':'cat-alkali','alkaline earth metal':'cat-alkaline',
+  'transition metal':'cat-transition','post-transition metal':'cat-post',
+  'metalloid':'cat-metalloid','nonmetal':'cat-nonmetal',
+  'halogen':'cat-halogen','noble gas':'cat-noble',
+  'lanthanide':'cat-lanthanide','actinide':'cat-actinide','unknown':'cat-unknown',
+};
+
+/* ---- DECAY COLOUR ---- */
+function decayClass(iso) {
+  if (iso.is_stable) return 'dec-stable';
+  const m = (iso.decay_1||'').toLowerCase();
+  if (m.includes('a'))  return 'dec-alpha';
+  if (m.includes('b-')) return 'dec-betam';
+  if (m.includes('b+') || m.includes('ec')) return 'dec-betap';
+  if (m.includes('it')) return 'dec-it';
+  if (m.includes('sf')) return 'dec-sf';
+  return 'dec-other';
+}
+
+/* ---- HALF-LIFE TEXT ---- */
+function hlText(iso) {
+  if (iso.is_stable) return 'Stable';
+  if (!iso.half_life) return '?';
+  const v = iso.half_life, u = (iso.unit_hl||'').toLowerCase();
+  if      (u==='s')   return `${+v.toPrecision(3)} s`;
+  else if (u==='ms')  return `${+v.toPrecision(3)} ms`;
+  else if (u==='us')  return `${+v.toPrecision(3)} μs`;
+  else if (u==='ns')  return `${+v.toPrecision(3)} ns`;
+  else if (u==='ps')  return `${+v.toPrecision(3)} ps`;
+  else if (u==='m')   return `${+v.toPrecision(3)} min`;
+  else if (u==='h')   return `${+v.toPrecision(3)} h`;
+  else if (u==='d')   return `${+v.toPrecision(3)} d`;
+  else if (u==='y')   {
+    if (v>=1e9)  return `${+(v/1e9).toPrecision(3)} Gy`;
+    if (v>=1e6)  return `${+(v/1e6).toPrecision(3)} My`;
+    if (v>=1e3)  return `${+(v/1e3).toPrecision(3)} ky`;
+    return `${+v.toPrecision(3)} y`;
+  }
+  return `${+v.toPrecision(3)} ${u}`;
+}
+
+/* ---- SPECIFIC ACTIVITY ---- */
+function specificActivity(iso) {
+  if (iso.is_stable || !iso.half_life_sec || iso.half_life_sec <= 0) return null;
+  const NA = 6.02214076e23, ln2 = Math.LN2;
+  const M = iso.atomic_mass || iso.A;
+  const Bqg = (ln2 * NA) / (iso.half_life_sec * M);
+  return Bqg;
+}
+
+function fmtSci(val, unit='') {
+  if (val === null || val === undefined || !isFinite(val)) return '—';
+  const exp = Math.floor(Math.log10(Math.abs(val)));
+  const mant = val / Math.pow(10, exp);
+  return `${mant.toFixed(2)}×10<sup>${exp}</sup>${unit ? ' '+unit : ''}`;
+}
+
+/* ---- DECAY STRIP ON TILE ---- */
+function buildDecayStrip(el) {
+  const isos = el.isotopes;
+  const total = isos.length;
+  if (total === 0) return '';
+  const groups = {};
+  for (const iso of isos) {
+    const c = decayClass(iso);
+    groups[c] = (groups[c]||0) + 1;
+  }
+  return Object.entries(groups).map(([cls, count]) => {
+    const pct = (count/total*100).toFixed(1);
+    return `<span class="ds-seg ${cls}" style="width:${pct}%" title="${cls.replace('dec-','')}:${count}"></span>`;
+  }).join('');
+}
+
+/* ============================================================
+   BUILD PERIODIC TABLE GRID
+   ============================================================ */
+function buildGrid(data) {
   const grid = document.getElementById('ptGrid');
   grid.innerHTML = '';
+  Object.values(data).forEach(el => {
+    const pos = PT_LAYOUT[el.Z];
+    if (!pos) return;
+    const catCls = CAT_CLASS[el.category] || 'cat-unknown';
+    const stripHTML = buildDecayStrip(el);
+    const mass = el.standard_weight
+      ? el.standard_weight.toFixed(el.standard_weight % 1 === 0 ? 0 : 3)
+      : (() => { const mx = el.isotopes.reduce((a,b)=>a.A>b.A?a:b,{A:0}); return `[${mx.A||'?'}]`; })();
 
-  // Build a position map for special rows: lanthanides/actinides shown as
-  // a reference cell in the main block, and as separate rows below.
-  Object.values(ELEMENT_DATA).forEach(el => {
     const tile = document.createElement('div');
-    tile.className = `element-tile cat-${el.category}`;
+    tile.className = `element-tile ${catCls}`;
     tile.dataset.z = el.Z;
+    tile.style.gridColumn = pos.col;
+    tile.style.gridRow = pos.row;
     tile.tabIndex = 0;
-    tile.setAttribute('role', 'button');
-    tile.setAttribute('aria-label', `${el.name} (${el.symbol}), atomic number ${el.Z}. Click to view isotopes.`);
-
-    let col, row;
-    if (el.category === 'lanthanide') {
-      col = (el.Z - 57) + 4; // La=57 starts at col 4 of row 9
-      row = 9;
-    } else if (el.category === 'actinide') {
-      col = (el.Z - 89) + 4;
-      row = 10;
-    } else {
-      col = el.group;
-      row = el.period;
-    }
-    tile.style.gridColumn = col;
-    tile.style.gridRow = row;
-
-    // Dominant decay-mode strip across this element's isotopes
-    const counts = { stable:0, alpha:0, betam:0, betap:0, it:0, sf:0, other:0 };
-    el.isotopes.forEach(iso => counts[decayCategory(iso.decay_modes, iso.is_stable)]++);
-    const total = el.isotopes.length || 1;
-    const stripSegments = Object.entries(counts)
-      .filter(([,c]) => c > 0)
-      .map(([cat,c]) => `<span style="background:${DECAY_COLORS[cat]}; flex-grow:${c}"></span>`)
-      .join('');
-
     tile.innerHTML = `
       <div class="tile-num">${el.Z}</div>
       <div class="tile-symbol">${el.symbol}</div>
       <div class="tile-bottom">
         <div class="tile-name">${el.name}</div>
-        <div class="tile-mass">${el.standard_weight
-          ? (Number.isInteger(el.standard_weight) ? el.standard_weight : el.standard_weight.toFixed(3))
-          : `[${heaviestIsotope(el)}]`}</div>
+        <div class="tile-mass">${mass}</div>
       </div>
-      <div class="tile-decay-strip">${stripSegments}</div>
-    `;
+      <div class="tile-strip">${stripHTML}</div>`;
     tile.addEventListener('click', () => selectElement(el.Z));
-    tile.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectElement(el.Z); }
+    tile.addEventListener('keydown', e => {
+      if (e.key==='Enter'||e.key===' ') { e.preventDefault(); selectElement(el.Z); }
     });
     grid.appendChild(tile);
   });
-
-  // La/Ac reference placeholders in main block (group 3, periods 6 & 7)
+  // La/Ac placeholders
   const laRef = document.createElement('div');
-  laRef.className = 'la-ac-ref';
-  laRef.style.gridColumn = 3; laRef.style.gridRow = 6;
-  laRef.textContent = '57–71';
+  laRef.className = 'la-ac-ref'; laRef.style.gridColumn=3; laRef.style.gridRow=6; laRef.textContent='57–71';
   grid.appendChild(laRef);
-
   const acRef = document.createElement('div');
-  acRef.className = 'la-ac-ref';
-  acRef.style.gridColumn = 3; acRef.style.gridRow = 7;
-  acRef.textContent = '89–103';
+  acRef.className = 'la-ac-ref'; acRef.style.gridColumn=3; acRef.style.gridRow=7; acRef.textContent='89–103';
   grid.appendChild(acRef);
-
-  // Spacer row between main block and La/Ac rows
   const spacer = document.createElement('div');
-  spacer.style.gridRow = 8;
-  spacer.style.gridColumn = '1 / -1';
-  spacer.style.height = '3px';
+  spacer.style.gridRow=8; spacer.style.gridColumn='1/-1'; spacer.style.height='6px';
   grid.appendChild(spacer);
 }
 
-function heaviestIsotope(el) {
-  if (!el.isotopes || el.isotopes.length === 0) return '—';
-  const max = el.isotopes.reduce((a,b) => (a.A > b.A ? a : b));
-  return max.A;
-}
-
 /* ============================================================
-   ELEMENT SELECTION -> ISOTOPE STRIP
+   SELECT ELEMENT → ISOTOPE STRIP
    ============================================================ */
 function selectElement(Z) {
-  activeZ = Z;
-  activeIsotope = null;
-
-  // highlight tile
-  document.querySelectorAll('.element-tile').forEach(t => {
-    t.classList.toggle('is-active', parseInt(t.dataset.z) === Z);
-  });
+  activeZ = Z; activeIsotope = null;
+  document.querySelectorAll('.element-tile').forEach(t =>
+    t.classList.toggle('is-active', parseInt(t.dataset.z)===Z));
 
   const el = ELEMENT_DATA[Z];
   const panel = document.getElementById('isoPanel');
   panel.classList.add('is-open');
 
-  // header
-  const badge = document.getElementById('isoBadge');
+  const catCls = CAT_CLASS[el.category] || 'cat-unknown';
+  const badge  = document.getElementById('isoBadge');
   badge.textContent = el.symbol;
-  badge.className = `iso-element-badge cat-${el.category}`;
-
+  badge.className = `iso-element-badge ${catCls}`;
   document.getElementById('isoElementName').textContent = `${el.name} — ${el.symbol}`;
 
-  const stableCount = el.isotopes.filter(i => i.is_stable).length;
-  const isomerCount = el.isotopes.filter(i => i.isomers && i.isomers.length).length;
-  document.getElementById('isoElementSub').innerHTML = `
-    <span>Z = <b>${el.Z}</b></span>
-    <span>Standard atomic weight: <b>${el.standard_weight ? el.standard_weight : 'no stable isotope'}</b></span>
-    <span>Known isotopes: <b>${el.isotopes.length}</b></span>
-    <span>Stable isotopes: <b>${stableCount}</b></span>
-    ${isomerCount ? `<span>Notable isomers: <b>${isomerCount}</b></span>` : ''}
-  `;
+  const stable = el.isotopes.filter(i=>i.is_stable).length;
+  const isomerCount = el.isotopes.filter(i=>i.isomers&&i.isomers.length).length;
+  document.getElementById('isoElementSub').innerHTML =
+    `<span>Z = <b>${el.Z}</b></span>
+     <span>Weight: <b>${el.standard_weight||'no stable isotope'}</b></span>
+     <span>Isotopes: <b>${el.isotopes.length}</b></span>
+     <span>Stable: <b>${stable}</b></span>
+     ${isomerCount ? `<span>Isomers: <b>${isomerCount}</b></span>` : ''}`;
 
-  // isotope strip
+  // Build chip strip
   const strip = document.getElementById('isoStrip');
   strip.innerHTML = '';
-  el.isotopes.forEach(iso => {
-    const cat = decayCategory(iso.decay_modes, iso.is_stable);
-    const chip = document.createElement('div');
-    chip.className = 'iso-chip';
-    chip.dataset.a = iso.A;
-    chip.tabIndex = 0;
-    chip.setAttribute('role','button');
-    chip.innerHTML = `
-      <sup style="font-size:9px; color:var(--text-faint); display:block;">${iso.A}</sup>${el.symbol}
-      <div class="chip-strip" style="background:${DECAY_COLORS[cat]}"></div>
-    `;
-    chip.addEventListener('click', () => selectIsotope(iso, chip));
-    chip.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectIsotope(iso, chip); }
-    });
+  const sorted = [...el.isotopes].sort((a,b)=>a.A-b.A);
+  for (const iso of sorted) {
+    const chip = makeChip(el.Z, iso, false);
     strip.appendChild(chip);
-
-    // If this isotope has a notable isomer, add a second chip for it
-    if (iso.isomers && iso.isomers.length) {
-      iso.isomers.forEach(isomer => {
-        const icat = decayCategory(isomer.decay_modes, false);
-        const ichip = document.createElement('div');
-        ichip.className = 'iso-chip';
-        ichip.innerHTML = `
-          <sup style="font-size:9px; color:var(--text-faint); display:block;">${isomer.isomer_label}</sup>${el.symbol}
-          <span class="chip-m">ISOMER</span>
-          <div class="chip-strip" style="background:${DECAY_COLORS[icat]}"></div>
-        `;
-        ichip.tabIndex = 0;
-        ichip.setAttribute('role','button');
-        ichip.addEventListener('click', () => selectIsotope(isomer, ichip, true, iso));
-        ichip.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectIsotope(isomer, ichip, true, iso); }
-        });
-        strip.appendChild(ichip);
-      });
+    if (iso.isomers) {
+      for (const ism of iso.isomers) {
+        strip.appendChild(makeChip(el.Z, ism, true));
+      }
     }
-  });
+  }
 
-  // reset detail panel
+  // Reset detail
   const detail = document.getElementById('detailPanel');
   detail.classList.remove('is-open');
   detail.innerHTML = `<div class="detail-empty">Select an isotope above to view half-life, decay modes, decay energies and specific activity.</div>`;
 
-  // Scroll just enough to show the isotope chip strip
-  setTimeout(() => {
-    const panelTop = panel.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top: panelTop - 20, behavior: 'smooth' });
+  setTimeout(()=>{
+    const top = panel.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: top-20, behavior:'smooth' });
   }, 50);
+
+  applyMedHighlights();
 }
 
-document.getElementById('isoPanelClose').addEventListener('click', () => {
-  document.getElementById('isoPanel').classList.remove('is-open');
-  document.querySelectorAll('.element-tile').forEach(t => t.classList.remove('is-active'));
-  activeZ = null;
-});
+function makeChip(Z, iso, isIsomer) {
+  const chip = document.createElement('button');
+  chip.className = `iso-chip ${decayClass(iso)}`;
+  chip.dataset.z = Z;
+  chip.dataset.a = iso.A;
+  chip.dataset.isomer = isIsomer ? '1' : '0';
+  const label = isIsomer ? `${iso.A}m` : `${iso.A}`;
+  chip.innerHTML = `<span class="chip-a">${label}</span><span class="chip-hl">${hlText(iso)}</span>`;
+  chip.addEventListener('click', () => selectIsotope(Z, iso, isIsomer));
+  return chip;
+}
 
 /* ============================================================
-   ISOTOPE DETAIL PANEL
+   SELECT ISOTOPE → DETAIL PANEL
    ============================================================ */
-const ENERGY_LABELS = {
-  alpha_MeV: { label:'Q(α) — alpha decay energy', symbol:'Q_α' },
-  beta_minus_MeV: { label:'Q(β⁻) — beta-minus decay energy', symbol:'Q_β⁻' },
-  ec_beta_plus_MeV: { label:'Q(EC/β⁺) — electron capture / positron decay energy', symbol:'Q_EC' },
-  it_MeV: { label:'E(IT) — isomeric transition (γ-ray) energy', symbol:'E_IT' }
-};
-
-function selectIsotope(iso, chipEl, isIsomer = false, parentIso = null) {
+function selectIsotope(Z, iso, isIsomer) {
   activeIsotope = iso;
+  document.querySelectorAll('.iso-chip').forEach(c =>
+    c.classList.toggle('is-active',
+      parseInt(c.dataset.a)===iso.A && c.dataset.isomer===(isIsomer?'1':'0')));
 
-  // update chip selection state
-  document.querySelectorAll('.iso-chip').forEach(c => c.classList.remove('is-selected'));
-  if (chipEl) chipEl.classList.add('is-selected');
-
-  const el = ELEMENT_DATA[activeZ];
-  const cat = decayCategory(iso.decay_modes, iso.is_stable && !isIsomer);
-  const color = DECAY_COLORS[cat];
-
-  const massNumber = iso.A;
-  const nuclideName = isIsomer
-    ? `${el.name}-${massNumber}${iso.common_name.replace(massNumber,'').replace(/^0/,'')}`
-    : `${el.name}-${massNumber}`;
-  const nuclideSymbol = isIsomer
-    ? `<sup>${iso.common_name}</sup>${el.symbol}`
-    : `<sup>${massNumber}</sup>${el.symbol}`;
-
-  const stable = iso.is_stable && !isIsomer;
-  const hl = formatHalfLife({...iso, is_stable: stable});
-
-  /* ---------- Headline / identity card ---------- */
-  let html = `
-    <div class="detail-card" style="grid-column: 1 / -1;">
-      <div class="detail-headline">
-        <span class="iso-name">${nuclideSymbol} <span style="font-size:14px;color:var(--text-dim);font-weight:400;">(${nuclideName})</span></span>
-        <span class="iso-tag" style="color:${color};">${stable ? 'STABLE' : (isIsomer ? 'METASTABLE ISOMER' : 'RADIOACTIVE')}</span>
-        ${isIsomer ? `<span class="iso-tag" style="color:var(--text-dim);">Ground state: <sup>${parentIso.A}</sup>${el.symbol}</span>` : ''}
-      </div>
-      <div style="display:flex; gap:28px; flex-wrap:wrap; margin-top:10px; font-family:var(--font-mono); font-size:12px; color:var(--text-dim);">
-        <span>Z = ${iso.Z}</span>
-        <span>N = ${iso.N}</span>
-        <span>A = ${iso.A}</span>
-        ${iso.spin_parity ? `<span>J<sup>π</sup> = ${spinParityHTML(iso.spin_parity)}</span>` : ''}
-        ${iso.atomic_mass_u ? `<span>Atomic mass = ${iso.atomic_mass_u.toFixed(6)} u</span>` : ''}
-        ${iso.abundance_percent != null ? `<span>Natural abundance = ${iso.abundance_percent}%</span>` : ''}
-        ${isIsomer ? `<span>Excitation energy = ${iso.excitation_energy_keV.toFixed(3)} keV</span>` : ''}
-        ${(!isIsomer && iso.discovery_year) ? `<span>Discovered ${iso.discovery_year}</span>` : ''}
-      </div>
-    </div>
-  `;
-
-  /* ---------- Applications card ---------- */
-  if (iso.application) {
-    const isCurated = !!iso.application_curated;
-    html += `
-      <div class="detail-card applications-card">
-        <h3>Where this isotope is used
-          <span class="app-badge ${isCurated ? 'curated' : 'general'}">${isCurated ? 'Documented use' : 'General note'}</span>
-        </h3>
-        <div class="app-text ${isCurated ? '' : 'is-fallback'}">${iso.application}</div>
-      </div>
-    `;
-  }
-
-  if (stable) {
-    html += `
-      <div class="detail-card">
-        <h3>Stability <span class="src-tag">IAEA ENSDF</span></h3>
-        <div class="stable-hero">
-          <div class="stable-icon">∞</div>
-          <div class="stable-text">
-            This nuclide is <b>observationally stable</b> — no radioactive decay has ever been measured, or its half-life is so long (&gt;10<span class="exp">18</span> yr) it is treated as stable for all practical purposes. It does not emit radiation and has no specific activity.
-          </div>
-        </div>
-      </div>
-    `;
-  } else if (hl.isResonance) {
-    /* ---------- Unbound resonance state (beyond drip line) ---------- */
-    html += `
-      <div class="detail-card">
-        <h3>Decay width (resonance) <span class="src-tag">IAEA / ENSDF</span></h3>
-        <div class="value-row">
-          <span class="v-label">Reported width Γ</span>
-          <span class="v-value">${hl.primary}</span>
-        </div>
-        <div class="value-row">
-          <span class="v-label">Equivalent lifetime (ħ/Γ)</span>
-          <span class="v-value">${hl.secondary}<span class="unit"> s</span></span>
-        </div>
-      </div>
-      <div class="detail-card" style="grid-column: span 2;">
-        <h3>Why no decay modes or activity?</h3>
-        <div style="font-size:12.5px; color:var(--text-dim); line-height:1.7;">
-          This is an <b style="color:var(--text);">unbound nuclear resonance</b> beyond the neutron or proton drip line — it is not a "normal" radioactive nuclide. Instead of a half-life, the IAEA database reports a <b style="color:var(--text);">decay width Γ</b> in energy units (MeV/keV), via the uncertainty relation Γ·τ ≈ ħ.
-          It immediately falls apart (typically by emitting one or more neutrons or protons) on a timescale of ~10<span class="exp">-21</span>–10<span class="exp">-22</span> s — far too fast for a meaningful "specific activity" or branching-ratio table, so those sections are omitted here.
-        </div>
-      </div>
-    `;
-  } else {
-    /* ---------- Half-life card ---------- */
-    html += `
-      <div class="detail-card">
-        <h3>Half-life <span class="src-tag">IAEA / ENSDF</span></h3>
-        <div class="value-row copyable">
-          <span class="v-label">Reported value</span>
-          <span class="v-value"><span class="v-num">${hl.primary}</span> ${copyBtn(iso.half_life_value, 'reported half-life')}</span>
-        </div>
-        <div class="value-row copyable">
-          <span class="v-label">In seconds</span>
-          <span class="v-value"><span class="v-num">${hl.secondary}<span class="unit"> s</span></span> ${copyBtn(sciPlain(iso.half_life_seconds), 'half-life in seconds')}</span>
-        </div>
-        ${iso.half_life_seconds ? `
-        <div class="value-row copyable">
-          <span class="v-label">Decay constant λ = ln2/T<span class="exp">½</span></span>
-          <span class="v-value"><span class="v-num">${sciHTML(Math.log(2)/iso.half_life_seconds)}<span class="unit"> s⁻¹</span></span> ${copyBtn(sciPlain(Math.log(2)/iso.half_life_seconds), 'decay constant')}</span>
-        </div>` : ''}
-      </div>
-    `;
-
-    /* ---------- Specific activity card ---------- */
-    if (iso.specific_activity_Bq_per_g != null) {
-      const sa = iso.specific_activity_Bq_per_g;
-      const saCi = sa / 3.7e10;
-      const saMol = Math.log(2) * NA_CONST / iso.half_life_seconds;
-      html += `
-        <div class="detail-card">
-          <h3>Specific activity <span class="src-tag">derived: A=ln2·N_A/(T½·M)</span></h3>
-          <div class="value-row copyable">
-            <span class="v-label">Activity per gram</span>
-            <span class="v-value"><span class="v-num">${sciHTML(sa)}<span class="unit"> Bq/g</span></span> ${copyBtn(sciPlain(sa), 'specific activity in Bq/g')}</span>
-          </div>
-          <div class="value-row copyable">
-            <span class="v-label">Per gram (curies)</span>
-            <span class="v-value"><span class="v-num">${sciHTML(saCi)}<span class="unit"> Ci/g</span></span> ${copyBtn(sciPlain(saCi), 'specific activity in Ci/g')}</span>
-          </div>
-          <div class="value-row copyable">
-            <span class="v-label">Activity per mole</span>
-            <span class="v-value"><span class="v-num">${sciHTML(saMol)}<span class="unit"> Bq/mol</span></span> ${copyBtn(sciPlain(saMol), 'specific activity in Bq/mol')}</span>
-          </div>
-        </div>
-      `;
-    } else {
-      html += `
-        <div class="detail-card">
-          <h3>Specific activity</h3>
-          <div class="value-row"><span class="v-label">Not computable</span><span class="v-value">—</span></div>
-          <div style="font-size:12px;color:var(--text-faint); margin-top:6px;">Half-life or atomic mass unavailable for this nuclide in the source dataset.</div>
-        </div>
-      `;
-    }
-
-    /* ---------- Decay modes card ---------- */
-    if (iso.decay_modes && iso.decay_modes.length) {
-      html += `<div class="detail-card"><h3>Decay modes <span class="src-tag">branching ratios</span></h3>`;
-      iso.decay_modes.forEach(dm => {
-        const dcat = dm.mode.includes('A') && !dm.mode.startsWith('B') ? 'alpha'
-                    : dm.mode.startsWith('B-') ? 'betam'
-                    : (dm.mode.startsWith('B+') || dm.mode.startsWith('EC')) ? 'betap'
-                    : dm.mode === 'IT' ? 'it'
-                    : dm.mode.includes('SF') ? 'sf' : 'other';
-        const dcolor = DECAY_COLORS[dcat];
-        const pct = dm.percent != null ? dm.percent : null;
-        let pctLabel;
-        if (pct != null) {
-          if (pct > 0 && pct < 0.001) {
-            pctLabel = sciHTML(pct, 2) + '%';
-            if (dm.percent_unc) {
-              const uncNum = parseFloat(dm.percent_unc);
-              if (!isNaN(uncNum) && uncNum > 0) {
-                pctLabel += ` <span style="color:var(--text-faint); font-weight:400;">± ${sciHTML(uncNum, 1)}%</span>`;
-              }
-            }
-          } else {
-            pctLabel = `${pct}%`;
-            if (dm.percent_unc) pctLabel += ` <span style="color:var(--text-faint); font-weight:400;">± ${dm.percent_unc}</span>`;
-          }
-        } else {
-          pctLabel = dm.percent_raw ? dm.percent_raw + '%' : '—';
-        }
-        // bar width: proportional, but with a visible minimum sliver for tiny branches
-        let barWidth;
-        if (pct == null) barWidth = 0;
-        else if (pct <= 0) barWidth = 0;
-        else if (pct < 1) barWidth = 1.2; // visible sliver for sub-1% branches
-        else barWidth = Math.min(100, pct);
-        html += `
-          <div class="decay-mode-row">
-            <div class="dm-label-line">
-              <span class="dm-name"><span class="dm-dot" style="background:${dcolor}"></span>${dm.label} <span style="color:var(--text-faint); font-family:var(--font-mono); font-size:10.5px;">(${dm.mode})</span></span>
-              <span class="dm-pct" style="color:${dcolor}">${pctLabel}</span>
-            </div>
-            <div class="dm-bar-track"><div class="dm-bar-fill" style="width:${barWidth}%; background:${dcolor};"></div></div>
-          </div>
-        `;
-      });
-      html += `</div>`;
-    }
-
-    /* ---------- Decay energies card ---------- */
-    const energies = iso.decay_energies_MeV || {};
-    const energyKeys = Object.keys(energies);
-    if (energyKeys.length) {
-      html += `<div class="detail-card"><h3>Decay energies (Q-values) <span class="src-tag">IAEA / NUBASE mass evaluation</span></h3>`;
-      energyKeys.forEach(key => {
-        const info = ENERGY_LABELS[key] || { label:key, symbol:key };
-        const val = energies[key];
-        html += `
-          <div class="value-row">
-            <span class="v-label">${info.label}</span>
-            <span class="v-value">${val.toFixed(4)}<span class="unit"> MeV</span></span>
-          </div>
-          <div class="value-row">
-            <span class="v-label" style="font-size:11px;">— in joules</span>
-            <span class="v-value" style="font-size:11.5px;">${sciHTML(val * 1.602176634e-13)}<span class="unit"> J</span></span>
-          </div>
-        `;
-      });
-      html += `
-        <div style="font-size:11px; color:var(--text-faint); margin-top:8px; line-height:1.5;">
-          Q-values represent total energy released, shared between decay products (recoil nucleus, emitted particle, neutrinos/gammas as applicable).
-        </div>
-      </div>`;
-    }
-
-    /* ---------- Gamma radiation card ---------- */
-    const gamma = iso.gamma_summary;
-    const gammaLines = iso.gamma_lines || [];
-    if (gamma && gammaLines.length > 0 && gamma.dominant_energy_keV != null) {
-      const topLines = gammaLines.slice(0, 8);
-      const allShown = gammaLines.length <= 8;
-      const domE = gamma.dominant_energy_keV ?? 0;
-      const domI = gamma.dominant_intensity_pct ?? 0;
-      const totI = gamma.total_intensity_pct ?? 0;
-      const meanE = gamma.mean_energy_keV ?? 0;
-
-      html += `
-        <div class="detail-card gamma-card">
-          <h3>Gamma radiation <span class="src-tag">IAEA ENSDF — ${gamma.n_lines} line${gamma.n_lines > 1 ? 's' : ''}</span></h3>
-          <div class="gamma-stats">
-            <div class="gamma-stat">
-              <span class="gs-label">Dominant line</span>
-              <span class="gs-value">${domE.toFixed(3)} <span class="gs-unit">keV</span></span>
-              <span class="gs-sub">${domI.toFixed(3)}% / decay</span>
-            </div>
-            <div class="gamma-stat">
-              <span class="gs-label">Sum of intensities</span>
-              <span class="gs-value">${totI.toFixed(2)}<span class="gs-unit">%</span></span>
-              <span class="gs-sub">over all ${gamma.n_lines} lines</span>
-            </div>
-            <div class="gamma-stat">
-              <span class="gs-label">Intensity-weighted mean E</span>
-              <span class="gs-value">${meanE.toFixed(2)} <span class="gs-unit">keV</span></span>
-              <span class="gs-sub">Σ(E·I) / Σ(I)</span>
-            </div>
-          </div>
-          <div class="gamma-table-wrap">
-            <table class="gamma-table">
-              <thead>
-                <tr>
-                  <th>Energy (keV)</th>
-                  <th>Intensity (%/decay)</th>
-                  <th>Uncertainty</th>
-                  <th class="gamma-bar-col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                ${topLines.map(g => {
-                  const e = g.e ?? g.energy_keV ?? 0;
-                  const i = g.i ?? g.intensity_pct ?? 0;
-                  const u = g.u ?? g.unc_pct ?? null;
-                  const barW = domI > 0 ? Math.max(2, (i / domI) * 100).toFixed(1) : 2;
-                  const unc = u != null ? `± ${u < 0.01 ? u.toExponential(1) : u.toFixed(3)}` : '—';
-                  return `<tr>
-                    <td class="gamma-e">${e.toFixed(3)}</td>
-                    <td class="gamma-i">${i < 0.001 ? i.toExponential(3) : i.toFixed(4)}</td>
-                    <td class="gamma-u">${unc}</td>
-                    <td class="gamma-bar-cell"><div class="gamma-bar" style="width:${barW}%"></div></td>
-                  </tr>`;
-                }).join('')}
-              </tbody>
-            </table>
-            ${!allShown ? `<div class="gamma-more">+ ${gammaLines.length - 8} more lines not shown</div>` : ''}
-          </div>
-        </div>
-      `;
-    } else if (!stable && !hl.isResonance) {
-      html += `
-        <div class="detail-card">
-          <h3>Gamma radiation <span class="src-tag">IAEA ENSDF</span></h3>
-          <div style="font-size:12.5px; color:var(--text-dim); padding:8px 0;">
-            No significant gamma emission found in IAEA ENSDF for this nuclide —
-            it may be a pure β/α emitter, decay gammas are below detection, or ENSDF data not yet evaluated.
-          </div>
-        </div>
-      `;
-    }
-
-    /* ---------- Isomer cross-reference card ---------- */
-    if (isIsomer) {
-      html += `
-        <div class="detail-card">
-          <h3>Relation to ground state</h3>
-          <div class="value-row">
-            <span class="v-label">Ground state nuclide</span>
-            <span class="v-value"><sup>${parentIso.A}</sup>${el.symbol}</span>
-          </div>
-          <div class="value-row">
-            <span class="v-label">Excitation energy above ground state</span>
-            <span class="v-value">${iso.excitation_energy_keV.toFixed(3)}<span class="unit"> keV</span></span>
-          </div>
-          <div class="value-row">
-            <span class="v-label">Ground-state half-life</span>
-            <span class="v-value">${parentIso.is_stable ? 'Stable' : `${parentIso.half_life_value} ${unitLabel(parentIso.half_life_unit)}`}</span>
-          </div>
-          <div style="font-size:11px; color:var(--text-faint); margin-top:8px; line-height:1.5;">
-            An isomer is a long-lived excited nuclear state of the same isotope. It decays either by emitting a γ-ray to reach the ground state (isomeric transition, IT) or directly via the modes listed above.
-          </div>
-        </div>
-      `;
-    }
-  }
-
+  const el = ELEMENT_DATA[Z];
   const detail = document.getElementById('detailPanel');
-  detail.innerHTML = `<div class="detail-grid">${html}</div>`;
   detail.classList.add('is-open');
 
-  // Wait for browser to render the newly visible panel, then scroll to it
-  setTimeout(() => {
-    const panel = document.getElementById('isoPanel');
-    const panelTop = panel.getBoundingClientRect().top + window.scrollY;
-    // Scroll so the top of the iso-panel (header + chips + detail) is near top of viewport
-    window.scrollTo({ top: panelTop - 20, behavior: 'smooth' });
-  }, 50);
+  const sa  = specificActivity(iso);
+  const saHTML = sa ? fmtSci(sa,'Bq/g') : '—';
+  const saCi  = sa ? fmtSci(sa/3.7e10,'Ci/g') : '—';
+
+  const medTags = getMedTags(Z, iso.A, isIsomer);
+  const medHTML = medTags.length ? buildMedTagsHTML(medTags) : '';
+
+  // Decay modes block
+  let decayRows = '';
+  for (let i=1; i<=5; i++) {
+    const mode = iso[`decay_${i}`];
+    const pct  = iso[`decay_${i}_%`];
+    if (mode) decayRows += `<tr><td>${mode}</td><td>${pct!=null?pct.toFixed(2)+'%':'—'}</td></tr>`;
+  }
+
+  // Q-values
+  let qRows = '';
+  const qMap = {qa:'α Q-value',qbm:'β⁻ Q-value',qbp:'β⁺ Q-value',qec:'EC Q-value'};
+  for (const [k,label] of Object.entries(qMap)) {
+    if (iso[k]!=null) qRows += `<tr><td>${label}</td><td>${iso[k].toFixed(1)} keV</td></tr>`;
+  }
+
+  // Gamma lines
+  let gammaHTML = '';
+  if (iso.gammas && iso.gammas.length) {
+    const sorted = [...iso.gammas].sort((a,b)=>b.intensity-a.intensity);
+    const top = sorted.slice(0,8);
+    const dom = top[0];
+    gammaHTML = `
+      <div class="data-card gamma-card">
+        <div class="card-title">Gamma Radiation</div>
+        <div class="gamma-stats">
+          <div class="gamma-stat"><div class="gs-label">Dominant line</div>
+            <div class="gs-value">${dom.energy.toFixed(2)}<span class="gs-unit">keV</span></div>
+            <div class="gs-sub">${dom.intensity.toFixed(1)}% intensity</div></div>
+          <div class="gamma-stat"><div class="gs-label">Lines in dataset</div>
+            <div class="gs-value">${iso.gammas.length}</div></div>
+        </div>
+        <div class="gamma-table-wrap"><table class="gamma-table">
+          <thead><tr><th>Energy (keV)</th><th>Intensity (%)</th><th>Bar</th></tr></thead>
+          <tbody>${top.map(g=>`<tr>
+            <td class="gamma-e">${g.energy.toFixed(3)}</td>
+            <td class="gamma-i">${g.intensity.toFixed(2)}</td>
+            <td class="gamma-bar-cell"><div class="gamma-bar" style="width:${Math.max(2,(g.intensity/dom.intensity*100)).toFixed(1)}%"></div></td>
+          </tr>`).join('')}</tbody>
+        </table></div>
+        ${iso.gammas.length>8?`<div class="gamma-more">+${iso.gammas.length-8} more lines not shown</div>`:''}
+      </div>`;
+  }
+
+  const label = isIsomer ? `${el.symbol}-${iso.A}m` : `${el.symbol}-${iso.A}`;
+  detail.innerHTML = `
+    <div class="detail-header">
+      <span class="detail-nuclide">${label}</span>
+      <span class="detail-name">${el.name}${isIsomer?' (isomer)':''}</span>
+    </div>
+    ${medHTML}
+    <div class="detail-grid">
+      <div class="data-card">
+        <div class="card-title">Identity</div>
+        <div class="value-row"><span class="v-label">Nuclide</span><span class="v-value">${label}</span></div>
+        <div class="value-row"><span class="v-label">Element</span><span class="v-value">${el.name} (${el.symbol})</span></div>
+        <div class="value-row"><span class="v-label">Z</span><span class="v-value">${Z}</span></div>
+        <div class="value-row"><span class="v-label">A</span><span class="v-value">${iso.A}</span></div>
+        <div class="value-row"><span class="v-label">N</span><span class="v-value">${iso.A-Z}</span></div>
+        ${iso.atomic_mass ? `<div class="value-row"><span class="v-label">Atomic mass</span><span class="v-value">${iso.atomic_mass.toFixed(6)} u</span></div>`:''}
+        ${iso.abundance!=null ? `<div class="value-row"><span class="v-label">Natural abundance</span><span class="v-value">${iso.abundance.toFixed(4)} %</span></div>`:''}
+      </div>
+      <div class="data-card">
+        <div class="card-title">Radioactive Properties</div>
+        <div class="value-row"><span class="v-label">Status</span>
+          <span class="v-value ${iso.is_stable?'val-stable':'val-radio'}">${iso.is_stable?'Stable':'Radioactive'}</span></div>
+        ${!iso.is_stable ? `
+        <div class="value-row copyable"><span class="v-label">Half-life</span>
+          <span class="v-value">${hlText(iso)}${makeCopyBtn(plainHl(iso))}</span></div>
+        <div class="value-row copyable"><span class="v-label">Specific activity</span>
+          <span class="v-value">${saHTML} ${sa?`(${saCi})`:''}${sa?makeCopyBtn((sa).toExponential(4)+' Bq/g'):''}</span></div>
+        `:''}
+      </div>
+      ${decayRows ? `
+      <div class="data-card">
+        <div class="card-title">Decay Modes</div>
+        <table class="mini-table"><thead><tr><th>Mode</th><th>Branch</th></tr></thead>
+        <tbody>${decayRows}</tbody></table>
+      </div>`:''}
+      ${qRows ? `
+      <div class="data-card">
+        <div class="card-title">Decay Energies (Q-values)</div>
+        <table class="mini-table"><thead><tr><th>Type</th><th>Energy</th></tr></thead>
+        <tbody>${qRows}</tbody></table>
+      </div>`:''}
+      ${gammaHTML}
+    </div>
+    <div class="src-note">Specific activity: A = ln(2)·N<sub>A</sub>/(T<sub>½</sub>·M). Data from IAEA Live Chart of Nuclides (ENSDF). For research reference only.</div>`;
+
+  detail.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      navigator.clipboard.writeText(btn.dataset.val).then(()=>{
+        btn.classList.add('is-copied');
+        setTimeout(()=>btn.classList.remove('is-copied'), 1500);
+      });
+    });
+  });
+
+  setTimeout(()=>{
+    detail.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }, 60);
+}
+
+function makeCopyBtn(val) {
+  return `<button class="copy-btn" data-val="${val}" title="Copy value">
+    <svg class="copy-icon-copy" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="5" y="5" width="9" height="9" rx="1"/><path d="M3 11V3a1 1 0 0 1 1-1h8"/>
+    </svg>
+    <svg class="copy-icon-check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M3 8l3 3 7-7"/>
+    </svg>
+  </button>`;
+}
+
+function plainHl(iso) {
+  if (iso.is_stable) return 'Stable';
+  if (!iso.half_life) return '?';
+  return `${iso.half_life} ${iso.unit_hl||''}`.trim();
+}
+
+function buildMedTagsHTML(tags) {
+  const statusTag = tags.find(t=>t==='established')||tags.find(t=>t==='development');
+  const appTag    = tags.find(t=>['diagnostic','theranostic','therapy'].includes(t));
+  const cancers   = tags.filter(t=>MEDICAL_TAG_META[t]&&MEDICAL_TAG_META[t].group==='cancer');
+  return `<div class="med-tags-row">
+    <span class="med-tag-label">⚕ Medical:</span>
+    ${statusTag ? `<span class="med-tag" style="--tc:${MEDICAL_TAG_META[statusTag].color}">${MEDICAL_TAG_META[statusTag].label}</span>`:''}
+    ${appTag    ? `<span class="med-tag" style="--tc:${MEDICAL_TAG_META[appTag].color}">${MEDICAL_TAG_META[appTag].label}</span>`:''}
+    ${cancers.map(t=>`<span class="med-tag" style="--tc:${MEDICAL_TAG_META[t].color}">${MEDICAL_TAG_META[t].label}</span>`).join('')}
+  </div>`;
 }
 
 /* ============================================================
-   DATA LOADING / INIT
+   INIT
    ============================================================ */
-async function init() {
-  const grid = document.getElementById('ptGrid');
-  grid.innerHTML = `<div class="loading-state" style="grid-column:1/-1;">
-    <div>Fetching nuclide dataset from IAEA Live Chart of Nuclides…</div>
-    <div class="loading-bar"></div>
-  </div>`;
+document.addEventListener('DOMContentLoaded', async () => {
   try {
-    const res = await fetch('data.json');
-    ELEMENT_DATA = await res.json();
-    document.getElementById('dataStatus').textContent = `${Object.keys(ELEMENT_DATA).length} elements loaded`;
-    buildPeriodicTable();
-  } catch (err) {
-    grid.innerHTML = `<div class="loading-state" style="grid-column:1/-1; color:var(--decay-sf);">
-      Failed to load nuclide dataset (${err.message}). Ensure data.json is in the same folder as index.html.
-    </div>`;
-    document.getElementById('dataStatus').textContent = 'Error';
+    const r = await fetch('data.json');
+    const arr = await r.json();
+    arr.forEach(el => { ELEMENT_DATA[el.Z] = el; });
+    buildGrid(ELEMENT_DATA);
+    buildMedPanel();
+  } catch(e) {
+    document.getElementById('ptGrid').innerHTML =
+      `<div style="color:#f87171;padding:2rem">Failed to load data.json — ${e.message}</div>`;
   }
-}
-
-init();
+});
