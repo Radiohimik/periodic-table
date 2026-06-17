@@ -3,526 +3,327 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nuclide Explorer — Interactive Periodic Table</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Nuclear Isotope Periodic Table</title>
 <style>
-/* ============================================================
-   DESIGN TOKENS
-   ============================================================ */
 :root {
-  --bg:        #0d0e12;
-  --bg-e1:     #131419;
-  --bg-e2:     #1a1b22;
-  --bg-e3:     #21222c;
-  --line:      #2a2b36;
-  --line-soft: #1e1f28;
-  --text:      #e8e9f0;
-  --text-dim:  #8b8fa8;
-  --text-faint:#545672;
-  --cyan:      #22d3ee;
-  --cyan-dim:  #0e4a55;
-  --amber:     #f59e0b;
-  --green:     #22c55e;
-
-  /* Decay mode colours */
-  --dec-stable:#4ade80;
-  --dec-alpha: #f59e0b;
-  --dec-betam: #60a5fa;
-  --dec-betap: #f87171;
-  --dec-it:    #c084fc;
-  --dec-sf:    #34d399;
-  --dec-other: #94a3b8;
-
-  /* BB-style element category backgrounds */
-  --cat-alkali:     #4b1942;
-  --cat-alkaline:   #0f3d2a;
-  --cat-transition: #0f2040;
-  --cat-post:       #1a2e1a;
-  --cat-metalloid:  #2a2010;
-  --cat-nonmetal:   #0e2a30;
-  --cat-halogen:    #30150a;
-  --cat-noble:      #0a1830;
-  --cat-lanthanide: #1a1030;
-  --cat-actinide:   #1e0a1a;
-  --cat-unknown:    #1a1a1a;
-
-  --font-bb:   'Oswald', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  --font-sans: 'Space Grotesk', sans-serif;
-  --radius-sm: 4px;
-  --radius-md: 7px;
+  --bg: #0d1117; --bg2: #161b22; --bg3: #21262d; --bg4: #2d333b;
+  --border: #30363d; --border2: #444c56;
+  --text: #e6edf3; --text2: #8b949e; --text3: #6e7681;
+  --link: #58a6ff; --accent: #1f6feb;
+  --dec-alpha: #f85149; --dec-betam: #3fb950; --dec-betap: #d2a8ff;
+  --dec-it: #ffa657; --dec-sf: #ff7b72; --dec-stable: #8b949e;
+  --dec-p: #79c0ff; --dec-n: #56d364;
+  --med-diag: #58a6ff; --med-ther: #f85149; --med-thera: #a371f7;
+  --med-estab: #3fb950; --med-dev: #d29922;
+  --sb-w: 155px;   /* ← sidebar width — change this one value to resize */
 }
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 13px; min-height: 100vh; overflow: hidden; }
 
-html { scroll-behavior: smooth; }
+/* ── HEADER ── */
+#header { padding: 10px 14px 8px; border-bottom: 1px solid var(--border); display:flex; align-items:center; gap:12px; flex-wrap:wrap; height: 44px; }
+#header h1 { font-size:1rem; font-weight:700; }
+#header .sub { color: var(--text2); font-size:0.72rem; }
+.src-badge { background: var(--bg3); border:1px solid var(--border); border-radius:4px; padding:1px 6px; font-size:0.68rem; color:var(--text2); }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-sans);
-  min-height: 100vh;
-  padding: 8px 10px 40px;
-}
+/* ── OUTER SHELL: sidebar + main side-by-side ── */
+#shell { display: flex; height: calc(100vh - 44px); overflow: hidden; }
 
-/* ============================================================
-   MASTHEAD
-   ============================================================ */
-.masthead {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 6px 2px 8px;
+/* ── SIDEBAR ── */
+#sidebar {
+  width: var(--sb-w); flex: 0 0 var(--sb-w);
+  background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
 }
-.masthead-logo {
-  font-family: var(--font-bb);
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: 1px;
+#sb-header {
+  padding: 8px 8px 6px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 4px; flex-shrink: 0;
 }
-.masthead-logo span { color: var(--green); }
-.masthead-sub {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--text-faint);
-  letter-spacing: 1px;
-}
-
-/* ============================================================
-   PERIODIC TABLE GRID
-   ============================================================ */
-.pt-scroll { overflow-x: auto; }
-.pt-grid {
-  display: grid;
-  grid-template-columns: repeat(18, minmax(0,1fr));
-  grid-template-rows: repeat(10, auto);
-  gap: 3px;
-  min-width: 960px;
-}
-
-/* ---- ELEMENT TILE (Breaking Bad style) ---- */
-.element-tile {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 3px 2px 0;
-  border: 2.5px solid #000;
-  cursor: pointer;
-  user-select: none;
-  transition: transform 0.12s, box-shadow 0.12s, outline 0.12s;
-  outline: 2.5px solid transparent;
-  outline-offset: 1px;
-  overflow: hidden;
-  min-height: 56px;
-}
-
-/* Category backgrounds */
-.cat-alkali     { background: var(--cat-alkali);     }
-.cat-alkaline   { background: var(--cat-alkaline);   }
-.cat-transition { background: var(--cat-transition); }
-.cat-post       { background: var(--cat-post);       }
-.cat-metalloid  { background: var(--cat-metalloid);  }
-.cat-nonmetal   { background: var(--cat-nonmetal);   }
-.cat-halogen    { background: var(--cat-halogen);    }
-.cat-noble      { background: var(--cat-noble);      }
-.cat-lanthanide { background: var(--cat-lanthanide); }
-.cat-actinide   { background: var(--cat-actinide);   }
-.cat-unknown    { background: var(--cat-unknown);    }
-
-.element-tile:hover {
-  transform: translateY(-1px) scale(1.04);
-  z-index: 5;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-}
-.element-tile.is-active {
-  transform: translateY(-3px) scale(1.18);
-  z-index: 10;
-  outline: 2.5px solid rgba(255,255,255,0.9);
-  box-shadow: 0 0 0 4px rgba(255,255,255,0.1),
-              0 0 20px 6px rgba(255,230,100,0.35),
-              0 0 40px 12px rgba(255,200,50,0.15);
-}
-@keyframes breathe {
-  0%,100% { box-shadow: 0 0 0 4px rgba(255,255,255,0.1), 0 0 20px 6px rgba(255,230,100,0.35), 0 0 40px 12px rgba(255,200,50,0.15); }
-  50%      { box-shadow: 0 0 0 4px rgba(255,255,255,0.15), 0 0 28px 10px rgba(255,240,120,0.5), 0 0 55px 18px rgba(255,210,60,0.2); }
-}
-.element-tile.is-active { animation: breathe 2s ease-in-out infinite; }
-
-.tile-num {
-  font-family: var(--font-bb);
-  font-size: 8px;
-  font-weight: 400;
-  color: rgba(255,255,255,0.6);
-  align-self: flex-start;
-  line-height: 1;
-  padding-left: 1px;
-}
-.tile-symbol {
-  font-family: var(--font-bb);
-  font-size: 21px;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1;
-  margin-top: 1px;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
-}
-.tile-bottom {
-  width: 100%;
-  text-align: center;
-  margin-top: 1px;
-}
-.tile-name {
-  font-family: var(--font-bb);
-  font-size: 6px;
-  color: rgba(255,255,255,0.55);
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  line-height: 1.2;
-}
-.tile-mass {
-  font-family: var(--font-mono);
-  font-size: 6.5px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.75);
-  line-height: 1.3;
-}
-.tile-strip {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 4px;
-  display: flex;
-}
-.ds-seg { height: 100%; }
-
-/* Medical highlights on tiles */
-.element-tile.med-glow::after {
-  content: '⚕';
-  position: absolute;
-  top: 1px; right: 2px;
-  font-size: 7px; line-height: 1;
-  opacity: 0.9; z-index: 2;
-}
-.element-tile.med-diagnostic  { outline-color: #38bdf8; outline-style: solid; box-shadow: 0 0 8px 1px #38bdf822; }
-.element-tile.med-therapy     { outline-color: #fb923c; outline-style: solid; box-shadow: 0 0 8px 1px #fb923c22; }
-.element-tile.med-theranostic { outline-color: #a78bfa; outline-style: solid; box-shadow: 0 0 10px 2px #a78bfa33; }
-.element-tile.med-development { outline-style: dashed !important; }
-.element-tile.med-glow        { outline-width: 2.5px; outline-offset: 1px; }
-.element-tile.is-active.med-glow { outline-color: rgba(255,255,255,0.9) !important; outline-style: solid !important; }
-
-.la-ac-ref {
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-mono); font-size: 9px; color: var(--text-faint);
-  border: 1px dashed var(--line); border-radius: var(--radius-sm);
-}
-
-/* Decay strip colours */
-.dec-stable { background: var(--dec-stable); }
-.dec-alpha  { background: var(--dec-alpha);  }
-.dec-betam  { background: var(--dec-betam);  }
-.dec-betap  { background: var(--dec-betap);  }
-.dec-it     { background: var(--dec-it);     }
-.dec-sf     { background: var(--dec-sf);     }
-.dec-other  { background: var(--dec-other);  }
-
-/* ============================================================
-   ISOTOPE PANEL
-   ============================================================ */
-.iso-panel {
-  display: none;
-  margin-top: 12px;
-  background: var(--bg-e1);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-.iso-panel.is-open { display: block; }
-.iso-panel-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 12px 16px;
-  background: var(--bg-e2);
-  border-bottom: 1px solid var(--line);
-}
-.iso-element-badge {
-  font-family: var(--font-bb);
-  font-size: 42px;
-  font-weight: 700;
-  width: 80px; height: 80px;
-  display: flex; align-items: center; justify-content: center;
-  border: 3px solid #000;
-  color: #fff;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
-  box-shadow: 4px 4px 0 rgba(0,0,0,0.4);
+#sb-title { font-size: 0.75rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Toggle switch */
+#med-toggle-wrap { display:flex; align-items:center; gap:4px; flex-shrink:0; }
+#med-toggle { display:none; }
+#med-toggle-label {
+  width: 32px; height: 17px; background: var(--bg4); border:1px solid var(--border2);
+  border-radius: 9px; cursor: pointer; position: relative; transition: background 0.2s;
   flex-shrink: 0;
 }
-.iso-header-text {}
-.iso-element-name {
-  font-family: var(--font-bb);
-  font-size: 20px; font-weight: 700; color: var(--text);
+#med-toggle-label::after {
+  content:''; position:absolute; top:2px; left:2px;
+  width:11px; height:11px; border-radius:50%; background: var(--text3); transition: all 0.2s;
 }
-.iso-element-sub {
-  display: flex; flex-wrap: wrap; gap: 6px 16px;
-  margin-top: 4px;
-}
-.iso-element-sub span {
-  font-family: var(--font-mono);
-  font-size: 11px; color: var(--text-dim);
-}
-.iso-element-sub b { color: var(--cyan); }
+#med-toggle:checked + #med-toggle-label { background: var(--accent); border-color: var(--link); }
+#med-toggle:checked + #med-toggle-label::after { left:17px; background: #fff; }
 
-/* ---- Chip strip ---- */
-.iso-strip-wrap { padding: 10px 14px; overflow-x: auto; }
-.iso-strip {
-  display: flex; flex-wrap: wrap; gap: 5px;
-  min-width: 400px;
+/* Scrollable sidebar body */
+#sb-body { flex:1; overflow-y:auto; padding: 6px; }
+#sb-body::-webkit-scrollbar { width:4px; }
+#sb-body::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+
+/* Sidebar sections */
+.sb-section { margin-bottom: 8px; }
+.sb-section-title { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text3); margin-bottom: 4px; padding: 0 2px; }
+.sb-filter {
+  display: flex; align-items: center; gap: 5px;
+  padding: 3px 4px; border-radius: 4px; cursor: pointer;
+  font-size: 0.68rem; color: var(--text2); transition: background 0.12s;
+  user-select: none;
 }
+.sb-filter:hover { background: var(--bg3); color: var(--text); }
+.sb-filter.active { background: var(--bg4); color: var(--text); }
+.sb-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.sb-count { margin-left: auto; font-size: 0.6rem; color: var(--text3); }
+
+#sb-clear { margin: 4px 2px; padding: 4px 0; font-size: 0.65rem; text-align: center; color: var(--text3); cursor: pointer; border: 1px solid var(--border); border-radius: 4px; }
+#sb-clear:hover { color: var(--link); border-color: var(--link); }
+#sb-match { font-size: 0.6rem; color: var(--text3); text-align: center; padding: 2px 0 4px; }
+
+/* ── MAIN AREA ── */
+#main { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }
+#top-panel { flex: 0 0 auto; overflow-y: auto; max-height: 56vh; padding: 8px 10px 4px; border-bottom: 1px solid var(--border); }
+#bottom-panel { flex: 1; overflow-y: auto; padding: 8px 10px; }
+
+/* ── PERIODIC TABLE GRID ── */
+#pt-grid { display: grid; grid-template-columns: repeat(18,1fr); gap: 2px; width: 100%; }
+.el-cell {
+  border: 1px solid var(--border); border-radius: 3px; padding: 2px 1px 1px;
+  cursor: pointer; transition: all 0.12s; background: var(--bg3);
+  display: flex; flex-direction: column; align-items: center;
+  min-width: 0; aspect-ratio: 1; position: relative; overflow: visible;
+}
+.el-cell:hover { border-color: var(--link); background: var(--bg4); z-index: 5; }
+.el-cell.selected { border-color: var(--link); background: #1c2d44; box-shadow: 0 0 0 2px rgba(88,166,255,0.3); }
+.el-cell.med-hidden { opacity: 0.18; pointer-events: none; }
+.el-cell .z   { font-size: 0.55rem; color: var(--text3); line-height: 1; align-self: flex-start; padding-left: 1px; }
+.el-cell .sym { font-size: 0.82rem; font-weight: 700; line-height: 1.2; }
+.el-cell .med-dot { position: absolute; top: 1px; right: 1px; width: 5px; height: 5px; border-radius: 50%; }
+.el-cell.med-diag  { border-color: rgba(88,166,255,0.5); }
+.el-cell.med-ther  { border-color: rgba(248,81,73,0.5); }
+.el-cell.med-thera { border-color: rgba(163,113,247,0.5); }
+.el-cell.med-mixed { border-color: rgba(255,166,87,0.5); }
+
+.cat-alkali      { --cc:#e34234; }
+.cat-alkali-earth { --cc:#f4a460; }
+.cat-transition  { --cc:#4682b4; }
+.cat-posttrans   { --cc:#9acd32; }
+.cat-metalloid   { --cc:#ffd700; }
+.cat-nonmetal    { --cc:#7cfc00; }
+.cat-halogen     { --cc:#40e0d0; }
+.cat-noble       { --cc:#ff69b4; }
+.cat-lanthanide  { --cc:#ee82ee; }
+.cat-actinide    { --cc:#ff6347; }
+.el-cell .sym { color: var(--cc, var(--text)); }
+
+.pt-sep { grid-column: 1/-1; height: 3px; }
+
+/* ── ISOTOPE STRIP ── */
+#strip-wrap { margin-top: 8px; display: none; }
+#strip-header { display: flex; align-items: baseline; gap: 8px; margin-bottom: 5px; flex-wrap: wrap; }
+#strip-el-name { font-size: 0.9rem; font-weight: 700; }
+#strip-el-info  { font-size: 0.7rem; color: var(--text2); }
+
+#decay-legend { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 5px; padding: 5px 7px; background: var(--bg3); border-radius: 5px; border: 1px solid var(--border); font-size: 0.68rem; align-items: center; }
+#decay-legend .leg-title { color: var(--text2); font-weight: 600; margin-right: 2px; }
+.leg-item { display: flex; align-items: center; gap: 3px; }
+.leg-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.leg-label { color: var(--text2); }
+
+#iso-strip { display: flex; flex-wrap: wrap; gap: 4px; }
 .iso-chip {
   display: flex; flex-direction: column; align-items: center;
-  padding: 4px 7px;
-  border: 1px solid var(--line);
-  border-radius: 5px;
-  background: var(--bg-e3);
-  cursor: pointer;
-  transition: border-color 0.1s, background 0.1s, transform 0.1s;
-  position: relative;
+  border: 1.5px solid var(--border); border-radius: 5px; padding: 3px 5px 2px;
+  cursor: pointer; background: var(--bg3); transition: all 0.1s; min-width: 44px; position: relative;
 }
-.iso-chip:hover { background: #282933; transform: translateY(-1px); }
-.iso-chip.is-active { border-color: var(--cyan); background: rgba(34,211,238,0.08); }
+.iso-chip:hover { border-color: var(--text2); background: var(--bg4); }
+.iso-chip.selected { background: #1c2d44; box-shadow: 0 0 0 2px rgba(88,166,255,0.4); }
+.iso-chip .ic-mass { font-size: 0.78rem; font-weight: 700; line-height: 1; }
+.iso-chip .ic-hl   { font-size: 0.57rem; color: var(--text2); margin-top: 1px; max-width: 55px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.iso-chip .ic-lbl  { font-size: 0.5rem; margin-top: 1px; font-weight: 600; }
+.ic-stable { color: var(--dec-stable); }
+.ic-rad    { color: var(--text2); }
 
-/* Chip decay colours */
-.iso-chip.dec-stable { border-top: 3px solid var(--dec-stable); }
-.iso-chip.dec-alpha  { border-top: 3px solid var(--dec-alpha);  }
-.iso-chip.dec-betam  { border-top: 3px solid var(--dec-betam);  }
-.iso-chip.dec-betap  { border-top: 3px solid var(--dec-betap);  }
-.iso-chip.dec-it     { border-top: 3px solid var(--dec-it);     }
-.iso-chip.dec-sf     { border-top: 3px solid var(--dec-sf);     }
-.iso-chip.dec-other  { border-top: 3px solid var(--dec-other);  }
+.chip-alpha { border-color: var(--dec-alpha); }
+.chip-betam { border-color: var(--dec-betam); }
+.chip-betap { border-color: var(--dec-betap); }
+.chip-it    { border-color: var(--dec-it); }
+.chip-sf    { border-color: var(--dec-sf); }
+.chip-p     { border-color: var(--dec-p); }
+.chip-n     { border-color: var(--dec-n); }
 
-.chip-a  { font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--text); }
-.chip-hl { font-family: var(--font-mono); font-size: 9px; color: var(--text-faint); margin-top: 1px; }
+.iso-chip.med-diag  { box-shadow: 0 0 0 2px var(--med-diag); }
+.iso-chip.med-ther  { box-shadow: 0 0 0 2px var(--med-ther); }
+.iso-chip.med-thera { box-shadow: 0 0 0 2px var(--med-thera); }
+.iso-chip .med-badge { position: absolute; top: -5px; right: -3px; font-size: 0.55rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 3px; padding: 0 2px; }
 
-/* Medical chip highlights */
-.iso-chip.med-chip { border-width: 2px; }
-.iso-chip.med-chip-diag  { border-color: #38bdf8; }
-.iso-chip.med-chip-ther  { border-color: #fb923c; }
-.iso-chip.med-chip-thera { border-color: #a78bfa; }
-.iso-chip.med-chip-development { border-style: dashed; }
-.med-badge {
-  position: absolute; top: -6px; right: -3px;
-  font-size: 9px; line-height: 1; pointer-events: none;
-}
+/* ── DETAIL PANEL ── */
+#detail { min-height: 160px; }
+.detail-empty { color: var(--text3); padding: 16px; text-align: center; }
+.dc { background: var(--bg3); border: 1px solid var(--border); border-radius: 7px; padding: 9px 11px; margin-bottom: 9px; }
+.dc h3 { font-size: 0.74rem; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 7px; padding-bottom: 3px; border-bottom: 1px solid var(--border); }
+.dc-row { display: flex; justify-content: space-between; align-items: baseline; padding: 2px 0; border-bottom: 1px solid rgba(48,54,61,0.5); gap: 8px; }
+.dc-row:last-child { border: none; }
+.dc-label { color: var(--text2); font-size: 0.72rem; flex-shrink: 0; }
+.dc-val   { font-family: 'Cascadia Code','Consolas',monospace; font-size: 0.77rem; text-align: right; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+.copy-btn { background: none; border: none; cursor: pointer; padding: 1px 3px; border-radius: 3px; font-size: 0.68rem; color: var(--text3); transition: all 0.1s; }
+.copy-btn:hover { color: var(--link); background: rgba(88,166,255,0.15); }
+.copy-btn.copied { color: var(--dec-betam); }
 
-/* ============================================================
-   DETAIL PANEL
-   ============================================================ */
-.detail-panel {
-  display: none;
-  padding: 14px 16px;
-  border-top: 1px solid var(--line);
-}
-.detail-panel.is-open { display: block; }
-.detail-empty {
-  font-family: var(--font-mono); font-size: 12px;
-  color: var(--text-faint); padding: 24px; text-align: center;
-}
-.detail-header {
-  display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px;
-}
-.detail-nuclide {
-  font-family: var(--font-bb); font-size: 26px; font-weight: 700; color: var(--cyan);
-}
-.detail-name {
-  font-family: var(--font-sans); font-size: 14px; color: var(--text-dim);
-}
-.detail-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 10px; margin-top: 10px;
-}
-.data-card {
-  background: var(--bg-e2); border: 1px solid var(--line);
-  border-radius: var(--radius-md); padding: 12px 14px;
-}
-.card-title {
-  font-family: var(--font-mono); font-size: 9.5px; text-transform: uppercase;
-  letter-spacing: 1.5px; color: var(--text-faint); margin-bottom: 10px;
-}
-.value-row {
-  display: flex; justify-content: space-between; align-items: baseline;
-  padding: 5px 0; border-bottom: 1px solid var(--line-soft); gap: 8px;
-}
-.value-row:last-child { border-bottom: none; }
-.v-label { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-dim); flex-shrink: 0; }
-.v-value { font-family: var(--font-mono); font-size: 12px; color: var(--text); text-align: right; }
-.v-value.val-stable { color: var(--dec-stable); font-weight: 700; }
-.v-value.val-radio  { color: var(--dec-betap);  font-weight: 700; }
-.v-value .exp { font-size: 0.75em; vertical-align: super; }
+.dm-row { display: flex; align-items: center; gap: 5px; padding: 3px 0; border-bottom: 1px solid rgba(48,54,61,0.5); }
+.dm-badge { display: inline-block; padding: 2px 5px; border-radius: 10px; font-size: 0.68rem; font-weight: 700; background: var(--bg4); border: 1px solid var(--border); min-width: 40px; text-align: center; }
+.dm-bar-wrap { flex: 1; background: var(--bg4); border-radius: 3px; height: 5px; overflow: hidden; }
+.dm-bar { height: 100%; border-radius: 3px; }
+.dm-pct { font-size: 0.68rem; color: var(--text2); min-width: 36px; text-align: right; }
 
-/* Copy button */
-.value-row.copyable .v-value { display: inline-flex; align-items: baseline; gap: 6px; }
-.copy-btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 20px; height: 20px;
-  border-radius: 4px; border: 1px solid var(--line);
-  background: var(--bg-e3); color: var(--text-faint); cursor: pointer;
-  flex-shrink: 0; transition: color .15s, border-color .15s, background .15s; padding: 0;
-}
-.copy-btn:hover { color: var(--cyan); border-color: var(--cyan); }
-.copy-btn svg { width: 11px; height: 11px; display: block; }
-.copy-btn.is-copied { color: var(--green); border-color: var(--green); background: rgba(34,197,94,0.1); }
-.copy-btn .copy-icon-check { display: none; }
-.copy-btn.is-copied .copy-icon-copy { display: none; }
-.copy-btn.is-copied .copy-icon-check { display: block; }
+.gm-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; margin-bottom: 7px; }
+.gm-box { background: var(--bg4); border: 1px solid var(--border); border-radius: 5px; padding: 6px 8px; text-align: center; }
+.gm-box .gm-num  { font-size: 0.95rem; font-weight: 700; font-family: monospace; }
+.gm-box .gm-unit { font-size: 0.58rem; color: var(--text2); margin-top: 1px; }
+.gm-table { width: 100%; border-collapse: collapse; font-size: 0.7rem; }
+.gm-table th { color: var(--text2); text-align: left; padding: 2px 3px; border-bottom: 1px solid var(--border2); font-weight: 600; }
+.gm-table td { padding: 2px 3px; border-bottom: 1px solid rgba(48,54,61,0.4); }
+.gm-table tr:last-child td { border: none; }
+.gm-bar { display: inline-block; height: 7px; border-radius: 2px; background: linear-gradient(90deg,#388bfd,#1f6feb); vertical-align: middle; margin-left: 3px; }
+.gm-no { color: var(--text3); font-style: italic; text-align: center; padding: 10px; }
 
-/* Mini table */
-.mini-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 11.5px; }
-.mini-table th { text-align: left; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px;
-  color: var(--text-faint); padding: 4px 0; border-bottom: 1px solid var(--line); }
-.mini-table td { padding: 4px 0; border-bottom: 1px solid var(--line-soft); }
-.mini-table tr:last-child td { border-bottom: none; }
+.med-banner { margin-bottom: 9px; border-radius: 7px; padding: 9px 11px; border: 1px solid; }
+.med-banner.diagnostic  { background: rgba(31,111,235,0.1); border-color: var(--med-diag); }
+.med-banner.therapy     { background: rgba(248,81,73,0.1);  border-color: var(--med-ther); }
+.med-banner.theranostic { background: rgba(163,113,247,0.1); border-color: var(--med-thera); }
+.med-banner h4 { font-size: 0.75rem; font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.med-type-tag { font-size: 0.62rem; padding: 1px 6px; border-radius: 10px; font-weight: 600; }
+.tag-diag  { background: rgba(88,166,255,0.2); color: var(--med-diag); border: 1px solid var(--med-diag); }
+.tag-ther  { background: rgba(248,81,73,0.2); color: var(--med-ther); border: 1px solid var(--med-ther); }
+.tag-thera { background: rgba(163,113,247,0.2); color: var(--med-thera); border: 1px solid var(--med-thera); }
+.tag-estab { background: rgba(63,185,80,0.2); color: var(--dec-betam); border: 1px solid var(--dec-betam); }
+.tag-dev   { background: rgba(210,153,34,0.2); color: var(--dec-it); border: 1px solid var(--dec-it); }
+.med-apps { list-style: none; }
+.med-apps li { padding: 1px 0; font-size: 0.71rem; color: var(--text2); }
+.med-apps li::before { content: "• "; color: var(--link); }
+.med-note { font-size: 0.67rem; color: var(--text3); margin-top: 4px; font-style: italic; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 3px; }
 
-/* Gamma card */
-.gamma-card { grid-column: 1 / -1; }
-.gamma-stats { display: flex; border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 10px; }
-.gamma-stat { flex: 1; padding: 10px 14px; border-right: 1px solid var(--line); }
-.gamma-stat:last-child { border-right: none; }
-.gs-label { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-faint); }
-.gs-value { font-family: var(--font-mono); font-size: 18px; font-weight: 700; color: #ffe080; }
-.gs-unit  { font-size: 11px; font-weight: 400; color: var(--text-dim); margin-left: 2px; }
-.gs-sub   { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); }
-.gamma-table-wrap { overflow-x: auto; }
-.gamma-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 12px; }
-.gamma-table th { text-align: left; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px;
-  color: var(--text-faint); padding: 5px 8px; border-bottom: 1px solid var(--line); }
-.gamma-table td { padding: 4px 8px; border-bottom: 1px solid var(--line-soft); }
-.gamma-table tr:last-child td { border-bottom: none; }
-.gamma-table tr:hover td { background: var(--bg-e3); }
-.gamma-e { color: var(--cyan); font-weight: 600; }
-.gamma-i { color: #ffe080; font-weight: 600; }
-.gamma-bar-cell { width: 120px; padding: 5px 8px; }
-.gamma-bar { height: 5px; background: linear-gradient(90deg,#ffe080,#ffb020); border-radius: 3px; min-width: 2px; }
-.gamma-more { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); padding: 6px 8px 0; }
+details { margin-top: 6px; }
+details summary { cursor: pointer; color: var(--text2); font-size: 0.72rem; padding: 3px 0; }
+details summary:hover { color: var(--link); }
+.glossary-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 7px; margin-top: 7px; }
+.glossary-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 5px; padding: 7px 9px; }
+.glossary-item h4 { font-size: 0.72rem; font-weight: 700; margin-bottom: 3px; }
+.glossary-item p  { font-size: 0.67rem; color: var(--text2); line-height: 1.5; }
 
-/* Medical tags row in detail panel */
-.med-tags-row {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
-  padding: 8px 12px; margin-bottom: 8px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--line); border-radius: var(--radius-sm);
-}
-.med-tag-label { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); margin-right: 4px; }
-.med-tag {
-  display: inline-block; padding: 2px 8px; border-radius: 3px;
-  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
-  background: color-mix(in srgb, var(--tc) 18%, transparent);
-  color: var(--tc); border: 1px solid color-mix(in srgb, var(--tc) 40%, transparent);
-}
-
-/* Source note */
-.src-note {
-  margin-top: 12px; padding: 10px 14px;
-  font-family: var(--font-mono); font-size: 10px; color: var(--text-faint);
-  border: 1px solid var(--line); border-radius: var(--radius-sm);
-  line-height: 1.7;
-}
-
-/* ============================================================
-   MEDICAL PANEL (floating, top-right)
-   ============================================================ */
-.med-panel {
-  position: fixed; top: 8px; right: 8px; width: 220px;
-  background: var(--bg-e2); border: 1px solid var(--line);
-  border-radius: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-  z-index: 900; font-family: var(--font-sans); overflow: hidden;
-}
-.med-hdr {
-  display: flex; align-items: center; gap: 7px;
-  padding: 9px 11px; background: var(--bg-e3);
-  border-bottom: 1px solid var(--line);
-}
-.med-hdr-icon  { font-size: 14px; flex-shrink: 0; }
-.med-hdr-title { font-size: 11.5px; font-weight: 700; flex: 1; color: var(--text); letter-spacing: .3px; }
-.med-toggle { position: relative; width: 34px; height: 18px; flex-shrink: 0; cursor: pointer; }
-.med-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
-.med-knob {
-  position: absolute; inset: 0; background: var(--bg-e1);
-  border-radius: 18px; border: 1px solid var(--line); transition: background .2s;
-}
-.med-knob::after {
-  content:''; position: absolute; left: 2px; top: 2px; width: 12px; height: 12px;
-  border-radius: 50%; background: var(--text-faint); transition: transform .2s, background .2s;
-}
-.med-toggle input:checked + .med-knob { background: #22c55e22; border-color: #22c55e; }
-.med-toggle input:checked + .med-knob::after { transform: translateX(16px); background: #22c55e; }
-
-.med-body {
-  padding: 9px 9px 11px;
-  display: flex; flex-direction: column; gap: 7px;
-  max-height: 80vh; overflow-y: auto;
-  opacity: 0.38; pointer-events: none; transition: opacity .2s;
-}
-.med-body.is-on { opacity: 1; pointer-events: auto; }
-.med-hint { font-size: 10px; color: var(--text-faint); line-height: 1.5; text-align: center; padding: 0 2px 2px; }
-.med-sec { display: flex; flex-direction: column; gap: 3px; }
-.med-sec-label { font-size: 8.5px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-faint); padding: 2px 1px 0; }
-.med-filter-btn {
-  display: flex; align-items: center; gap: 6px; width: 100%;
-  padding: 4px 7px; border: 1px solid transparent; border-radius: 4px;
-  background: var(--bg-e3); color: var(--text-dim); font-size: 10.5px;
-  cursor: pointer; transition: border-color .12s, background .12s, color .12s; text-align: left;
-}
-.med-filter-btn:hover { border-color: var(--med-col); color: var(--text); }
-.med-filter-btn.is-on {
-  border-color: var(--med-col);
-  background: color-mix(in srgb, var(--med-col) 14%, transparent);
-  color: var(--med-col); font-weight: 600;
-}
-.med-filter-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--med-col); flex-shrink: 0; }
-.med-clear {
-  width: 100%; padding: 5px; border: 1px solid var(--line); border-radius: 4px;
-  background: transparent; color: var(--text-faint); font-size: 10px;
-  cursor: pointer; margin-top: 2px; transition: color .12s, border-color .12s;
-}
-.med-clear:hover { color: var(--text); border-color: var(--text-dim); }
-.med-count { font-size: 9.5px; color: var(--text-faint); text-align: center; min-height: 12px; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
 </style>
 </head>
 <body>
-
-<header class="masthead">
-  <div>
-    <div class="masthead-logo">Nuclide <span>Explorer</span></div>
-    <div class="masthead-sub">IAEA ENSDF · 3,383 NUCLIDES · INTERACTIVE</div>
-  </div>
-</header>
-
-<div class="pt-scroll">
-  <div class="pt-grid" id="ptGrid"></div>
+<div id="header">
+  <h1>⚛ Nuclear Isotope Periodic Table</h1>
+  <span class="sub">3,391 isotopes · gamma · medical · IAEA ENSDF 2024</span>
+  <span class="src-badge">🔬 IAEA NDS</span>
+  <span class="src-badge">💊 EANM/SNMMI</span>
 </div>
 
-<div class="iso-panel" id="isoPanel">
-  <div class="iso-panel-header">
-    <div class="iso-element-badge cat-unknown" id="isoBadge">?</div>
-    <div class="iso-header-text">
-      <div class="iso-element-name" id="isoElementName">Select an element</div>
-      <div class="iso-element-sub" id="isoElementSub"></div>
+<div id="shell">
+
+  <!-- ══ NARROW SIDEBAR ══ -->
+  <div id="sidebar">
+    <div id="sb-header">
+      <span id="sb-title">💊 Medical</span>
+      <div id="med-toggle-wrap">
+        <input type="checkbox" id="med-toggle">
+        <label for="med-toggle" id="med-toggle-label" title="Toggle medical filter"></label>
+      </div>
     </div>
-  </div>
-  <div class="iso-strip-wrap">
-    <div class="iso-strip" id="isoStrip"></div>
-  </div>
-  <div class="detail-panel" id="detailPanel">
-    <div class="detail-empty">Select an isotope above to view half-life, decay modes, decay energies and specific activity.</div>
-  </div>
-</div>
+    <div id="sb-body">
+      <div id="sb-hint" style="font-size:0.62rem;color:var(--text3);padding:4px 2px 6px;line-height:1.4;">Toggle ON to filter.<br>No filter = show all.</div>
 
-<script src="app.js" defer></script>
+      <div class="sb-section">
+        <div class="sb-section-title">Status</div>
+        <div class="sb-filter" data-filter="status:established">
+          <span class="sb-dot" style="background:var(--med-estab)"></span>Established<span class="sb-count" id="cnt-estab"></span>
+        </div>
+        <div class="sb-filter" data-filter="status:development">
+          <span class="sb-dot" style="background:var(--med-dev)"></span>In Development<span class="sb-count" id="cnt-dev"></span>
+        </div>
+      </div>
+
+      <div class="sb-section">
+        <div class="sb-section-title">Type</div>
+        <div class="sb-filter" data-filter="type:diagnostic">
+          <span class="sb-dot" style="background:var(--med-diag)"></span>◎ Diagnostic<span class="sb-count" id="cnt-diag"></span>
+        </div>
+        <div class="sb-filter" data-filter="type:theranostic">
+          <span class="sb-dot" style="background:var(--med-thera)"></span>☯ Theranostic<span class="sb-count" id="cnt-thera"></span>
+        </div>
+        <div class="sb-filter" data-filter="type:therapy">
+          <span class="sb-dot" style="background:var(--med-ther)"></span>⚡ Therapy<span class="sb-count" id="cnt-ther"></span>
+        </div>
+      </div>
+
+      <div class="sb-section">
+        <div class="sb-section-title">Modality</div>
+        <div class="sb-filter" data-filter="modality:PET"><span class="sb-dot" style="background:#58a6ff"></span>PET</div>
+        <div class="sb-filter" data-filter="modality:SPECT"><span class="sb-dot" style="background:#79c0ff"></span>SPECT</div>
+        <div class="sb-filter" data-filter="modality:Alpha"><span class="sb-dot" style="background:#f85149"></span>Alpha (TAT)</div>
+        <div class="sb-filter" data-filter="modality:Brachy"><span class="sb-dot" style="background:#ffa657"></span>Brachytherapy</div>
+        <div class="sb-filter" data-filter="modality:Beta"><span class="sb-dot" style="background:#3fb950"></span>Beta Therapy</div>
+        <div class="sb-filter" data-filter="modality:Synov"><span class="sb-dot" style="background:#d2a8ff"></span>Synovectomy</div>
+      </div>
+
+      <div class="sb-section">
+        <div class="sb-section-title">Cancer / Indication</div>
+        <div class="sb-filter" data-filter="app:neuroendocrine"><span class="sb-dot" style="background:#58a6ff"></span>Neuroendocrine</div>
+        <div class="sb-filter" data-filter="app:prostate"><span class="sb-dot" style="background:#d2a8ff"></span>Prostate</div>
+        <div class="sb-filter" data-filter="app:thyroid"><span class="sb-dot" style="background:#ffa657"></span>Thyroid</div>
+        <div class="sb-filter" data-filter="app:liver"><span class="sb-dot" style="background:#f85149"></span>Liver / HCC</div>
+        <div class="sb-filter" data-filter="app:bone"><span class="sb-dot" style="background:#e8b04b"></span>Bone Mets</div>
+        <div class="sb-filter" data-filter="app:lymphoma"><span class="sb-dot" style="background:#a371f7"></span>Lymphoma</div>
+        <div class="sb-filter" data-filter="app:breast"><span class="sb-dot" style="background:#ff7b9c"></span>Breast</div>
+        <div class="sb-filter" data-filter="app:cardiac"><span class="sb-dot" style="background:#ff6b6b"></span>Cardiac</div>
+        <div class="sb-filter" data-filter="app:brain"><span class="sb-dot" style="background:#56d364"></span>Brain</div>
+        <div class="sb-filter" data-filter="app:ovarian"><span class="sb-dot" style="background:#e8b04b"></span>Ovarian</div>
+        <div class="sb-filter" data-filter="app:leukemia"><span class="sb-dot" style="background:#ff7b72"></span>Leukemia / AML</div>
+        <div class="sb-filter" data-filter="app:melanoma"><span class="sb-dot" style="background:#8b949e"></span>Melanoma</div>
+        <div class="sb-filter" data-filter="app:renal"><span class="sb-dot" style="background:#3fb950"></span>Kidney / Renal</div>
+        <div class="sb-filter" data-filter="app:arthritis"><span class="sb-dot" style="background:#79c0ff"></span>Synovitis / RA</div>
+        <div class="sb-filter" data-filter="app:alzheimer"><span class="sb-dot" style="background:#ffd700"></span>Alzheimer's</div>
+      </div>
+
+      <div id="sb-clear">Clear all filters</div>
+      <div id="sb-match"></div>
+    </div>
+  </div><!-- /sidebar -->
+
+  <!-- ══ MAIN CONTENT ══ -->
+  <div id="main">
+    <div id="top-panel">
+      <div id="pt-grid"></div>
+      <div id="strip-wrap">
+        <div id="strip-header">
+          <span id="strip-el-name"></span>
+          <span id="strip-el-info"></span>
+        </div>
+        <div id="decay-legend"></div>
+        <div id="iso-strip"></div>
+      </div>
+    </div>
+    <div id="bottom-panel">
+      <div id="detail"><div class="detail-empty">← Click an element to explore its isotopes</div></div>
+      <details>
+        <summary>📖 Glossary / How to read this table</summary>
+        <div class="glossary-grid">
+          <div class="glossary-item"><h4>Half-life (T½)</h4><p>Time for half the atoms to decay. Ranges from femtoseconds to billions of years.</p></div>
+          <div class="glossary-item"><h4>Specific Activity</h4><p>Decays per second per gram (Bq/g). Formula: A = ln(2)·Nₐ/(T½·M). Click 📋 to copy.</p></div>
+          <div class="glossary-item"><h4>Decay modes</h4><p><b style="color:var(--dec-alpha)">α</b> emits ⁴He. <b style="color:var(--dec-betam)">β⁻</b> neutron→proton. <b style="color:var(--dec-betap)">β⁺/EC</b> proton→neutron. <b style="color:var(--dec-it)">IT</b> isomeric transition. <b style="color:var(--dec-sf)">SF</b> spontaneous fission.</p></div>
+          <div class="glossary-item"><h4>Gamma (γ) radiation</h4><p>Photons emitted per 100 parent decays. Σ intensity = total per decay. Total keV/decay = total photon energy released.</p></div>
+          <div class="glossary-item"><h4>Isomers (m)</h4><p>Long-lived excited nuclear states (e.g. ⁹⁹ᵐTc). Key in nuclear medicine — IT decay emits useful γ.</p></div>
+          <div class="glossary-item"><h4>Medical symbols</h4><p>◎ Diagnostic (PET/SPECT) · ⚡ Therapy · ☯ Theranostic. ✓ = established clinical use · … = in development.</p></div>
+        </div>
+      </details>
+    </div>
+  </div><!-- /main -->
+
+</div><!-- /shell -->
+<script src="app.js"></script>
 </body>
 </html>
