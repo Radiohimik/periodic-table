@@ -590,7 +590,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     const r = await fetch('data.json');
     const arr = await r.json();
-    arr.forEach(el => { ELEMENT_DATA[el.Z] = el; });
+    Object.values(arr).forEach(el => { ELEMENT_DATA[el.Z] = el; });
     buildGrid(ELEMENT_DATA);
     buildMedPanel();
   } catch(e) {
