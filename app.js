@@ -11,94 +11,6 @@ let ELEMENT_DATA = null; // keyed by Z (string) -> element object
 let activeZ = null;
 let activeIsotope = null; // currently selected isotope object
 
-/* ============================================================
-   MEDICAL ISOTOPES DATA + FILTER STATE
-   Techniques: SPECT, PET, Alpha therapy, Beta therapy, Brachytherapy
-   ============================================================ */
-const MEDICAL_ISOTOPES = [
-  // ── SPECT ──────────────────────────────────────────────────
-  { Z:43, symbol:'Tc', A:99,  label:'Tc-99m',  techniques:['SPECT'],
-    halfLife:'6.01 h', note:'Most widely used diagnostic isotope. Bone scans, cardiac perfusion, renal, thyroid, hepatobiliary imaging. ~85 % of all nuclear medicine procedures.' },
-  { Z:53, symbol:'I',  A:123, label:'I-123',   techniques:['SPECT'],
-    halfLife:'13.2 h', note:'Thyroid function, neurological dopamine transporter imaging (DaTSCAN). Low radiation dose.' },
-  { Z:81, symbol:'Tl', A:201, label:'Tl-201',  techniques:['SPECT'],
-    halfLife:'73.1 h', note:'Cardiac perfusion SPECT. Being replaced by Tc-99m agents but still used in some centres.' },
-  { Z:31, symbol:'Ga', A:67,  label:'Ga-67',   techniques:['SPECT'],
-    halfLife:'78.3 h', note:'Infection / inflammation imaging, lymphoma. Multi-day protocol.' },
-  { Z:49, symbol:'In', A:111, label:'In-111',  techniques:['SPECT'],
-    halfLife:'67.3 h', note:'Octreoscan (somatostatin receptor), WBC imaging, antibody labelling.' },
-  { Z:71, symbol:'Lu', A:177, label:'Lu-177',  techniques:['SPECT','Beta therapy'],
-    halfLife:'6.65 d', note:'DOTATATE / PSMA theranostic: low-energy gamma enables SPECT imaging during β⁻ therapy. Approved for NETs and mCRPC.' },
-  // ── PET ───────────────────────────────────────────────────
-  { Z:9,  symbol:'F',  A:18,  label:'F-18',    techniques:['PET'],
-    halfLife:'109.8 min', note:'FDG-PET/CT: cornerstone of oncological PET. Also NaF (bone), flortaucipir (tau), florbetapir (amyloid).' },
-  { Z:31, symbol:'Ga', A:68,  label:'Ga-68',   techniques:['PET'],
-    halfLife:'67.7 min', note:'PSMA-PET (prostate cancer), DOTATATE-PET (NETs). Generator-produced; no cyclotron needed on site.' },
-  { Z:40, symbol:'Zr', A:89,  label:'Zr-89',   techniques:['PET'],
-    halfLife:'78.4 h',   note:'Immuno-PET: long half-life matches antibody pharmacokinetics for whole-body mAb tracking.' },
-  { Z:29, symbol:'Cu', A:64,  label:'Cu-64',   techniques:['PET','Beta therapy'],
-    halfLife:'12.7 h',   note:'Theranostic copper. PET imaging (β⁺) plus β⁻ /Auger therapy potential in same nuclide.' },
-  { Z:53, symbol:'I',  A:124, label:'I-124',   techniques:['PET'],
-    halfLife:'4.18 d',   note:'Iodine PET: thyroid cancer dosimetry, radioimmunotherapy pre-dosimetry.' },
-  { Z:6,  symbol:'C',  A:11,  label:'C-11',    techniques:['PET'],
-    halfLife:'20.4 min',  note:'Brain PET: C-11 raclopride (dopamine), C-11 choline, C-11 methionine.' },
-  { Z:7,  symbol:'N',  A:13,  label:'N-13',    techniques:['PET'],
-    halfLife:'9.97 min',  note:'N-13 ammonia: cardiac perfusion PET, gold-standard myocardial flow reserve.' },
-  { Z:8,  symbol:'O',  A:15,  label:'O-15',    techniques:['PET'],
-    halfLife:'122 s',     note:'O-15 water: cerebral blood flow PET. Very short half-life; on-site cyclotron essential.' },
-  { Z:37, symbol:'Rb', A:82,  label:'Rb-82',   techniques:['PET'],
-    halfLife:'76 s',      note:'Generator-produced cardiac PET. High throughput; approved for myocardial perfusion.' },
-  // ── Alpha therapy ─────────────────────────────────────────
-  { Z:88, symbol:'Ra', A:223, label:'Ra-223',  techniques:['Alpha therapy'],
-    halfLife:'11.43 d', note:'Xofigo (Bayer): first approved targeted alpha therapy. Bone metastases in castration-resistant prostate cancer.' },
-  { Z:89, symbol:'Ac', A:225, label:'Ac-225',  techniques:['Alpha therapy'],
-    halfLife:'9.92 d',  note:'Ac-225 PSMA-617: pivotal Phase III (TherapACs). Four alpha decays in one generator chain.' },
-  { Z:83, symbol:'Bi', A:213, label:'Bi-213',  techniques:['Alpha therapy'],
-    halfLife:'45.6 min', note:'Daughter of Ac-225. Used in targeted alpha therapy for AML and solid tumours.' },
-  { Z:85, symbol:'At', A:211, label:'At-211',  techniques:['Alpha therapy'],
-    halfLife:'7.21 h',  note:'Astatine-211: high-LET alpha, no beta. Under investigation for thyroid and glioblastoma.' },
-  { Z:82, symbol:'Pb', A:212, label:'Pb-212',  techniques:['Alpha therapy'],
-    halfLife:'10.6 h',  note:'In vivo generator decaying to Bi-212 then Tl-208; α-emitter for melanoma and pancreatic cancer trials.' },
-  { Z:83, symbol:'Bi', A:212, label:'Bi-212',  techniques:['Alpha therapy'],
-    halfLife:'60.6 min', note:'Daughter of Pb-212. Short-range alpha; used in targeted α therapy research.' },
-  // ── Beta therapy ──────────────────────────────────────────
-  { Z:39, symbol:'Y',  A:90,  label:'Y-90',    techniques:['Beta therapy'],
-    halfLife:'64.1 h',  note:'SIR-Spheres / TheraSphere: radioembolisation for hepatocellular carcinoma. Also Y-90 ibritumomab (lymphoma).' },
-  { Z:53, symbol:'I',  A:131, label:'I-131',   techniques:['Beta therapy'],
-    halfLife:'8.02 d',  note:'Oldest targeted radionuclide therapy. Thyroid cancer ablation, hyperthyroidism, Bexxar (lymphoma).' },
-  { Z:38, symbol:'Sr', A:89,  label:'Sr-89',   techniques:['Beta therapy'],
-    halfLife:'50.6 d',  note:'Metastron: bone pain palliation in osteoblastic metastases. Mimics calcium in bone.' },
-  { Z:62, symbol:'Sm', A:153, label:'Sm-153',  techniques:['Beta therapy'],
-    halfLife:'46.3 h',  note:'Quadramet: EDTMP-chelated bone pain palliation; also emits 103 keV gamma for scintigraphy.' },
-  { Z:75, symbol:'Re', A:186, label:'Re-186',  techniques:['Beta therapy'],
-    halfLife:'90.6 h',  note:'HEDP complex for bone pain palliation. 137 keV gamma also allows scintigraphy.' },
-  { Z:75, symbol:'Re', A:188, label:'Re-188',  techniques:['Beta therapy'],
-    halfLife:'17.0 h',  note:'Generator-produced (W-188). Targeted therapy research; higher energy beta than Re-186.' },
-  { Z:32, symbol:'Ge', A:77,  label:'Ge-77 / As-77', techniques:['Beta therapy'],
-    halfLife:'38.8 h (As-77)', note:'As-77 (daughter of Ge-77): emerging β emitter for radiopharmaceutical therapy; PSMA conjugates in trials.' },
-  // ── Brachytherapy ─────────────────────────────────────────
-  { Z:53, symbol:'I',  A:125, label:'I-125',   techniques:['Brachytherapy'],
-    halfLife:'59.4 d',  note:'Permanent prostate seed brachytherapy (LDR). Low-energy photons; ideal radiation protection profile.' },
-  { Z:46, symbol:'Pd', A:103, label:'Pd-103',  techniques:['Brachytherapy'],
-    halfLife:'16.99 d', note:'Prostate seed brachytherapy (LDR). Lower energy than I-125; favoured for some tumour grades.' },
-  { Z:77, symbol:'Ir', A:192, label:'Ir-192',  techniques:['Brachytherapy'],
-    halfLife:'73.8 d',  note:'HDR brachytherapy source. Gynaecological, breast, prostate, and skin cancers. Widely deployed.' },
-  { Z:55, symbol:'Cs', A:131, label:'Cs-131',  techniques:['Brachytherapy'],
-    halfLife:'9.69 d',  note:'Brain, prostate, and ocular brachytherapy. Short half-life suitable for resection-cavity implants.' },
-  { Z:69, symbol:'Tm', A:170, label:'Tm-170',  techniques:['Brachytherapy'],
-    halfLife:'128.6 d', note:'Eye brachytherapy applicators (ophthalmic use). Long-lasting beta source.' },
-];
-
-const TECHNIQUE_META = {
-  'SPECT':          { color:'#4A9EFF', icon:'◎', desc:'Single-photon emission CT — gamma-emitting tracers' },
-  'PET':            { color:'#FF8C42', icon:'⊕', desc:'Positron emission tomography — β⁺ emitters' },
-  'Alpha therapy':  { color:'#FF4D6D', icon:'α',  desc:'Targeted alpha therapy — high-LET α emitters' },
-  'Beta therapy':   { color:'#4CAF50', icon:'β⁻', desc:'Targeted β⁻ radionuclide therapy' },
-  'Brachytherapy':  { color:'#B47FFF', icon:'⦿', desc:'Internal sealed-source radiotherapy' },
-};
-
-let activeTechniques = new Set(); // multi-select state
-
 /* ---------- Decay mode -> visual category mapping ---------- */
 function decayCategory(modes, isStable) {
   if (isStable) return 'stable';
@@ -122,6 +34,7 @@ const DECAY_COLORS = {
 };
 
 /* ---------- Number formatting helpers ---------- */
+// Format a number in scientific notation as HTML: m.mm × 10^xx
 function sciHTML(value, sig = 3) {
   if (value === null || value === undefined || isNaN(value)) return '—';
   if (value === 0) return '0';
@@ -135,6 +48,8 @@ function sciHTML(value, sig = 3) {
   return `${mantStr} × 10<span class="exp">${e}</span>`;
 }
 
+// Plain-text scientific notation for clipboard copying, e.g. "1.95e+17" -> "1.95e17"
+// Uses the same rounding as sciHTML so the copied number matches what's displayed.
 function sciPlain(value, sig = 3) {
   if (value === null || value === undefined || isNaN(value)) return '';
   if (value === 0) return '0';
@@ -148,6 +63,8 @@ function sciPlain(value, sig = 3) {
   return `${mantStr}e${e}`;
 }
 
+// Build a copy-button HTML snippet. `value` is the exact plain-text string
+// that will be placed on the clipboard when clicked.
 let copyBtnCounter = 0;
 function copyBtn(value, label) {
   if (value === null || value === undefined || value === '') return '';
@@ -159,15 +76,18 @@ function copyBtn(value, label) {
   </button>`;
 }
 
+// Event delegation: handle clicks on any .copy-btn within the detail panel
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('.copy-btn');
   if (!btn) return;
   const value = btn.dataset.copyValue;
   if (value === undefined) return;
+
   const doFeedback = () => {
     btn.classList.add('is-copied');
     setTimeout(() => btn.classList.remove('is-copied'), 1200);
   };
+
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(value).then(doFeedback).catch(() => fallbackCopy(value, doFeedback));
   } else {
@@ -175,6 +95,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
+// Fallback clipboard method for browsers/contexts without navigator.clipboard
 function fallbackCopy(text, onDone) {
   const ta = document.createElement('textarea');
   ta.value = text;
@@ -187,6 +108,7 @@ function fallbackCopy(text, onDone) {
   if (onDone) onDone();
 }
 
+// Format half-life nicely with original unit + seconds equivalent in sci notation
 function formatHalfLife(iso) {
   if (iso.is_stable) return { primary: 'Stable', secondary: 'Does not decay', isResonance:false };
   if (!iso.half_life_value) return { primary: 'Unknown', secondary: '—', isResonance:false };
@@ -196,11 +118,16 @@ function formatHalfLife(iso) {
   const unc = iso.half_life_unc ? ` ± ${iso.half_life_unc}` : '';
   const isResonance = ['MEV','KEV','EV'].includes(unit.toUpperCase());
   if (isResonance) {
-    return { primary: `${val}${unc} ${unit}`, secondary: sec != null ? sciHTML(sec) : '—', isResonance: true };
+    return {
+      primary: `${val}${unc} ${unit}`,
+      secondary: sec != null ? sciHTML(sec) : '—',
+      isResonance: true
+    };
   }
-  return { primary: `${val}${unc} ${unitLabel(unit)}`, secondary: sec != null ? sciHTML(sec) : '—', isResonance:false };
+  const primary = `${val}${unc} ${unitLabel(unit)}`;
+  const secondary = sec != null ? sciHTML(sec) : '—';
+  return { primary, secondary, isResonance:false };
 }
-
 function unitLabel(u) {
   const map = {
     s:'s', ms:'ms', us:'µs', ns:'ns', ps:'ps', fs:'fs', as:'as', zs:'zs', ys:'ys',
@@ -210,428 +137,12 @@ function unitLabel(u) {
   return map[u] || u;
 }
 
+// Render a spin-parity string like "9/2+" or "(3/2-)" with the parity sign superscripted
 function spinParityHTML(jp) {
   if (!jp) return '—';
   const m = jp.match(/^(\(?[\d/]+\)?)\s*([+\-])$/);
   if (!m) return jp;
   return `${m[1]}<sup>${m[2]}</sup>`;
-}
-
-/* ============================================================
-   CSS INJECTION — fixes grid visibility + font sizes
-   ============================================================ */
-function injectStyles() {
-  const style = document.createElement('style');
-  style.id = 'nuclide-explorer-overrides';
-  style.textContent = `
-    /* ── Fix: ensure La/Ac rows are not clipped ── */
-    #ptGrid {
-      grid-template-rows: repeat(10, auto) !important;
-      overflow: visible !important;
-      height: auto !important;
-      min-height: 0 !important;
-      padding-bottom: 8px !important;
-    }
-
-    /* ── Larger, brighter atomic numbers ── */
-    .tile-num {
-      font-size: 11px !important;
-      font-weight: 600 !important;
-      color: rgba(255,255,255,0.82) !important;
-    }
-
-    /* ── Larger element symbol ── */
-    .tile-symbol {
-      font-size: 22px !important;
-      line-height: 1.05 !important;
-      font-weight: 700 !important;
-    }
-
-    /* ── Larger element name ── */
-    .tile-name {
-      font-size: 9.5px !important;
-      font-weight: 500 !important;
-      letter-spacing: 0.01em !important;
-    }
-
-    /* ── Medical filter panel ── */
-    #medicalPanel {
-      margin: 0 0 0 0;
-      padding: 18px 20px 14px 20px;
-      background: rgba(255,255,255,0.025);
-      border-top: 1px solid rgba(255,255,255,0.06);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      display: flex;
-      gap: 24px;
-      align-items: flex-start;
-      min-height: 0;
-    }
-
-    #medicalPanel .mp-left {
-      flex: 0 0 220px;
-      min-width: 180px;
-    }
-
-    #medicalPanel .mp-right {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .mp-title {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
-      margin-bottom: 10px;
-    }
-
-    .mp-subtitle {
-      font-size: 11px;
-      color: rgba(255,255,255,0.35);
-      margin-bottom: 10px;
-      line-height: 1.45;
-    }
-
-    .mp-filter-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      width: 100%;
-      padding: 7px 11px;
-      margin-bottom: 5px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 12.5px;
-      color: rgba(255,255,255,0.65);
-      text-align: left;
-      transition: background 0.15s, border-color 0.15s, color 0.15s;
-      font-family: inherit;
-    }
-
-    .mp-filter-btn:hover {
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.9);
-    }
-
-    .mp-filter-btn.is-active {
-      background: rgba(255,255,255,0.09);
-      border-color: var(--mp-btn-color, rgba(255,255,255,0.35));
-      color: #fff;
-      box-shadow: 0 0 0 1px var(--mp-btn-color, transparent) inset;
-    }
-
-    .mp-filter-btn .mp-btn-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      background: var(--mp-btn-color, #888);
-      opacity: 0.7;
-      transition: opacity 0.15s;
-    }
-
-    .mp-filter-btn.is-active .mp-btn-dot { opacity: 1; }
-
-    .mp-filter-btn .mp-btn-count {
-      margin-left: auto;
-      font-size: 10px;
-      opacity: 0.5;
-      font-family: var(--font-mono, monospace);
-    }
-
-    .mp-clear-btn {
-      margin-top: 4px;
-      padding: 5px 11px;
-      background: none;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 11px;
-      color: rgba(255,255,255,0.35);
-      font-family: inherit;
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .mp-clear-btn:hover { color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.2); }
-
-    /* ── Isotope result list ── */
-    .mp-result-header {
-      font-size: 11px;
-      color: rgba(255,255,255,0.35);
-      margin-bottom: 9px;
-      font-weight: 500;
-    }
-
-    .mp-result-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-    }
-
-    .mp-iso-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 7px;
-      padding: 7px 11px;
-      min-width: 140px;
-      max-width: 220px;
-      cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
-      position: relative;
-    }
-
-    .mp-iso-card:hover {
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(255,255,255,0.2);
-    }
-
-    .mp-iso-card-name {
-      font-size: 13px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 3px;
-    }
-
-    .mp-iso-card-hl {
-      font-size: 10.5px;
-      color: rgba(255,255,255,0.4);
-      font-family: var(--font-mono, monospace);
-      margin-bottom: 4px;
-    }
-
-    .mp-iso-card-note {
-      font-size: 10.5px;
-      color: rgba(255,255,255,0.5);
-      line-height: 1.4;
-    }
-
-    .mp-iso-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 3px;
-      margin-bottom: 4px;
-    }
-
-    .mp-iso-tag {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      padding: 1px 5px;
-      border-radius: 3px;
-      color: #fff;
-      opacity: 0.85;
-    }
-
-    .mp-empty {
-      font-size: 12px;
-      color: rgba(255,255,255,0.25);
-      padding: 16px 0;
-    }
-
-    /* ── Publications link ── */
-    .mp-pubmed-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      margin-top: 12px;
-      font-size: 10.5px;
-      color: rgba(255,255,255,0.35);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255,255,255,0.12);
-      padding-bottom: 1px;
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .mp-pubmed-link:hover { color: rgba(255,255,255,0.75); border-color: rgba(255,255,255,0.4); }
-    .mp-pubmed-link svg { opacity: 0.6; }
-
-    /* ── Tile highlight / dim when medical filter active ── */
-    .element-tile.medical-highlight {
-      outline: 2px solid rgba(255,255,255,0.55) !important;
-      outline-offset: 1px;
-      z-index: 2;
-    }
-
-    .element-tile.medical-dim {
-      opacity: 0.22 !important;
-      pointer-events: none;
-    }
-
-    /* keep selected tile always fully visible */
-    .element-tile.is-active {
-      opacity: 1 !important;
-    }
-
-    @media (max-width: 900px) {
-      #medicalPanel { flex-direction: column; }
-      #medicalPanel .mp-left { flex: none; width: 100%; }
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-/* ============================================================
-   MEDICAL FILTER PANEL — BUILD + RENDER
-   ============================================================ */
-function buildMedicalPanel() {
-  const panel = document.createElement('div');
-  panel.id = 'medicalPanel';
-
-  // Insert after ptGrid
-  const grid = document.getElementById('ptGrid');
-  grid.parentNode.insertBefore(panel, grid.nextSibling);
-
-  renderMedicalPanel();
-}
-
-function renderMedicalPanel() {
-  const panel = document.getElementById('medicalPanel');
-  if (!panel) return;
-
-  // Compute matching isotopes
-  const matchingIsos = activeTechniques.size === 0
-    ? []
-    : MEDICAL_ISOTOPES.filter(iso => iso.techniques.some(t => activeTechniques.has(t)));
-
-  // Count per technique
-  const counts = {};
-  Object.keys(TECHNIQUE_META).forEach(t => {
-    counts[t] = MEDICAL_ISOTOPES.filter(iso => iso.techniques.includes(t)).length;
-  });
-
-  // Build PubMed URL for the past 2 weeks
-  const pubmedUrl = buildPubmedUrl();
-
-  // Left column: filter buttons
-  let filterHTML = `
-    <div class="mp-title">Medical Isotopes</div>
-    <div class="mp-subtitle">Select one or more techniques to highlight matching elements and see matched isotopes.</div>
-  `;
-  Object.entries(TECHNIQUE_META).forEach(([tech, meta]) => {
-    const isActive = activeTechniques.has(tech);
-    filterHTML += `
-      <button class="mp-filter-btn ${isActive ? 'is-active' : ''}"
-              style="--mp-btn-color:${meta.color}"
-              data-technique="${tech}"
-              title="${meta.desc}">
-        <span class="mp-btn-dot"></span>
-        <span>${meta.icon} ${tech}</span>
-        <span class="mp-btn-count">${counts[tech]}</span>
-      </button>
-    `;
-  });
-
-  if (activeTechniques.size > 0) {
-    filterHTML += `<button class="mp-clear-btn" id="mpClearBtn">✕ Clear filters</button>`;
-  }
-
-  filterHTML += `
-    <a class="mp-pubmed-link" href="${pubmedUrl}" target="_blank" rel="noopener" title="Search PubMed for recent medical isotope publications (last 2 weeks)">
-      <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v4l2.5 1.5"/></svg>
-      Recent publications (PubMed, last 2 weeks)
-    </a>
-  `;
-
-  // Right column: isotope result list
-  let resultsHTML = '';
-  if (activeTechniques.size === 0) {
-    resultsHTML = `<div class="mp-empty">← Select a technique to see matching isotopes and highlight them on the table above.</div>`;
-  } else if (matchingIsos.length === 0) {
-    resultsHTML = `<div class="mp-empty">No isotopes found for the selected combination.</div>`;
-  } else {
-    const techLabel = activeTechniques.size === 1
-      ? [...activeTechniques][0]
-      : [...activeTechniques].join(' + ');
-    resultsHTML = `<div class="mp-result-header">${matchingIsos.length} isotope${matchingIsos.length !== 1 ? 's' : ''} — ${techLabel}</div>`;
-    resultsHTML += `<div class="mp-result-list">`;
-    matchingIsos.forEach(iso => {
-      const tagHTML = iso.techniques
-        .map(t => `<span class="mp-iso-tag" style="background:${TECHNIQUE_META[t]?.color || '#555'}">${t}</span>`)
-        .join('');
-      resultsHTML += `
-        <div class="mp-iso-card" data-jump-z="${iso.Z}" title="Click to open ${iso.label} on the periodic table">
-          <div class="mp-iso-tags">${tagHTML}</div>
-          <div class="mp-iso-card-name">${iso.label}</div>
-          <div class="mp-iso-card-hl">T½ ${iso.halfLife}</div>
-          <div class="mp-iso-card-note">${iso.note}</div>
-        </div>
-      `;
-    });
-    resultsHTML += `</div>`;
-  }
-
-  panel.innerHTML = `
-    <div class="mp-left">${filterHTML}</div>
-    <div class="mp-right">${resultsHTML}</div>
-  `;
-
-  // Bind filter button clicks
-  panel.querySelectorAll('.mp-filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => applyMedicalFilter(btn.dataset.technique));
-  });
-
-  // Bind clear button
-  const clearBtn = panel.querySelector('#mpClearBtn');
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      activeTechniques.clear();
-      refreshMedicalHighlights();
-      renderMedicalPanel();
-    });
-  }
-
-  // Bind isotope card clicks → jump to element on table
-  panel.querySelectorAll('.mp-iso-card[data-jump-z]').forEach(card => {
-    card.addEventListener('click', () => {
-      const z = parseInt(card.dataset.jumpZ);
-      selectElement(z);
-      // scroll table into view
-      const tile = document.querySelector(`.element-tile[data-z="${z}"]`);
-      if (tile) tile.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
-  });
-}
-
-function applyMedicalFilter(technique) {
-  if (activeTechniques.has(technique)) {
-    activeTechniques.delete(technique);
-  } else {
-    activeTechniques.add(technique);
-  }
-  refreshMedicalHighlights();
-  renderMedicalPanel();
-}
-
-function refreshMedicalHighlights() {
-  const matchingZ = new Set();
-  if (activeTechniques.size > 0) {
-    MEDICAL_ISOTOPES.forEach(iso => {
-      if (iso.techniques.some(t => activeTechniques.has(t))) {
-        matchingZ.add(iso.Z);
-      }
-    });
-  }
-
-  document.querySelectorAll('.element-tile').forEach(tile => {
-    const z = parseInt(tile.dataset.z);
-    tile.classList.remove('medical-highlight', 'medical-dim');
-    if (activeTechniques.size > 0) {
-      if (matchingZ.has(z)) {
-        tile.classList.add('medical-highlight');
-      } else {
-        tile.classList.add('medical-dim');
-      }
-    }
-  });
-}
-
-/* Build a PubMed search URL covering the last 2 weeks */
-function buildPubmedUrl() {
-  const now = new Date();
-  const twoWeeksAgo = new Date(now - 14 * 24 * 60 * 60 * 1000);
-  const fmt = d => `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
-  const term = encodeURIComponent('medical radioisotope OR radiopharmaceutical OR targeted radionuclide therapy');
-  return `https://pubmed.ncbi.nlm.nih.gov/?term=${term}&datetype=pdat&mindate=${fmt(twoWeeksAgo)}&maxdate=${fmt(now)}&sort=date`;
 }
 
 /* ============================================================
@@ -641,6 +152,8 @@ function buildPeriodicTable() {
   const grid = document.getElementById('ptGrid');
   grid.innerHTML = '';
 
+  // Build a position map for special rows: lanthanides/actinides shown as
+  // a reference cell in the main block, and as separate rows below.
   Object.values(ELEMENT_DATA).forEach(el => {
     const tile = document.createElement('div');
     tile.className = `element-tile cat-${el.category}`;
@@ -651,7 +164,7 @@ function buildPeriodicTable() {
 
     let col, row;
     if (el.category === 'lanthanide') {
-      col = (el.Z - 57) + 4;
+      col = (el.Z - 57) + 4; // La=57 starts at col 4 of row 9
       row = 9;
     } else if (el.category === 'actinide') {
       col = (el.Z - 89) + 4;
@@ -663,8 +176,10 @@ function buildPeriodicTable() {
     tile.style.gridColumn = col;
     tile.style.gridRow = row;
 
+    // Dominant decay-mode strip across this element's isotopes
     const counts = { stable:0, alpha:0, betam:0, betap:0, it:0, sf:0, other:0 };
     el.isotopes.forEach(iso => counts[decayCategory(iso.decay_modes, iso.is_stable)]++);
+    const total = el.isotopes.length || 1;
     const stripSegments = Object.entries(counts)
       .filter(([,c]) => c > 0)
       .map(([cat,c]) => `<span style="background:${DECAY_COLORS[cat]}; flex-grow:${c}"></span>`)
@@ -705,7 +220,7 @@ function buildPeriodicTable() {
   const spacer = document.createElement('div');
   spacer.style.gridRow = 8;
   spacer.style.gridColumn = '1 / -1';
-  spacer.style.height = '6px';
+  spacer.style.height = '3px';
   grid.appendChild(spacer);
 }
 
@@ -722,6 +237,7 @@ function selectElement(Z) {
   activeZ = Z;
   activeIsotope = null;
 
+  // highlight tile
   document.querySelectorAll('.element-tile').forEach(t => {
     t.classList.toggle('is-active', parseInt(t.dataset.z) === Z);
   });
@@ -730,6 +246,7 @@ function selectElement(Z) {
   const panel = document.getElementById('isoPanel');
   panel.classList.add('is-open');
 
+  // header
   const badge = document.getElementById('isoBadge');
   badge.textContent = el.symbol;
   badge.className = `iso-element-badge cat-${el.category}`;
@@ -746,6 +263,7 @@ function selectElement(Z) {
     ${isomerCount ? `<span>Notable isomers: <b>${isomerCount}</b></span>` : ''}
   `;
 
+  // isotope strip
   const strip = document.getElementById('isoStrip');
   strip.innerHTML = '';
   el.isotopes.forEach(iso => {
@@ -765,6 +283,7 @@ function selectElement(Z) {
     });
     strip.appendChild(chip);
 
+    // If this isotope has a notable isomer, add a second chip for it
     if (iso.isomers && iso.isomers.length) {
       iso.isomers.forEach(isomer => {
         const icat = decayCategory(isomer.decay_modes, false);
@@ -786,10 +305,12 @@ function selectElement(Z) {
     }
   });
 
+  // reset detail panel
   const detail = document.getElementById('detailPanel');
   detail.classList.remove('is-open');
   detail.innerHTML = `<div class="detail-empty">Select an isotope above to view half-life, decay modes, decay energies and specific activity.</div>`;
 
+  // Scroll just enough to show the isotope chip strip
   setTimeout(() => {
     const panelTop = panel.getBoundingClientRect().top + window.scrollY;
     window.scrollTo({ top: panelTop - 20, behavior: 'smooth' });
@@ -806,15 +327,16 @@ document.getElementById('isoPanelClose').addEventListener('click', () => {
    ISOTOPE DETAIL PANEL
    ============================================================ */
 const ENERGY_LABELS = {
-  alpha_MeV:        { label:'Q(α) — alpha decay energy',                      symbol:'Q_α'  },
-  beta_minus_MeV:   { label:'Q(β⁻) — beta-minus decay energy',                symbol:'Q_β⁻' },
+  alpha_MeV: { label:'Q(α) — alpha decay energy', symbol:'Q_α' },
+  beta_minus_MeV: { label:'Q(β⁻) — beta-minus decay energy', symbol:'Q_β⁻' },
   ec_beta_plus_MeV: { label:'Q(EC/β⁺) — electron capture / positron decay energy', symbol:'Q_EC' },
-  it_MeV:           { label:'E(IT) — isomeric transition (γ-ray) energy',     symbol:'E_IT' }
+  it_MeV: { label:'E(IT) — isomeric transition (γ-ray) energy', symbol:'E_IT' }
 };
 
 function selectIsotope(iso, chipEl, isIsomer = false, parentIso = null) {
   activeIsotope = iso;
 
+  // update chip selection state
   document.querySelectorAll('.iso-chip').forEach(c => c.classList.remove('is-selected'));
   if (chipEl) chipEl.classList.add('is-selected');
 
@@ -880,6 +402,7 @@ function selectIsotope(iso, chipEl, isIsomer = false, parentIso = null) {
       </div>
     `;
   } else if (hl.isResonance) {
+    /* ---------- Unbound resonance state (beyond drip line) ---------- */
     html += `
       <div class="detail-card">
         <h3>Decay width (resonance) <span class="src-tag">IAEA / ENSDF</span></h3>
@@ -981,10 +504,11 @@ function selectIsotope(iso, chipEl, isIsomer = false, parentIso = null) {
         } else {
           pctLabel = dm.percent_raw ? dm.percent_raw + '%' : '—';
         }
+        // bar width: proportional, but with a visible minimum sliver for tiny branches
         let barWidth;
         if (pct == null) barWidth = 0;
         else if (pct <= 0) barWidth = 0;
-        else if (pct < 1) barWidth = 1.2;
+        else if (pct < 1) barWidth = 1.2; // visible sliver for sub-1% branches
         else barWidth = Math.min(100, pct);
         html += `
           <div class="decay-mode-row">
@@ -1127,9 +651,11 @@ function selectIsotope(iso, chipEl, isIsomer = false, parentIso = null) {
   detail.innerHTML = `<div class="detail-grid">${html}</div>`;
   detail.classList.add('is-open');
 
+  // Wait for browser to render the newly visible panel, then scroll to it
   setTimeout(() => {
     const panel = document.getElementById('isoPanel');
     const panelTop = panel.getBoundingClientRect().top + window.scrollY;
+    // Scroll so the top of the iso-panel (header + chips + detail) is near top of viewport
     window.scrollTo({ top: panelTop - 20, behavior: 'smooth' });
   }, 50);
 }
@@ -1138,9 +664,6 @@ function selectIsotope(iso, chipEl, isIsomer = false, parentIso = null) {
    DATA LOADING / INIT
    ============================================================ */
 async function init() {
-  // Inject CSS overrides first so they apply immediately
-  injectStyles();
-
   const grid = document.getElementById('ptGrid');
   grid.innerHTML = `<div class="loading-state" style="grid-column:1/-1;">
     <div>Fetching nuclide dataset from IAEA Live Chart of Nuclides…</div>
@@ -1151,7 +674,6 @@ async function init() {
     ELEMENT_DATA = await res.json();
     document.getElementById('dataStatus').textContent = `${Object.keys(ELEMENT_DATA).length} elements loaded`;
     buildPeriodicTable();
-    buildMedicalPanel();
   } catch (err) {
     grid.innerHTML = `<div class="loading-state" style="grid-column:1/-1; color:var(--decay-sf);">
       Failed to load nuclide dataset (${err.message}). Ensure data.json is in the same folder as index.html.
