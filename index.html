@@ -4,326 +4,700 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nuclear Isotope Periodic Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0d1117; --bg2: #161b22; --bg3: #21262d; --bg4: #2d333b;
-  --border: #30363d; --border2: #444c56;
-  --text: #e6edf3; --text2: #8b949e; --text3: #6e7681;
-  --link: #58a6ff; --accent: #1f6feb;
-  --dec-alpha: #f85149; --dec-betam: #3fb950; --dec-betap: #d2a8ff;
-  --dec-it: #ffa657; --dec-sf: #ff7b72; --dec-stable: #8b949e;
-  --dec-p: #79c0ff; --dec-n: #56d364;
-  --med-diag: #58a6ff; --med-ther: #f85149; --med-thera: #a371f7;
-  --med-estab: #3fb950; --med-dev: #d29922;
-  --sb-w: 155px;   /* ← sidebar width — change this one value to resize */
+:root{
+  --bg:#0a0f0a; --bg1:#0d150d; --bg2:#111a11; --bg3:#162016;
+  --line:#1e301e; --lines:#182018;
+  --text:#e8f5e8; --dim:#8aaa8a; --faint:#4a6a4a;
+  --cyan:#5EEAD4; --cyand:#1F4D47; --amber:#FBBE5C;
+  --s-stable:#5CD68A; --s-alpha:#FF8A5C; --s-betam:#5CA8FF;
+  --s-betap:#C792FF; --s-it:#5EEAD4; --s-sf:#FF5C7A; --s-other:#A0ABC5;
+  --fdis:'Space Grotesk',sans-serif; --fmono:'JetBrains Mono',monospace;
+  --fbb:'Oswald','Arial Narrow',sans-serif;
+  --r4:4px; --r8:8px; --r14:14px;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 13px; min-height: 100vh; overflow: hidden; }
-
-/* ── HEADER ── */
-#header { padding: 10px 14px 8px; border-bottom: 1px solid var(--border); display:flex; align-items:center; gap:12px; flex-wrap:wrap; height: 44px; }
-#header h1 { font-size:1rem; font-weight:700; }
-#header .sub { color: var(--text2); font-size:0.72rem; }
-.src-badge { background: var(--bg3); border:1px solid var(--border); border-radius:4px; padding:1px 6px; font-size:0.68rem; color:var(--text2); }
-
-/* ── OUTER SHELL: sidebar + main side-by-side ── */
-#shell { display: flex; height: calc(100vh - 44px); overflow: hidden; }
-
-/* ── SIDEBAR ── */
-#sidebar {
-  width: var(--sb-w); flex: 0 0 var(--sb-w);
-  background: var(--bg2); border-right: 1px solid var(--border);
-  display: flex; flex-direction: column; overflow: hidden;
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--bg);color:var(--text);font-family:var(--fdis);-webkit-font-smoothing:antialiased;min-height:100vh;}
+body{
+  background-image:radial-gradient(ellipse 1400px 900px at 30% 40%,rgba(20,80,20,0.18),transparent 70%),
+  radial-gradient(ellipse 800px 600px at 80% 20%,rgba(10,60,10,0.12),transparent 60%);
+  padding:8px 12px 40px;
 }
-#sb-header {
-  padding: 8px 8px 6px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 4px; flex-shrink: 0;
+/* HEADER */
+.hd{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:8px;}
+.hd-mark{font-family:var(--fmono);font-size:18px;font-weight:700;color:var(--bg);background:var(--cyan);width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:var(--r4);flex-shrink:0;box-shadow:0 0 0 3px var(--cyand),0 0 18px -4px var(--cyan);}
+.hd h1{font-size:16px;font-weight:600;}
+.hd .sub{font-family:var(--fmono);font-size:9px;color:var(--dim);}
+.hd-links{display:flex;gap:7px;margin-left:auto;}
+.hd-links a{font-family:var(--fmono);font-size:9px;padding:4px 9px;border:1px solid var(--line);border-radius:var(--r4);color:var(--dim);text-decoration:none;transition:color .15s,border-color .15s;}
+.hd-links a:hover{color:var(--cyan);border-color:var(--cyan);}
+.hd-meta{display:flex;gap:16px;font-family:var(--fmono);font-size:9.5px;color:var(--dim);}
+.hd-meta .ml{display:block;font-size:7.5px;text-transform:uppercase;letter-spacing:1.5px;color:var(--faint);margin-bottom:1px;}
+/* SHELL */
+.shell{display:flex;gap:10px;align-items:flex-start;}
+/* SIDEBAR */
+.sb{width:165px;min-width:165px;flex-shrink:0;background:var(--bg1);border:1px solid var(--line);border-radius:var(--r14);padding:11px 10px 13px;position:sticky;top:8px;max-height:calc(100vh - 60px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--line) transparent;}
+.sb::-webkit-scrollbar{width:3px;}.sb::-webkit-scrollbar-thumb{background:var(--line);border-radius:2px;}
+.sb-hd{display:flex;align-items:center;gap:6px;margin-bottom:7px;padding-bottom:7px;border-bottom:1px solid var(--line);}
+.sb-title{font-size:13px;font-weight:700;flex:1;}
+.sw-wrap{display:flex;align-items:center;cursor:pointer;}
+.sw-inp{display:none;}
+.sw{width:32px;height:17px;background:var(--bg3);border:1px solid var(--line);border-radius:9px;position:relative;transition:background .2s,border-color .2s;}
+.sw::after{content:'';position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:50%;background:var(--faint);transition:transform .2s,background .2s;}
+.sw-inp:checked+.sw{background:var(--cyand);border-color:var(--cyan);}
+.sw-inp:checked+.sw::after{transform:translateX(15px);background:var(--cyan);}
+.sb-hint{font-family:var(--fmono);font-size:8.5px;color:var(--faint);margin-bottom:9px;line-height:1.5;}
+.sb-sec{margin-bottom:9px;}
+.sb-sec-t{font-family:var(--fmono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);margin-bottom:4px;}
+.sb-item{display:flex;align-items:center;gap:5px;padding:3px 5px;border-radius:var(--r4);cursor:pointer;font-size:11px;color:var(--dim);transition:background .1s,color .1s;margin-bottom:2px;user-select:none;border:1px solid transparent;}
+.sb-item:hover{background:var(--bg2);color:var(--text);}
+.sb-item.on{background:var(--bg3);color:var(--text);border-color:var(--line);}
+.sb-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.sb-cnt{margin-left:auto;font-family:var(--fmono);font-size:8.5px;color:var(--faint);background:var(--bg3);padding:1px 4px;border-radius:3px;}
+.sb-clear{width:100%;margin-top:8px;padding:5px;background:var(--bg3);border:1px solid var(--line);border-radius:var(--r4);color:var(--dim);font-family:var(--fmono);font-size:9px;cursor:pointer;transition:color .15s,border-color .15s;}
+.sb-clear:hover{color:var(--s-sf);border-color:var(--s-sf);}
+.sb-pub{display:block;margin-top:9px;padding-top:8px;border-top:1px solid var(--line);font-family:var(--fmono);font-size:8.5px;color:var(--cyan);text-decoration:none;opacity:.7;line-height:1.5;transition:opacity .15s;}
+.sb-pub:hover{opacity:1;}
+/* MAIN */
+.main{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;}
+/* PERIODIC TABLE */
+.pt-scroll{overflow-x:auto;overflow-y:visible;}
+#ptGrid{
+  display:grid;
+  grid-template-columns:repeat(18,minmax(50px,1fr));
+  grid-template-rows:repeat(10,auto);
+  gap:3px;
+  min-width:940px;
+  padding:2px;
 }
-#sb-title { font-size: 0.75rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-/* Toggle switch */
-#med-toggle-wrap { display:flex; align-items:center; gap:4px; flex-shrink:0; }
-#med-toggle { display:none; }
-#med-toggle-label {
-  width: 32px; height: 17px; background: var(--bg4); border:1px solid var(--border2);
-  border-radius: 9px; cursor: pointer; position: relative; transition: background 0.2s;
-  flex-shrink: 0;
+.tile{
+  position:relative;border-radius:3px;
+  outline:2px solid rgba(0,0,0,.7);
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.22),inset -2px -2px 0 rgba(0,0,0,.45),1px 1px 3px rgba(0,0,0,.5);
+  background:#1e6b1e;
+  padding:3px 3px 5px;cursor:pointer;
+  transition:transform .18s cubic-bezier(.34,1.56,.64,1),filter .18s,opacity .25s;
+  display:flex;flex-direction:column;align-items:stretch;min-height:58px;overflow:visible;z-index:1;
 }
-#med-toggle-label::after {
-  content:''; position:absolute; top:2px; left:2px;
-  width:11px; height:11px; border-radius:50%; background: var(--text3); transition: all 0.2s;
-}
-#med-toggle:checked + #med-toggle-label { background: var(--accent); border-color: var(--link); }
-#med-toggle:checked + #med-toggle-label::after { left:17px; background: #fff; }
-
-/* Scrollable sidebar body */
-#sb-body { flex:1; overflow-y:auto; padding: 6px; }
-#sb-body::-webkit-scrollbar { width:4px; }
-#sb-body::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
-
-/* Sidebar sections */
-.sb-section { margin-bottom: 8px; }
-.sb-section-title { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text3); margin-bottom: 4px; padding: 0 2px; }
-.sb-filter {
-  display: flex; align-items: center; gap: 5px;
-  padding: 3px 4px; border-radius: 4px; cursor: pointer;
-  font-size: 0.68rem; color: var(--text2); transition: background 0.12s;
-  user-select: none;
-}
-.sb-filter:hover { background: var(--bg3); color: var(--text); }
-.sb-filter.active { background: var(--bg4); color: var(--text); }
-.sb-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.sb-count { margin-left: auto; font-size: 0.6rem; color: var(--text3); }
-
-#sb-clear { margin: 4px 2px; padding: 4px 0; font-size: 0.65rem; text-align: center; color: var(--text3); cursor: pointer; border: 1px solid var(--border); border-radius: 4px; }
-#sb-clear:hover { color: var(--link); border-color: var(--link); }
-#sb-match { font-size: 0.6rem; color: var(--text3); text-align: center; padding: 2px 0 4px; }
-
-/* ── MAIN AREA ── */
-#main { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }
-#top-panel { flex: 0 0 auto; overflow-y: auto; max-height: 56vh; padding: 8px 10px 4px; border-bottom: 1px solid var(--border); }
-#bottom-panel { flex: 1; overflow-y: auto; padding: 8px 10px; }
-
-/* ── PERIODIC TABLE GRID ── */
-#pt-grid { display: grid; grid-template-columns: repeat(18,1fr); gap: 2px; width: 100%; }
-.el-cell {
-  border: 1px solid var(--border); border-radius: 3px; padding: 2px 1px 1px;
-  cursor: pointer; transition: all 0.12s; background: var(--bg3);
-  display: flex; flex-direction: column; align-items: center;
-  min-width: 0; aspect-ratio: 1; position: relative; overflow: visible;
-}
-.el-cell:hover { border-color: var(--link); background: var(--bg4); z-index: 5; }
-.el-cell.selected { border-color: var(--link); background: #1c2d44; box-shadow: 0 0 0 2px rgba(88,166,255,0.3); }
-.el-cell.med-hidden { opacity: 0.18; pointer-events: none; }
-.el-cell .z   { font-size: 0.55rem; color: var(--text3); line-height: 1; align-self: flex-start; padding-left: 1px; }
-.el-cell .sym { font-size: 0.82rem; font-weight: 700; line-height: 1.2; }
-.el-cell .med-dot { position: absolute; top: 1px; right: 1px; width: 5px; height: 5px; border-radius: 50%; }
-.el-cell.med-diag  { border-color: rgba(88,166,255,0.5); }
-.el-cell.med-ther  { border-color: rgba(248,81,73,0.5); }
-.el-cell.med-thera { border-color: rgba(163,113,247,0.5); }
-.el-cell.med-mixed { border-color: rgba(255,166,87,0.5); }
-
-.cat-alkali      { --cc:#e34234; }
-.cat-alkali-earth { --cc:#f4a460; }
-.cat-transition  { --cc:#4682b4; }
-.cat-posttrans   { --cc:#9acd32; }
-.cat-metalloid   { --cc:#ffd700; }
-.cat-nonmetal    { --cc:#7cfc00; }
-.cat-halogen     { --cc:#40e0d0; }
-.cat-noble       { --cc:#ff69b4; }
-.cat-lanthanide  { --cc:#ee82ee; }
-.cat-actinide    { --cc:#ff6347; }
-.el-cell .sym { color: var(--cc, var(--text)); }
-
-.pt-sep { grid-column: 1/-1; height: 3px; }
-
-/* ── ISOTOPE STRIP ── */
-#strip-wrap { margin-top: 8px; display: none; }
-#strip-header { display: flex; align-items: baseline; gap: 8px; margin-bottom: 5px; flex-wrap: wrap; }
-#strip-el-name { font-size: 0.9rem; font-weight: 700; }
-#strip-el-info  { font-size: 0.7rem; color: var(--text2); }
-
-#decay-legend { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 5px; padding: 5px 7px; background: var(--bg3); border-radius: 5px; border: 1px solid var(--border); font-size: 0.68rem; align-items: center; }
-#decay-legend .leg-title { color: var(--text2); font-weight: 600; margin-right: 2px; }
-.leg-item { display: flex; align-items: center; gap: 3px; }
-.leg-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-.leg-label { color: var(--text2); }
-
-#iso-strip { display: flex; flex-wrap: wrap; gap: 4px; }
-.iso-chip {
-  display: flex; flex-direction: column; align-items: center;
-  border: 1.5px solid var(--border); border-radius: 5px; padding: 3px 5px 2px;
-  cursor: pointer; background: var(--bg3); transition: all 0.1s; min-width: 44px; position: relative;
-}
-.iso-chip:hover { border-color: var(--text2); background: var(--bg4); }
-.iso-chip.selected { background: #1c2d44; box-shadow: 0 0 0 2px rgba(88,166,255,0.4); }
-.iso-chip .ic-mass { font-size: 0.78rem; font-weight: 700; line-height: 1; }
-.iso-chip .ic-hl   { font-size: 0.57rem; color: var(--text2); margin-top: 1px; max-width: 55px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.iso-chip .ic-lbl  { font-size: 0.5rem; margin-top: 1px; font-weight: 600; }
-.ic-stable { color: var(--dec-stable); }
-.ic-rad    { color: var(--text2); }
-
-.chip-alpha { border-color: var(--dec-alpha); }
-.chip-betam { border-color: var(--dec-betam); }
-.chip-betap { border-color: var(--dec-betap); }
-.chip-it    { border-color: var(--dec-it); }
-.chip-sf    { border-color: var(--dec-sf); }
-.chip-p     { border-color: var(--dec-p); }
-.chip-n     { border-color: var(--dec-n); }
-
-.iso-chip.med-diag  { box-shadow: 0 0 0 2px var(--med-diag); }
-.iso-chip.med-ther  { box-shadow: 0 0 0 2px var(--med-ther); }
-.iso-chip.med-thera { box-shadow: 0 0 0 2px var(--med-thera); }
-.iso-chip .med-badge { position: absolute; top: -5px; right: -3px; font-size: 0.55rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 3px; padding: 0 2px; }
-
-/* ── DETAIL PANEL ── */
-#detail { min-height: 160px; }
-.detail-empty { color: var(--text3); padding: 16px; text-align: center; }
-.dc { background: var(--bg3); border: 1px solid var(--border); border-radius: 7px; padding: 9px 11px; margin-bottom: 9px; }
-.dc h3 { font-size: 0.74rem; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 7px; padding-bottom: 3px; border-bottom: 1px solid var(--border); }
-.dc-row { display: flex; justify-content: space-between; align-items: baseline; padding: 2px 0; border-bottom: 1px solid rgba(48,54,61,0.5); gap: 8px; }
-.dc-row:last-child { border: none; }
-.dc-label { color: var(--text2); font-size: 0.72rem; flex-shrink: 0; }
-.dc-val   { font-family: 'Cascadia Code','Consolas',monospace; font-size: 0.77rem; text-align: right; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
-.copy-btn { background: none; border: none; cursor: pointer; padding: 1px 3px; border-radius: 3px; font-size: 0.68rem; color: var(--text3); transition: all 0.1s; }
-.copy-btn:hover { color: var(--link); background: rgba(88,166,255,0.15); }
-.copy-btn.copied { color: var(--dec-betam); }
-
-.dm-row { display: flex; align-items: center; gap: 5px; padding: 3px 0; border-bottom: 1px solid rgba(48,54,61,0.5); }
-.dm-badge { display: inline-block; padding: 2px 5px; border-radius: 10px; font-size: 0.68rem; font-weight: 700; background: var(--bg4); border: 1px solid var(--border); min-width: 40px; text-align: center; }
-.dm-bar-wrap { flex: 1; background: var(--bg4); border-radius: 3px; height: 5px; overflow: hidden; }
-.dm-bar { height: 100%; border-radius: 3px; }
-.dm-pct { font-size: 0.68rem; color: var(--text2); min-width: 36px; text-align: right; }
-
-.gm-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; margin-bottom: 7px; }
-.gm-box { background: var(--bg4); border: 1px solid var(--border); border-radius: 5px; padding: 6px 8px; text-align: center; }
-.gm-box .gm-num  { font-size: 0.95rem; font-weight: 700; font-family: monospace; }
-.gm-box .gm-unit { font-size: 0.58rem; color: var(--text2); margin-top: 1px; }
-.gm-table { width: 100%; border-collapse: collapse; font-size: 0.7rem; }
-.gm-table th { color: var(--text2); text-align: left; padding: 2px 3px; border-bottom: 1px solid var(--border2); font-weight: 600; }
-.gm-table td { padding: 2px 3px; border-bottom: 1px solid rgba(48,54,61,0.4); }
-.gm-table tr:last-child td { border: none; }
-.gm-bar { display: inline-block; height: 7px; border-radius: 2px; background: linear-gradient(90deg,#388bfd,#1f6feb); vertical-align: middle; margin-left: 3px; }
-.gm-no { color: var(--text3); font-style: italic; text-align: center; padding: 10px; }
-
-.med-banner { margin-bottom: 9px; border-radius: 7px; padding: 9px 11px; border: 1px solid; }
-.med-banner.diagnostic  { background: rgba(31,111,235,0.1); border-color: var(--med-diag); }
-.med-banner.therapy     { background: rgba(248,81,73,0.1);  border-color: var(--med-ther); }
-.med-banner.theranostic { background: rgba(163,113,247,0.1); border-color: var(--med-thera); }
-.med-banner h4 { font-size: 0.75rem; font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
-.med-type-tag { font-size: 0.62rem; padding: 1px 6px; border-radius: 10px; font-weight: 600; }
-.tag-diag  { background: rgba(88,166,255,0.2); color: var(--med-diag); border: 1px solid var(--med-diag); }
-.tag-ther  { background: rgba(248,81,73,0.2); color: var(--med-ther); border: 1px solid var(--med-ther); }
-.tag-thera { background: rgba(163,113,247,0.2); color: var(--med-thera); border: 1px solid var(--med-thera); }
-.tag-estab { background: rgba(63,185,80,0.2); color: var(--dec-betam); border: 1px solid var(--dec-betam); }
-.tag-dev   { background: rgba(210,153,34,0.2); color: var(--dec-it); border: 1px solid var(--dec-it); }
-.med-apps { list-style: none; }
-.med-apps li { padding: 1px 0; font-size: 0.71rem; color: var(--text2); }
-.med-apps li::before { content: "• "; color: var(--link); }
-.med-note { font-size: 0.67rem; color: var(--text3); margin-top: 4px; font-style: italic; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 3px; }
-
-details { margin-top: 6px; }
-details summary { cursor: pointer; color: var(--text2); font-size: 0.72rem; padding: 3px 0; }
-details summary:hover { color: var(--link); }
-.glossary-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 7px; margin-top: 7px; }
-.glossary-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 5px; padding: 7px 9px; }
-.glossary-item h4 { font-size: 0.72rem; font-weight: 700; margin-bottom: 3px; }
-.glossary-item p  { font-size: 0.67rem; color: var(--text2); line-height: 1.5; }
-
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+.tile:hover{transform:translateY(-3px) scale(1.07);filter:brightness(1.25);box-shadow:inset 2px 2px 0 rgba(255,255,255,.28),inset -2px -2px 0 rgba(0,0,0,.5),0 0 12px 3px rgba(100,255,100,.3),0 8px 20px -4px rgba(0,0,0,.6);z-index:10;}
+.tile:focus-visible{outline:3px solid #aaffaa;outline-offset:2px;z-index:10;}
+.tile.sel{transform:scale(1.14) translateY(-3px);z-index:20;filter:brightness(1.35);outline:2px solid rgba(255,255,255,.9);box-shadow:inset 2px 2px 0 rgba(255,255,255,.35),0 0 0 3px rgba(255,255,255,.8),0 0 14px 4px rgba(160,255,160,.6),0 10px 30px -6px rgba(0,0,0,.8);}
+.tile.mdim{opacity:.15;pointer-events:none;}
+.tile.mmatch{outline:2px solid rgba(255,220,80,.9);}
+.t-num{font-family:var(--fmono);font-size:9.5px;font-weight:700;color:rgba(255,255,255,.9);line-height:1;padding:1px 2px 0;}
+.t-sym{font-family:var(--fbb);font-size:22px;font-weight:700;line-height:1;color:#fff;text-align:center;text-shadow:0 1px 0 rgba(0,0,0,.5);flex:1;display:flex;align-items:center;justify-content:center;}
+.t-bot{text-align:center;padding:0 2px 1px;}
+.t-name{font-family:var(--fbb);font-size:8px;font-weight:600;color:rgba(255,255,255,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase;line-height:1.2;}
+.t-mass{font-family:var(--fmono);font-size:7.5px;font-weight:700;color:rgba(255,255,180,.95);line-height:1.3;}
+.t-strip{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 3px 3px;display:flex;overflow:hidden;}
+.t-strip span{flex:1;}
+.t-mdot{position:absolute;top:2px;right:2px;width:6px;height:6px;border-radius:50%;border:1px solid rgba(0,0,0,.4);z-index:5;}
+.t-mdot.est{background:#5CD68A;}.t-mdot.dev{background:#FBBE5C;}
+/* category colors */
+.cat-alkali-metal{background:linear-gradient(145deg,#2e882e,#1e621e);}
+.cat-alkaline-earth{background:linear-gradient(145deg,#287828,#185a18);}
+.cat-transition-metal{background:linear-gradient(145deg,#246e24,#165216);}
+.cat-post-transition{background:linear-gradient(145deg,#226222,#165016);}
+.cat-metalloid{background:linear-gradient(145deg,#256825,#175217);}
+.cat-nonmetal{background:linear-gradient(145deg,#287228,#185618);}
+.cat-halogen{background:linear-gradient(145deg,#246a24,#165216);}
+.cat-noble-gas{background:linear-gradient(145deg,#145e42,#0c4030);}
+.cat-lanthanide{background:linear-gradient(145deg,#5a3010,#3a1e08);}
+.cat-actinide{background:linear-gradient(145deg,#502808,#341808);}
+.cat-unknown{background:linear-gradient(145deg,#303030,#202020);}
+.la-ref{display:flex;align-items:center;justify-content:center;font-family:var(--fmono);font-size:9px;font-weight:700;color:rgba(255,255,255,.3);border:2px dashed rgba(255,255,255,.1);border-radius:3px;background:rgba(10,30,10,.5);}
+/* ISO PANEL */
+.iso-pan{background:var(--bg1);border:1px solid var(--line);border-radius:var(--r14);box-shadow:0 20px 60px -20px rgba(0,0,0,.7),0 0 0 1px var(--line);display:none;overflow:hidden;}
+.iso-pan.open{display:block;animation:pIn .28s ease;}
+@keyframes pIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.iso-hd{display:flex;align-items:center;gap:16px;padding:16px 20px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,var(--bg2),var(--bg1));flex-wrap:wrap;}
+.iso-badge{font-family:var(--fbb);font-size:34px;font-weight:700;width:68px;height:68px;display:flex;align-items:center;justify-content:center;border-radius:3px;flex-shrink:0;outline:2px solid rgba(0,0,0,.7);color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.6);box-shadow:inset 3px 3px 0 rgba(255,255,255,.22),inset -3px -3px 0 rgba(0,0,0,.45),2px 2px 8px rgba(0,0,0,.6);}
+.iso-info h2{font-size:19px;font-weight:600;}
+.iso-sub{font-family:var(--fmono);font-size:11px;color:var(--dim);margin-top:4px;display:flex;gap:14px;flex-wrap:wrap;}
+.iso-sub span b{color:var(--text);font-weight:600;}
+.iso-close{margin-left:auto;background:var(--bg3);border:1px solid var(--line);color:var(--dim);font-family:var(--fmono);font-size:10px;letter-spacing:1px;padding:7px 13px;border-radius:var(--r4);cursor:pointer;transition:color .15s,border-color .15s;text-transform:uppercase;}
+.iso-close:hover{color:var(--text);border-color:var(--cyan);}
+.chip-wrap{padding:13px 20px 16px;}
+.chip-lbl{font-family:var(--fmono);font-size:9.5px;text-transform:uppercase;letter-spacing:2px;color:var(--faint);margin-bottom:9px;}
+.chip-row{display:flex;flex-wrap:wrap;gap:5px;}
+.chip{position:relative;font-family:var(--fmono);font-size:11.5px;font-weight:600;color:var(--text);background:var(--bg2);border:1px solid var(--line);border-radius:var(--r4);padding:5px 9px 7px;cursor:pointer;transition:transform .1s,border-color .1s;min-width:48px;text-align:center;}
+.chip:hover{transform:translateY(-2px);border-color:var(--cyan);}
+.chip.on{background:var(--cyand);border-color:var(--cyan);color:var(--cyan);}
+.chip-s{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 3px 3px;}
+.chip-m{font-size:7.5px;color:var(--amber);display:block;margin-top:1px;font-weight:700;letter-spacing:.5px;}
+/* DETAIL */
+.det-pan{border-top:1px solid var(--line);padding:18px 20px 24px;display:none;animation:pIn .22s ease;}
+.det-pan.open{display:block;}
+.det-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:13px;margin-top:14px;}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r8);padding:13px 15px;}
+.card h3{font-family:var(--fmono);font-size:9.5px;text-transform:uppercase;letter-spacing:2px;color:var(--faint);margin-bottom:9px;display:flex;align-items:center;gap:7px;}
+.card h3 .st{font-size:7.5px;background:var(--bg3);color:var(--dim);padding:2px 5px;border-radius:3px;letter-spacing:1px;}
+.dhl{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:5px;}
+.dhl .iname{font-size:21px;font-weight:600;}
+.dhl .itag{font-family:var(--fmono);font-size:11px;padding:3px 8px;border-radius:20px;border:1px solid currentColor;letter-spacing:.5px;}
+.vr{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--lines);font-size:12px;gap:8px;}
+.vr:last-child{border-bottom:none;}
+.vl{color:var(--dim);}
+.vv{font-family:var(--fmono);font-weight:600;text-align:right;color:var(--text);}
+.vv .u{color:var(--dim);font-weight:400;font-size:10.5px;margin-left:2px;}
+.vv .e{font-size:.75em;vertical-align:super;}
+.vr.cp{flex-wrap:wrap;}
+.vr.cp .vv{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;margin-left:auto;}
+.vr.cp .vv .vn{display:inline-block;}
+.cb{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:4px;border:1px solid var(--line);background:var(--bg3);color:var(--faint);cursor:pointer;flex-shrink:0;transition:color .15s,border-color .15s;padding:0;}
+.cb:hover{color:var(--cyan);border-color:var(--cyan);}
+.cb svg{width:10px;height:10px;display:block;}
+.cb.done{color:var(--s-stable);border-color:var(--s-stable);background:rgba(92,214,138,.12);}
+.cb .ck{display:none;}.cb.done .cc{display:none;}.cb.done .ck{display:block;}
+/* app card */
+.ac{grid-column:1/-1;}
+.ac .at{font-size:13px;line-height:1.7;color:var(--text);}
+.ac .at.fb{color:var(--dim);}
+.ac .ab{display:inline-block;font-family:var(--fmono);font-size:8px;text-transform:uppercase;letter-spacing:1.5px;padding:2px 5px;border-radius:3px;margin-left:7px;vertical-align:middle;}
+.ac .ab.cur{background:var(--cyand);color:var(--cyan);}
+.ac .ab.gen{background:var(--bg3);color:var(--faint);}
+/* gamma */
+.gc{grid-column:1/-1;}
+.gstats{display:flex;gap:0;flex-wrap:wrap;margin-bottom:12px;border:1px solid var(--line);border-radius:var(--r4);overflow:hidden;}
+.gstat{flex:1 1 140px;padding:9px 13px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:2px;}
+.gstat:last-child{border-right:none;}
+.gsl{font-family:var(--fmono);font-size:8.5px;text-transform:uppercase;letter-spacing:1.5px;color:var(--faint);}
+.gsv{font-family:var(--fmono);font-size:17px;font-weight:700;color:#ffe080;line-height:1.1;}
+.gsv .gu{font-size:10.5px;font-weight:400;color:var(--dim);margin-left:2px;}
+.gss{font-family:var(--fmono);font-size:9px;color:var(--faint);}
+.gtw{overflow-x:auto;}
+.gt{width:100%;border-collapse:collapse;font-family:var(--fmono);font-size:11px;}
+.gt th{text-align:left;font-size:8.5px;text-transform:uppercase;letter-spacing:1.5px;color:var(--faint);padding:4px 7px;border-bottom:1px solid var(--line);white-space:nowrap;}
+.gt td{padding:4px 7px;border-bottom:1px solid var(--lines);vertical-align:middle;}
+.gt tr:last-child td{border-bottom:none;}
+.gt tr:hover td{background:var(--bg3);}
+.ge{color:var(--cyan);font-weight:600;}
+.gi{color:#ffe080;font-weight:600;}
+.gu2{color:var(--faint);font-size:10px;}
+.gbc{width:90px;}.gbl td{padding:4px 7px;}
+.gb{height:5px;background:linear-gradient(90deg,#ffe080,#ffb020);border-radius:3px;min-width:2px;}
+.gm{font-family:var(--fmono);font-size:10.5px;color:var(--faint);padding:5px 7px 0;}
+/* decay bars */
+.dm{margin-bottom:7px;}
+.dm:last-child{margin-bottom:0;}
+.dml{display:flex;justify-content:space-between;align-items:flex-start;gap:6px;font-size:11.5px;margin-bottom:3px;flex-wrap:wrap;}
+.dmn{display:flex;align-items:center;gap:5px;flex:1 1 auto;min-width:0;}
+.dmd{width:7px;height:7px;border-radius:2px;flex-shrink:0;}
+.dmp{font-family:var(--fmono);font-weight:600;white-space:nowrap;flex-shrink:0;text-align:right;}
+.dmt{height:4px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+.dmf{height:100%;min-width:2px;border-radius:3px;}
+/* stable */
+.sh{display:flex;align-items:center;gap:12px;padding:10px 0 3px;}
+.si{width:40px;height:40px;border-radius:50%;background:rgba(92,214,138,.12);border:1px solid var(--s-stable);display:flex;align-items:center;justify-content:center;color:var(--s-stable);font-size:17px;flex-shrink:0;}
+.stx{font-size:12px;color:var(--dim);line-height:1.5;}
+.stx b{color:var(--s-stable);font-family:var(--fmono);}
+.empty{text-align:center;padding:32px 20px;color:var(--faint);font-family:var(--fmono);font-size:11px;letter-spacing:1px;}
+/* sources */
+.src{background:var(--bg1);border:1px solid var(--line);border-radius:var(--r8);padding:14px 18px;font-size:11px;color:var(--dim);line-height:1.7;}
+.src h4{font-family:var(--fmono);font-size:9.5px;text-transform:uppercase;letter-spacing:2px;color:var(--faint);margin-bottom:7px;}
+.src a{color:var(--cyan);text-decoration:none;border-bottom:1px dotted var(--cyan);}
+.src a:hover{color:#fff;}
+.src-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px 18px;margin-bottom:8px;}
+.src-n{border-top:1px solid var(--line);padding-top:7px;margin-top:7px;font-size:10.5px;}
+/* loading */
+.ld{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:12px;font-family:var(--fmono);color:var(--dim);font-size:11.5px;letter-spacing:1px;}
+.lb{width:200px;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.lb::after{content:'';display:block;width:40%;height:100%;background:var(--cyan);animation:ls 1.1s ease-in-out infinite;}
+@keyframes ls{0%{transform:translateX(-100%);}100%{transform:translateX(350%);}}
+::-webkit-scrollbar{height:7px;width:7px;}
+::-webkit-scrollbar-track{background:var(--bg1);}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:var(--faint);}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 </style>
 </head>
 <body>
-<div id="header">
-  <h1>⚛ Nuclear Isotope Periodic Table</h1>
-  <span class="sub">3,391 isotopes · gamma · medical · IAEA ENSDF 2024</span>
-  <span class="src-badge">🔬 IAEA NDS</span>
-  <span class="src-badge">💊 EANM/SNMMI</span>
+
+<header class="hd">
+  <div class="hd-mark">☢</div>
+  <div>
+    <h1>Nuclear Isotope Periodic Table</h1>
+    <div class="sub">3,391 isotopes · gamma · medical · IAEA ENSDF 2024</div>
+  </div>
+  <div class="hd-links">
+    <a href="https://www-nds.iaea.org/relnsd/vcharthtml/VChartHTML.html" target="_blank" rel="noopener">⬆ IAEA NDS</a>
+    <a href="https://www.eanm.org/" target="_blank" rel="noopener">🔴 EANM/SNMMI</a>
+  </div>
+  <div class="hd-meta">
+    <div><span class="ml">Primary Source</span>IAEA Live Chart</div>
+    <div><span class="ml">Evaluation</span>ENSDF / NUBASE</div>
+    <div><span class="ml">Status</span><span id="dataStatus">Loading…</span></div>
+  </div>
+</header>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sb">
+    <div class="sb-hd">
+      <span>🔴</span>
+      <span class="sb-title">Medical</span>
+      <label class="sw-wrap" title="Toggle medical filter">
+        <input type="checkbox" id="medToggle" class="sw-inp">
+        <span class="sw"></span>
+      </label>
+    </div>
+    <div class="sb-hint">Toggle ON to filter.<br>No filter = show all.</div>
+
+    <div class="sb-sec">
+      <div class="sb-sec-t">STATUS</div>
+      <div class="sb-item" data-f="status" data-v="established"><span class="sb-dot" style="background:#5CD68A"></span>Established<span class="sb-cnt" id="cnt-est">—</span></div>
+      <div class="sb-item" data-f="status" data-v="development"><span class="sb-dot" style="background:#FBBE5C"></span>In Development<span class="sb-cnt" id="cnt-dev">—</span></div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-sec-t">TYPE</div>
+      <div class="sb-item" data-f="type" data-v="diagnostic"><span class="sb-dot" style="background:#5CA8FF"></span>◎ Diagnostic<span class="sb-cnt" id="cnt-dia">—</span></div>
+      <div class="sb-item" data-f="type" data-v="theranostic"><span class="sb-dot" style="background:#5EEAD4"></span>☯ Theranostic<span class="sb-cnt" id="cnt-the">—</span></div>
+      <div class="sb-item" data-f="type" data-v="therapy"><span class="sb-dot" style="background:#FF5C7A"></span>⚡ Therapy<span class="sb-cnt" id="cnt-thr">—</span></div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-sec-t">MODALITY</div>
+      <div class="sb-item" data-f="modality" data-v="pet"><span class="sb-dot" style="background:#5CA8FF"></span>PET</div>
+      <div class="sb-item" data-f="modality" data-v="spect"><span class="sb-dot" style="background:#5CA8FF"></span>SPECT</div>
+      <div class="sb-item" data-f="modality" data-v="alpha"><span class="sb-dot" style="background:#FF8A5C"></span>Alpha (TAT)</div>
+      <div class="sb-item" data-f="modality" data-v="brachytherapy"><span class="sb-dot" style="background:#FBBE5C"></span>Brachytherapy</div>
+      <div class="sb-item" data-f="modality" data-v="beta"><span class="sb-dot" style="background:#5CD68A"></span>Beta Therapy</div>
+      <div class="sb-item" data-f="modality" data-v="synovectomy"><span class="sb-dot" style="background:#C792FF"></span>Synovectomy</div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-sec-t">CANCER / INDICATION</div>
+      <div class="sb-item" data-f="ind" data-v="neuroendocrine"><span class="sb-dot" style="background:#5CA8FF"></span>Neuroendocrine</div>
+      <div class="sb-item" data-f="ind" data-v="prostate"><span class="sb-dot" style="background:#C792FF"></span>Prostate</div>
+      <div class="sb-item" data-f="ind" data-v="thyroid"><span class="sb-dot" style="background:#FBBE5C"></span>Thyroid</div>
+      <div class="sb-item" data-f="ind" data-v="liver"><span class="sb-dot" style="background:#FF5C7A"></span>Liver / HCC</div>
+      <div class="sb-item" data-f="ind" data-v="bone"><span class="sb-dot" style="background:#FBBE5C"></span>Bone Mets</div>
+      <div class="sb-item" data-f="ind" data-v="lymphoma"><span class="sb-dot" style="background:#C792FF"></span>Lymphoma</div>
+      <div class="sb-item" data-f="ind" data-v="breast"><span class="sb-dot" style="background:#FF8A5C"></span>Breast</div>
+      <div class="sb-item" data-f="ind" data-v="cardiac"><span class="sb-dot" style="background:#FF5C7A"></span>Cardiac</div>
+      <div class="sb-item" data-f="ind" data-v="brain"><span class="sb-dot" style="background:#5CD68A"></span>Brain</div>
+    </div>
+
+    <button class="sb-clear" id="sbClear">✕ Clear all filters</button>
+    <a class="sb-pub" id="sbPub" href="#" target="_blank" rel="noopener">📄 Recent publications<br>(PubMed, last 2 weeks)</a>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="pt-scroll">
+      <div id="ptGrid"></div>
+    </div>
+
+    <section class="iso-pan" id="isoPanel">
+      <div class="iso-hd">
+        <div class="iso-badge" id="isoBadge"></div>
+        <div class="iso-info">
+          <h2 id="isoName"></h2>
+          <div class="iso-sub" id="isoSub"></div>
+        </div>
+        <button class="iso-close" id="isoClose">Close ✕</button>
+      </div>
+      <div class="chip-wrap">
+        <div class="chip-lbl">Known isotopes — click to view full decay data</div>
+        <div class="chip-row" id="chipRow"></div>
+      </div>
+      <div class="det-pan" id="detPanel">
+        <div class="empty">Select an isotope above to view half-life, decay modes, decay energies and specific activity.</div>
+      </div>
+    </section>
+
+    <div class="src">
+      <h4>Data Sources &amp; Methodology</h4>
+      <div class="src-g">
+        <div><strong>IAEA Live Chart of Nuclides</strong><br>Half-lives, decay modes, branching ratios, atomic masses and Q-values for 3,383 nuclides (Z=1–118).<br><a href="https://www-nds.iaea.org/relnsd/vcharthtml/VChartHTML.html" target="_blank" rel="noopener">www-nds.iaea.org</a></div>
+        <div><strong>Selected metastable isomers</strong><br>Excitation energies, isomeric half-lives and branching (Tc-99m, Co-60m, Am-242m) from IAEA ENSDF.</div>
+        <div><strong>Cross-reference</strong><br><a href="https://www.nndc.bnl.gov/" target="_blank" rel="noopener">NNDC (Brookhaven)</a>, <a href="https://www-nds.iaea.org/" target="_blank" rel="noopener">IAEA-NDS</a>, <a href="https://joint-research-centre.ec.europa.eu/" target="_blank" rel="noopener">JRC-Geel</a>.</div>
+      </div>
+      <div class="src-n"><strong>Specific activity</strong> derived via A = ln(2)·N<sub>A</sub>/(T<sub>½</sub>·M). For regulatory or clinical use, consult primary IAEA/ENSDF evaluations directly.</div>
+    </div>
+  </div>
 </div>
 
-<div id="shell">
+<script>
+/* ============================================================
+   ALL JAVASCRIPT INLINE — no separate app.js needed
+   ============================================================ */
+const NA = 6.02214076e23;
+let DATA = null, activeZ = null;
 
-  <!-- ══ NARROW SIDEBAR ══ -->
-  <div id="sidebar">
-    <div id="sb-header">
-      <span id="sb-title">💊 Medical</span>
-      <div id="med-toggle-wrap">
-        <input type="checkbox" id="med-toggle">
-        <label for="med-toggle" id="med-toggle-label" title="Toggle medical filter"></label>
-      </div>
+/* ── medical data ── */
+const MED = [
+  {Z:9, s:'established',t:'diagnostic', m:['pet'],     i:['brain','neuroendocrine','prostate','breast','bone']},
+  {Z:21,s:'development',t:'diagnostic', m:['pet'],     i:['neuroendocrine']},
+  {Z:21,s:'development',t:'theranostic',m:['spect','beta'],i:['neuroendocrine']},
+  {Z:24,s:'established',t:'diagnostic', m:['spect'],   i:[]},
+  {Z:29,s:'established',t:'theranostic',m:['pet','beta'],i:['neuroendocrine','brain','breast']},
+  {Z:29,s:'development',t:'diagnostic', m:['pet'],     i:['neuroendocrine','breast']},
+  {Z:29,s:'development',t:'theranostic',m:['spect','beta'],i:['neuroendocrine','lymphoma']},
+  {Z:31,s:'established',t:'diagnostic', m:['spect'],   i:['lymphoma','liver','neuroendocrine']},
+  {Z:31,s:'established',t:'diagnostic', m:['pet'],     i:['neuroendocrine','prostate','brain','liver']},
+  {Z:36,s:'established',t:'diagnostic', m:['spect'],   i:[]},
+  {Z:37,s:'established',t:'diagnostic', m:['pet'],     i:['cardiac']},
+  {Z:38,s:'established',t:'therapy',    m:['beta'],    i:['bone']},
+  {Z:39,s:'established',t:'therapy',    m:['beta','brachytherapy'],i:['liver','neuroendocrine']},
+  {Z:40,s:'established',t:'diagnostic', m:['pet'],     i:['lymphoma','breast']},
+  {Z:43,s:'established',t:'diagnostic', m:['spect'],   i:['bone','cardiac','thyroid','brain','liver','neuroendocrine']},
+  {Z:49,s:'established',t:'diagnostic', m:['spect'],   i:['neuroendocrine','lymphoma']},
+  {Z:53,s:'established',t:'diagnostic', m:['spect'],   i:['thyroid','brain']},
+  {Z:53,s:'established',t:'theranostic',m:['pet'],     i:['thyroid','neuroendocrine']},
+  {Z:53,s:'established',t:'theranostic',m:['spect','beta'],i:['thyroid']},
+  {Z:54,s:'established',t:'diagnostic', m:['spect'],   i:[]},
+  {Z:62,s:'established',t:'therapy',    m:['beta'],    i:['bone']},
+  {Z:65,s:'development',t:'therapy',    m:['alpha'],   i:['neuroendocrine']},
+  {Z:65,s:'development',t:'diagnostic', m:['pet'],     i:['neuroendocrine']},
+  {Z:65,s:'development',t:'diagnostic', m:['spect'],   i:['neuroendocrine']},
+  {Z:65,s:'development',t:'theranostic',m:['spect','beta'],i:['neuroendocrine','prostate']},
+  {Z:67,s:'established',t:'therapy',    m:['beta','synovectomy'],i:['liver']},
+  {Z:68,s:'established',t:'therapy',    m:['synovectomy'],i:[]},
+  {Z:71,s:'established',t:'theranostic',m:['spect','beta'],i:['neuroendocrine','prostate']},
+  {Z:75,s:'established',t:'therapy',    m:['beta'],    i:['bone']},
+  {Z:75,s:'development',t:'therapy',    m:['beta'],    i:['bone','liver']},
+  {Z:81,s:'established',t:'diagnostic', m:['spect'],   i:['cardiac']},
+  {Z:82,s:'development',t:'therapy',    m:['alpha'],   i:['neuroendocrine','prostate']},
+  {Z:83,s:'development',t:'therapy',    m:['alpha'],   i:['neuroendocrine','lymphoma','brain']},
+  {Z:85,s:'development',t:'therapy',    m:['alpha'],   i:['brain','breast','thyroid']},
+  {Z:88,s:'established',t:'therapy',    m:['alpha'],   i:['bone']},
+  {Z:89,s:'development',t:'therapy',    m:['alpha'],   i:['prostate','neuroendocrine','bone']},
+  {Z:90,s:'development',t:'therapy',    m:['alpha'],   i:['bone','prostate']},
+];
+const MBZ = {};
+MED.forEach(m => {
+  if (!MBZ[m.Z]) MBZ[m.Z] = {est:false,dev:false,types:new Set(),mods:new Set(),inds:new Set()};
+  const e = MBZ[m.Z];
+  if (m.s==='established') e.est=true; else e.dev=true;
+  e.types.add(m.t); m.m.forEach(x=>e.mods.add(x)); m.i.forEach(x=>e.inds.add(x));
+});
+const MF = {status:new Set(),type:new Set(),modality:new Set(),ind:new Set()};
+let medOn = false;
+
+/* ── decay helpers ── */
+const DC = {stable:'var(--s-stable)',alpha:'var(--s-alpha)',betam:'var(--s-betam)',betap:'var(--s-betap)',it:'var(--s-it)',sf:'var(--s-sf)',other:'var(--s-other)'};
+function dcat(modes,stable){
+  if(stable) return 'stable';
+  if(!modes||!modes.length) return 'other';
+  const p=modes[0].mode;
+  if(p.includes('A')) return 'alpha';
+  if(p.startsWith('B-')) return 'betam';
+  if(p.startsWith('B+')||p.startsWith('EC')) return 'betap';
+  if(p==='IT') return 'it';
+  if(p.includes('SF')) return 'sf';
+  return 'other';
+}
+
+/* ── number formatting ── */
+function sciH(v,s=3){
+  if(v==null||isNaN(v)) return '—'; if(v===0) return '0';
+  let e=Math.floor(Math.log10(Math.abs(v))),m=v/Math.pow(10,e),mr=parseFloat(m.toFixed(s-1));
+  if(Math.abs(mr)>=10){mr/=10;e++;}
+  const ms=mr.toFixed(s-1); if(e===0) return ms;
+  return `${ms} × 10<span class="e">${e}</span>`;
+}
+function sciP(v,s=3){
+  if(v==null||isNaN(v)) return ''; if(v===0) return '0';
+  let e=Math.floor(Math.log10(Math.abs(v))),m=v/Math.pow(10,e),mr=parseFloat(m.toFixed(s-1));
+  if(Math.abs(mr)>=10){mr/=10;e++;}
+  const ms=mr.toFixed(s-1); if(e===0) return ms;
+  return `${ms}e${e}`;
+}
+function cb(val,lbl){
+  if(val==null||val==='') return '';
+  const sv=String(val).replace(/"/g,'&quot;');
+  return `<button class="cb" data-cv="${sv}" title="Copy ${lbl||'value'}"><svg class="cc" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 10.5V3.5C3 2.67 3.67 2 4.5 2H10.5"/></svg><svg class="ck" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5L6 11.5L13 4.5"/></svg></button>`;
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.cb'); if(!b) return;
+  const v=b.dataset.cv; if(!v) return;
+  const ok=()=>{b.classList.add('done');setTimeout(()=>b.classList.remove('done'),1200);};
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(v).then(ok).catch(()=>fbCopy(v,ok));
+  else fbCopy(v,ok);
+});
+function fbCopy(t,fn){const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(a);if(fn)fn();}
+function fmtHL(iso){
+  const stable=iso._stable;
+  if(stable) return {p:'Stable',s:'Does not decay',r:false};
+  if(!iso.half_life_value) return {p:'Unknown',s:'—',r:false};
+  const u=iso.half_life_unit||'', v=iso.half_life_value, sec=iso.half_life_seconds;
+  const unc=iso.half_life_unc?` ± ${iso.half_life_unc}`:'';
+  const r=['MEV','KEV','EV'].includes(u.toUpperCase());
+  if(r) return {p:`${v}${unc} ${u}`,s:sec!=null?sciH(sec):'—',r:true};
+  return {p:`${v}${unc} ${ulbl(u)}`,s:sec!=null?sciH(sec):'—',r:false};
+}
+function ulbl(u){const m={s:'s',ms:'ms',us:'µs',ns:'ns',ps:'ps',fs:'fs',as:'as',m:'min',h:'h',d:'days',y:'years',Y:'years',ky:'kyr',My:'Myr',Gy:'Gyr'};return m[u]||u;}
+function spH(jp){if(!jp) return '—';const m=jp.match(/^(\(?[\d\/]+\)?)\s*([+\-])$/);if(!m)return jp;return `${m[1]}<sup>${m[2]}</sup>`;}
+
+/* ── periodic table ── */
+function buildTable(){
+  const g=document.getElementById('ptGrid');
+  g.innerHTML='';
+  g.style.cssText='display:grid;grid-template-columns:repeat(18,minmax(50px,1fr));grid-template-rows:repeat(10,auto);gap:3px;min-width:940px;padding:2px;';
+
+  Object.values(DATA).forEach(el=>{
+    const tile=document.createElement('div');
+    tile.className=`tile cat-${el.category}`;
+    tile.dataset.z=el.Z;
+    tile.tabIndex=0;
+    tile.setAttribute('role','button');
+
+    let col,row;
+    if(el.category==='lanthanide'){col=(el.Z-57)+4;row=9;}
+    else if(el.category==='actinide'){col=(el.Z-89)+4;row=10;}
+    else{col=el.group;row=el.period;}
+    tile.style.gridColumn=col;
+    tile.style.gridRow=row;
+
+    const cnt={stable:0,alpha:0,betam:0,betap:0,it:0,sf:0,other:0};
+    el.isotopes.forEach(iso=>cnt[dcat(iso.decay_modes,iso.is_stable)]++);
+    const strip=Object.entries(cnt).filter(([,c])=>c>0)
+      .map(([c,n])=>`<span style="background:${DC[c]};flex-grow:${n}"></span>`).join('');
+
+    const mi=MBZ[el.Z];
+    const mdot=mi?`<div class="t-mdot ${mi.est?'est':'dev'}"></div>`:'';
+
+    tile.innerHTML=`${mdot}<div class="t-num">${el.Z}</div><div class="t-sym">${el.symbol}</div><div class="t-bot"><div class="t-name">${el.name}</div><div class="t-mass">${el.standard_weight?(Number.isInteger(el.standard_weight)?el.standard_weight:el.standard_weight.toFixed(3)):`[${el.isotopes.reduce((a,b)=>a.A>b.A?a:b,{A:0}).A}]`}</div></div><div class="t-strip">${strip}</div>`;
+    tile.addEventListener('click',()=>selEl(el.Z));
+    tile.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selEl(el.Z);}});
+    g.appendChild(tile);
+  });
+
+  // La/Ac placeholders
+  ['57–71','89–103'].forEach((lbl,i)=>{
+    const d=document.createElement('div');
+    d.className='la-ref';d.style.gridColumn=3;d.style.gridRow=6+i;d.textContent=lbl;
+    g.appendChild(d);
+  });
+  // spacer between rows 7 and 9
+  const sp=document.createElement('div');
+  sp.style.cssText='grid-row:8;grid-column:1/-1;height:6px;';
+  g.appendChild(sp);
+}
+
+/* ── medical sidebar ── */
+function buildMedSidebar(){
+  const estZ=new Set(),devZ=new Set(),diaZ=new Set(),theZ=new Set(),thrZ=new Set();
+  MED.forEach(m=>{
+    if(m.s==='established')estZ.add(m.Z);else devZ.add(m.Z);
+    if(m.t==='diagnostic')diaZ.add(m.Z);
+    else if(m.t==='theranostic')theZ.add(m.Z);
+    else if(m.t==='therapy')thrZ.add(m.Z);
+  });
+  document.getElementById('cnt-est').textContent=estZ.size;
+  document.getElementById('cnt-dev').textContent=devZ.size;
+  document.getElementById('cnt-dia').textContent=diaZ.size;
+  document.getElementById('cnt-the').textContent=theZ.size;
+  document.getElementById('cnt-thr').textContent=thrZ.size;
+
+  const tog=document.getElementById('medToggle');
+  tog.addEventListener('change',()=>{medOn=tog.checked;refresh();});
+
+  document.querySelectorAll('.sb-item').forEach(item=>{
+    item.addEventListener('click',()=>{
+      const f=item.dataset.f,v=item.dataset.v;
+      if(!f||!v) return;
+      const key=f==='ind'?'ind':f;
+      if(MF[key].has(v)){MF[key].delete(v);item.classList.remove('on');}
+      else{MF[key].add(v);item.classList.add('on');}
+      const any=Object.values(MF).some(s=>s.size>0);
+      tog.checked=any;medOn=any;refresh();
+    });
+  });
+
+  document.getElementById('sbClear').addEventListener('click',()=>{
+    Object.values(MF).forEach(s=>s.clear());
+    document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('on'));
+    tog.checked=false;medOn=false;refresh();
+  });
+
+  // PubMed dynamic link
+  const pub=document.getElementById('sbPub');
+  if(pub){
+    const now=new Date(),ago=new Date(now-14*864e5);
+    const f=d=>`${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+    pub.href=`https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(`("radiopharmaceutical" OR "radionuclide therapy" OR "PET tracer" OR "medical isotope") AND ("${f(ago)}"[PDAT]:"${f(now)}"[PDAT])`)}&sort=date`;
+  }
+}
+
+function refresh(){
+  document.querySelectorAll('.tile').forEach(tile=>{
+    tile.classList.remove('mdim','mmatch');
+    if(!medOn) return;
+    const z=parseInt(tile.dataset.z);
+    const info=MBZ[z];
+    if(!info){tile.classList.add('mdim');return;}
+    let ok=true;
+    if(MF.status.size>0&&!(MF.status.has('established')&&info.est||MF.status.has('development')&&info.dev)) ok=false;
+    if(ok&&MF.type.size>0&&![...MF.type].some(t=>info.types.has(t))) ok=false;
+    if(ok&&MF.modality.size>0&&![...MF.modality].some(m=>info.mods.has(m))) ok=false;
+    if(ok&&MF.ind.size>0&&![...MF.ind].some(i=>info.inds.has(i))) ok=false;
+    tile.classList.add(ok?'mmatch':'mdim');
+  });
+}
+
+/* ── element select ── */
+function selEl(Z){
+  activeZ=Z;
+  document.querySelectorAll('.tile').forEach(t=>t.classList.toggle('sel',parseInt(t.dataset.z)===Z));
+  const el=DATA[Z],pan=document.getElementById('isoPanel');
+  pan.classList.add('open');
+  const badge=document.getElementById('isoBadge');
+  badge.textContent=el.symbol;badge.className=`iso-badge cat-${el.category}`;
+  document.getElementById('isoName').textContent=`${el.name} — ${el.symbol}`;
+  const sc=el.isotopes.filter(i=>i.is_stable).length,ic=el.isotopes.filter(i=>i.isomers&&i.isomers.length).length;
+  document.getElementById('isoSub').innerHTML=`<span>Z = <b>${el.Z}</b></span><span>Weight: <b>${el.standard_weight||'no stable isotope'}</b></span><span>Isotopes: <b>${el.isotopes.length}</b></span><span>Stable: <b>${sc}</b></span>${ic?`<span>Isomers: <b>${ic}</b></span>`:''}`;
+  const cr=document.getElementById('chipRow');cr.innerHTML='';
+  el.isotopes.forEach(iso=>{
+    const cat=dcat(iso.decay_modes,iso.is_stable),ch=document.createElement('div');
+    ch.className='chip';ch.tabIndex=0;ch.setAttribute('role','button');
+    ch.innerHTML=`<sup style="font-size:8.5px;color:var(--faint);display:block;">${iso.A}</sup>${el.symbol}<div class="chip-s" style="background:${DC[cat]}"></div>`;
+    ch.addEventListener('click',()=>selIso(iso,ch));
+    ch.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selIso(iso,ch);}});
+    cr.appendChild(ch);
+    if(iso.isomers&&iso.isomers.length){
+      iso.isomers.forEach(im=>{
+        const ic2=dcat(im.decay_modes,false),ic3=document.createElement('div');
+        ic3.className='chip';ic3.tabIndex=0;ic3.setAttribute('role','button');
+        ic3.innerHTML=`<sup style="font-size:8.5px;color:var(--faint);display:block;">${im.isomer_label}</sup>${el.symbol}<span class="chip-m">ISOMER</span><div class="chip-s" style="background:${DC[ic2]}"></div>`;
+        ic3.addEventListener('click',()=>selIso(im,ic3,true,iso));
+        ic3.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selIso(im,ic3,true,iso);}});
+        cr.appendChild(ic3);
+      });
+    }
+  });
+  const dp=document.getElementById('detPanel');dp.classList.remove('open');
+  dp.innerHTML='<div class="empty">Select an isotope above to view half-life, decay modes, decay energies and specific activity.</div>';
+  setTimeout(()=>window.scrollTo({top:pan.getBoundingClientRect().top+scrollY-20,behavior:'smooth'}),50);
+}
+document.getElementById('isoClose').addEventListener('click',()=>{
+  document.getElementById('isoPanel').classList.remove('open');
+  document.querySelectorAll('.tile').forEach(t=>t.classList.remove('sel'));
+  activeZ=null;
+});
+
+/* ── isotope detail ── */
+const EL={alpha_MeV:{l:'Q(α) — alpha decay energy'},beta_minus_MeV:{l:'Q(β⁻) — beta-minus decay energy'},ec_beta_plus_MeV:{l:'Q(EC/β⁺) — electron capture / positron'},it_MeV:{l:'E(IT) — isomeric transition energy'}};
+
+function selIso(iso,chipEl,isIso=false,parIso=null){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  if(chipEl)chipEl.classList.add('on');
+  const el=DATA[activeZ];
+  const stable=iso.is_stable&&!isIso;
+  iso._stable=stable;
+  const hl=fmtHL(iso);
+  const col=DC[dcat(iso.decay_modes,stable)];
+  const A=iso.A;
+  const sym=isIso?`<sup>${iso.common_name||A+'m'}</sup>${el.symbol}`:`<sup>${A}</sup>${el.symbol}`;
+  const nm=isIso?`${el.name}-${A}m`:`${el.name}-${A}`;
+  let h=`<div class="card" style="grid-column:1/-1">
+    <div class="dhl">
+      <span class="iname">${sym} <span style="font-size:12px;color:var(--dim);font-weight:400;">(${nm})</span></span>
+      <span class="itag" style="color:${col}">${stable?'STABLE':isIso?'METASTABLE ISOMER':'RADIOACTIVE'}</span>
+      ${isIso?`<span class="itag" style="color:var(--dim)">Ground state: <sup>${parIso.A}</sup>${el.symbol}</span>`:''}
     </div>
-    <div id="sb-body">
-      <div id="sb-hint" style="font-size:0.62rem;color:var(--text3);padding:4px 2px 6px;line-height:1.4;">Toggle ON to filter.<br>No filter = show all.</div>
-
-      <div class="sb-section">
-        <div class="sb-section-title">Status</div>
-        <div class="sb-filter" data-filter="status:established">
-          <span class="sb-dot" style="background:var(--med-estab)"></span>Established<span class="sb-count" id="cnt-estab"></span>
-        </div>
-        <div class="sb-filter" data-filter="status:development">
-          <span class="sb-dot" style="background:var(--med-dev)"></span>In Development<span class="sb-count" id="cnt-dev"></span>
-        </div>
-      </div>
-
-      <div class="sb-section">
-        <div class="sb-section-title">Type</div>
-        <div class="sb-filter" data-filter="type:diagnostic">
-          <span class="sb-dot" style="background:var(--med-diag)"></span>◎ Diagnostic<span class="sb-count" id="cnt-diag"></span>
-        </div>
-        <div class="sb-filter" data-filter="type:theranostic">
-          <span class="sb-dot" style="background:var(--med-thera)"></span>☯ Theranostic<span class="sb-count" id="cnt-thera"></span>
-        </div>
-        <div class="sb-filter" data-filter="type:therapy">
-          <span class="sb-dot" style="background:var(--med-ther)"></span>⚡ Therapy<span class="sb-count" id="cnt-ther"></span>
-        </div>
-      </div>
-
-      <div class="sb-section">
-        <div class="sb-section-title">Modality</div>
-        <div class="sb-filter" data-filter="modality:PET"><span class="sb-dot" style="background:#58a6ff"></span>PET</div>
-        <div class="sb-filter" data-filter="modality:SPECT"><span class="sb-dot" style="background:#79c0ff"></span>SPECT</div>
-        <div class="sb-filter" data-filter="modality:Alpha"><span class="sb-dot" style="background:#f85149"></span>Alpha (TAT)</div>
-        <div class="sb-filter" data-filter="modality:Brachy"><span class="sb-dot" style="background:#ffa657"></span>Brachytherapy</div>
-        <div class="sb-filter" data-filter="modality:Beta"><span class="sb-dot" style="background:#3fb950"></span>Beta Therapy</div>
-        <div class="sb-filter" data-filter="modality:Synov"><span class="sb-dot" style="background:#d2a8ff"></span>Synovectomy</div>
-      </div>
-
-      <div class="sb-section">
-        <div class="sb-section-title">Cancer / Indication</div>
-        <div class="sb-filter" data-filter="app:neuroendocrine"><span class="sb-dot" style="background:#58a6ff"></span>Neuroendocrine</div>
-        <div class="sb-filter" data-filter="app:prostate"><span class="sb-dot" style="background:#d2a8ff"></span>Prostate</div>
-        <div class="sb-filter" data-filter="app:thyroid"><span class="sb-dot" style="background:#ffa657"></span>Thyroid</div>
-        <div class="sb-filter" data-filter="app:liver"><span class="sb-dot" style="background:#f85149"></span>Liver / HCC</div>
-        <div class="sb-filter" data-filter="app:bone"><span class="sb-dot" style="background:#e8b04b"></span>Bone Mets</div>
-        <div class="sb-filter" data-filter="app:lymphoma"><span class="sb-dot" style="background:#a371f7"></span>Lymphoma</div>
-        <div class="sb-filter" data-filter="app:breast"><span class="sb-dot" style="background:#ff7b9c"></span>Breast</div>
-        <div class="sb-filter" data-filter="app:cardiac"><span class="sb-dot" style="background:#ff6b6b"></span>Cardiac</div>
-        <div class="sb-filter" data-filter="app:brain"><span class="sb-dot" style="background:#56d364"></span>Brain</div>
-        <div class="sb-filter" data-filter="app:ovarian"><span class="sb-dot" style="background:#e8b04b"></span>Ovarian</div>
-        <div class="sb-filter" data-filter="app:leukemia"><span class="sb-dot" style="background:#ff7b72"></span>Leukemia / AML</div>
-        <div class="sb-filter" data-filter="app:melanoma"><span class="sb-dot" style="background:#8b949e"></span>Melanoma</div>
-        <div class="sb-filter" data-filter="app:renal"><span class="sb-dot" style="background:#3fb950"></span>Kidney / Renal</div>
-        <div class="sb-filter" data-filter="app:arthritis"><span class="sb-dot" style="background:#79c0ff"></span>Synovitis / RA</div>
-        <div class="sb-filter" data-filter="app:alzheimer"><span class="sb-dot" style="background:#ffd700"></span>Alzheimer's</div>
-      </div>
-
-      <div id="sb-clear">Clear all filters</div>
-      <div id="sb-match"></div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:7px;font-family:var(--fmono);font-size:11px;color:var(--dim);">
+      <span>Z=${iso.Z}</span><span>N=${iso.N}</span><span>A=${iso.A}</span>
+      ${iso.spin_parity?`<span>J<sup>π</sup>=${spH(iso.spin_parity)}</span>`:''}
+      ${iso.atomic_mass_u?`<span>Mass=${iso.atomic_mass_u.toFixed(6)} u</span>`:''}
+      ${iso.abundance_percent!=null?`<span>Abundance=${iso.abundance_percent}%</span>`:''}
+      ${isIso?`<span>Excitation=${iso.excitation_energy_keV.toFixed(3)} keV</span>`:''}
+      ${(!isIso&&iso.discovery_year)?`<span>Discovered ${iso.discovery_year}</span>`:''}
     </div>
-  </div><!-- /sidebar -->
+  </div>`;
 
-  <!-- ══ MAIN CONTENT ══ -->
-  <div id="main">
-    <div id="top-panel">
-      <div id="pt-grid"></div>
-      <div id="strip-wrap">
-        <div id="strip-header">
-          <span id="strip-el-name"></span>
-          <span id="strip-el-info"></span>
-        </div>
-        <div id="decay-legend"></div>
-        <div id="iso-strip"></div>
-      </div>
-    </div>
-    <div id="bottom-panel">
-      <div id="detail"><div class="detail-empty">← Click an element to explore its isotopes</div></div>
-      <details>
-        <summary>📖 Glossary / How to read this table</summary>
-        <div class="glossary-grid">
-          <div class="glossary-item"><h4>Half-life (T½)</h4><p>Time for half the atoms to decay. Ranges from femtoseconds to billions of years.</p></div>
-          <div class="glossary-item"><h4>Specific Activity</h4><p>Decays per second per gram (Bq/g). Formula: A = ln(2)·Nₐ/(T½·M). Click 📋 to copy.</p></div>
-          <div class="glossary-item"><h4>Decay modes</h4><p><b style="color:var(--dec-alpha)">α</b> emits ⁴He. <b style="color:var(--dec-betam)">β⁻</b> neutron→proton. <b style="color:var(--dec-betap)">β⁺/EC</b> proton→neutron. <b style="color:var(--dec-it)">IT</b> isomeric transition. <b style="color:var(--dec-sf)">SF</b> spontaneous fission.</p></div>
-          <div class="glossary-item"><h4>Gamma (γ) radiation</h4><p>Photons emitted per 100 parent decays. Σ intensity = total per decay. Total keV/decay = total photon energy released.</p></div>
-          <div class="glossary-item"><h4>Isomers (m)</h4><p>Long-lived excited nuclear states (e.g. ⁹⁹ᵐTc). Key in nuclear medicine — IT decay emits useful γ.</p></div>
-          <div class="glossary-item"><h4>Medical symbols</h4><p>◎ Diagnostic (PET/SPECT) · ⚡ Therapy · ☯ Theranostic. ✓ = established clinical use · … = in development.</p></div>
-        </div>
-      </details>
-    </div>
-  </div><!-- /main -->
+  if(iso.application){
+    const cur=!!iso.application_curated;
+    h+=`<div class="card ac"><h3>Where this isotope is used<span class="ab ${cur?'cur':'gen'}">${cur?'Documented use':'General note'}</span></h3><div class="at ${cur?'':'fb'}">${iso.application}</div></div>`;
+  }
 
-</div><!-- /shell -->
-<script src="app.js"></script>
+  if(stable){
+    h+=`<div class="card"><h3>Stability <span class="st">IAEA ENSDF</span></h3><div class="sh"><div class="si">∞</div><div class="stx">This nuclide is <b>observationally stable</b> — no radioactive decay has ever been measured.</div></div></div>`;
+  }else if(hl.r){
+    h+=`<div class="card"><h3>Decay width (resonance)</h3><div class="vr"><span class="vl">Reported width Γ</span><span class="vv">${hl.p}</span></div><div class="vr"><span class="vl">Equivalent lifetime</span><span class="vv">${hl.s}<span class="u"> s</span></span></div></div>`;
+  }else{
+    h+=`<div class="card"><h3>Half-life <span class="st">IAEA/ENSDF</span></h3>
+      <div class="vr cp"><span class="vl">Reported value</span><span class="vv"><span class="vn">${hl.p}</span>${cb(iso.half_life_value,'half-life')}</span></div>
+      <div class="vr cp"><span class="vl">In seconds</span><span class="vv"><span class="vn">${hl.s}<span class="u"> s</span></span>${cb(sciP(iso.half_life_seconds),'half-life in s')}</span></div>
+      ${iso.half_life_seconds?`<div class="vr cp"><span class="vl">Decay constant λ</span><span class="vv"><span class="vn">${sciH(Math.log(2)/iso.half_life_seconds)}<span class="u"> s⁻¹</span></span>${cb(sciP(Math.log(2)/iso.half_life_seconds),'decay constant')}</span></div>`:''}
+    </div>`;
+    if(iso.specific_activity_Bq_per_g!=null){
+      const sa=iso.specific_activity_Bq_per_g,ci=sa/3.7e10,mol=Math.log(2)*NA/iso.half_life_seconds;
+      h+=`<div class="card"><h3>Specific activity <span class="st">A=ln2·Nₐ/(T½·M)</span></h3>
+        <div class="vr cp"><span class="vl">Per gram</span><span class="vv"><span class="vn">${sciH(sa)}<span class="u"> Bq/g</span></span>${cb(sciP(sa),'Bq/g')}</span></div>
+        <div class="vr cp"><span class="vl">Per gram (Ci)</span><span class="vv"><span class="vn">${sciH(ci)}<span class="u"> Ci/g</span></span>${cb(sciP(ci),'Ci/g')}</span></div>
+        <div class="vr cp"><span class="vl">Per mole</span><span class="vv"><span class="vn">${sciH(mol)}<span class="u"> Bq/mol</span></span>${cb(sciP(mol),'Bq/mol')}</span></div>
+      </div>`;
+    }else{
+      h+=`<div class="card"><h3>Specific activity</h3><div class="vr"><span class="vl">Not computable</span><span class="vv">—</span></div><div style="font-size:11px;color:var(--faint);margin-top:5px;">Half-life or atomic mass unavailable.</div></div>`;
+    }
+    if(iso.decay_modes&&iso.decay_modes.length){
+      h+=`<div class="card"><h3>Decay modes <span class="st">branching ratios</span></h3>`;
+      iso.decay_modes.forEach(dm=>{
+        const dc2=dm.mode.includes('A')&&!dm.mode.startsWith('B')?'alpha':dm.mode.startsWith('B-')?'betam':(dm.mode.startsWith('B+')||dm.mode.startsWith('EC'))?'betap':dm.mode==='IT'?'it':dm.mode.includes('SF')?'sf':'other';
+        const dcol=DC[dc2];
+        const pct=dm.percent;
+        let pl=pct!=null?(pct>0&&pct<0.001?sciH(pct,2)+'%':`${pct}%`+(dm.percent_unc?` <span style="color:var(--faint);font-weight:400">± ${dm.percent_unc}</span>`:'')):dm.percent_raw?dm.percent_raw+'%':'—';
+        const bw=pct==null?0:pct<=0?0:pct<1?1.2:Math.min(100,pct);
+        h+=`<div class="dm"><div class="dml"><span class="dmn"><span class="dmd" style="background:${dcol}"></span>${dm.label} <span style="color:var(--faint);font-family:var(--fmono);font-size:9.5px;">(${dm.mode})</span></span><span class="dmp" style="color:${dcol}">${pl}</span></div><div class="dmt"><div class="dmf" style="width:${bw}%;background:${dcol}"></div></div></div>`;
+      });
+      h+=`</div>`;
+    }
+    const en=iso.decay_energies_MeV||{},ek=Object.keys(en);
+    if(ek.length){
+      h+=`<div class="card"><h3>Decay energies (Q-values) <span class="st">IAEA/NUBASE</span></h3>`;
+      ek.forEach(k=>{const v=en[k],info=EL[k]||{l:k};h+=`<div class="vr"><span class="vl">${info.l}</span><span class="vv">${v.toFixed(4)}<span class="u"> MeV</span></span></div><div class="vr"><span class="vl" style="font-size:10px;">— in joules</span><span class="vv" style="font-size:10.5px;">${sciH(v*1.602176634e-13)}<span class="u"> J</span></span></div>`;});
+      h+=`<div style="font-size:10px;color:var(--faint);margin-top:5px;">Q-values = total energy released, shared between decay products.</div></div>`;
+    }
+    const gs=iso.gamma_summary,gl=iso.gamma_lines||[];
+    if(gs&&gl.length>0&&gs.dominant_energy_keV!=null){
+      const tl=gl.slice(0,8),de=gs.dominant_energy_keV??0,di=gs.dominant_intensity_pct??0,ti=gs.total_intensity_pct??0,me=gs.mean_energy_keV??0;
+      h+=`<div class="card gc"><h3>Gamma radiation <span class="st">IAEA ENSDF — ${gs.n_lines} line${gs.n_lines>1?'s':''}</span></h3>
+        <div class="gstats">
+          <div class="gstat"><span class="gsl">Dominant line</span><span class="gsv">${de.toFixed(3)} <span class="gu">keV</span></span><span class="gss">${di.toFixed(3)}% / decay</span></div>
+          <div class="gstat"><span class="gsl">Sum of intensities</span><span class="gsv">${ti.toFixed(2)}<span class="gu">%</span></span><span class="gss">over all ${gs.n_lines} lines</span></div>
+          <div class="gstat"><span class="gsl">Weighted mean E</span><span class="gsv">${me.toFixed(2)} <span class="gu">keV</span></span><span class="gss">Σ(E·I)/Σ(I)</span></div>
+        </div>
+        <div class="gtw"><table class="gt"><thead><tr><th>Energy (keV)</th><th>Intensity (%/dec)</th><th>Uncertainty</th><th class="gbc"></th></tr></thead>
+        <tbody>${tl.map(g=>{const ge=g.e??g.energy_keV??0,gi=g.i??g.intensity_pct??0,gu=g.u??g.unc_pct??null,bw=di>0?Math.max(2,(gi/di)*100).toFixed(1):2,unc=gu!=null?`± ${gu<0.01?gu.toExponential(1):gu.toFixed(3)}`:'—';return `<tr><td class="ge">${ge.toFixed(3)}</td><td class="gi">${gi<0.001?gi.toExponential(3):gi.toFixed(4)}</td><td class="gu2">${unc}</td><td class="gbl"><div class="gb" style="width:${bw}%"></div></td></tr>`;}).join('')}</tbody></table>
+        ${gl.length>8?`<div class="gm">+ ${gl.length-8} more lines not shown</div>`:''}</div></div>`;
+    }else if(!stable&&!hl.r){
+      h+=`<div class="card"><h3>Gamma radiation <span class="st">IAEA ENSDF</span></h3><div style="font-size:11.5px;color:var(--dim);padding:5px 0;">No significant gamma emission found — pure β/α emitter or data not yet evaluated.</div></div>`;
+    }
+    if(isIso){
+      h+=`<div class="card"><h3>Relation to ground state</h3>
+        <div class="vr"><span class="vl">Ground state</span><span class="vv"><sup>${parIso.A}</sup>${el.symbol}</span></div>
+        <div class="vr"><span class="vl">Excitation energy</span><span class="vv">${iso.excitation_energy_keV.toFixed(3)}<span class="u"> keV</span></span></div>
+        <div class="vr"><span class="vl">G.S. half-life</span><span class="vv">${parIso.is_stable?'Stable':`${parIso.half_life_value} ${ulbl(parIso.half_life_unit)}`}</span></div>
+      </div>`;
+    }
+  }
+  const dp=document.getElementById('detPanel');
+  dp.innerHTML=`<div class="det-grid">${h}</div>`;
+  dp.classList.add('open');
+  setTimeout(()=>window.scrollTo({top:document.getElementById('isoPanel').getBoundingClientRect().top+scrollY-20,behavior:'smooth'}),50);
+}
+
+/* ── init ── */
+async function init(){
+  const g=document.getElementById('ptGrid');
+  g.style.cssText='display:grid;grid-template-columns:repeat(18,minmax(50px,1fr));grid-template-rows:repeat(10,auto);gap:3px;min-width:940px;padding:2px;';
+  g.innerHTML='<div class="ld" style="grid-column:1/-1"><div>Loading nuclide dataset…</div><div class="lb"></div></div>';
+  try{
+    const r=await fetch('data.json');
+    DATA=await r.json();
+    document.getElementById('dataStatus').textContent=`${Object.keys(DATA).length} elements loaded`;
+    buildTable();
+    buildMedSidebar();
+  }catch(err){
+    g.innerHTML=`<div class="ld" style="grid-column:1/-1;color:var(--s-sf);">Failed to load data.json (${err.message}). Open via a web server, not file://</div>`;
+    document.getElementById('dataStatus').textContent='Error';
+  }
+}
+init();
+</script>
 </body>
 </html>
