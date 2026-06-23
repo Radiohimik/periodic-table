@@ -327,10 +327,11 @@ body {
 .pt-area {
   flex: 1;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 6px 8px 20px;
 }
-.pt-area::-webkit-scrollbar { width: 5px; }
+.pt-area::-webkit-scrollbar { height: 5px; width: 5px; }
 .pt-area::-webkit-scrollbar-track { background: var(--bg); }
 .pt-area::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
 
