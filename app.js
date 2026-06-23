@@ -13,43 +13,82 @@ let activeIsotope = null;
    Sources: EANM/SNMMI guidelines, published literature
    ============================================================ */
 const MEDICAL_ISOTOPES = {
-  // F  — F-18 FDG / PSMA PET
-  9:  [{ A:18,  status:'established', type:'diagnostic',  modality:'PET',          indications:['neuroendocrine','prostate','cardiac','brain','lymphoma'] }],
+  // C  — C-11 PET tracers (choline, methionine, acetate, raclopride)
+  6:  [{ A:11,  status:'established', type:'diagnostic',  modality:'PET',          indications:['prostate','brain'] }],
+  // N  — N-13 ammonia myocardial perfusion PET
+  7:  [{ A:13,  status:'established', type:'diagnostic',  modality:'PET',          indications:['cardiac'] }],
+  // O  — O-15 water perfusion PET (brain / cardiac)
+  8:  [{ A:15,  status:'established', type:'diagnostic',  modality:'PET',          indications:['brain','cardiac'] }],
+  // F  — F-18 FDG / PSMA / NaF PET
+  9:  [{ A:18,  status:'established', type:'diagnostic',  modality:'PET',          indications:['neuroendocrine','prostate','cardiac','brain','lymphoma','bone'] }],
   // Na — Na-22 (research PET)
   11: [{ A:22,  status:'development', type:'diagnostic',  modality:'PET',          indications:[] }],
   // P  — P-32 brachytherapy
   15: [{ A:32,  status:'established', type:'therapy',     modality:'brachytherapy',indications:[] }],
-  // Sc — Sc-44 PET / Sc-47 theranostic pair
+  // Sc — Sc-43/44 PET, Sc-47 theranostic beta (matched pair with Lu-177-type ligands)
   21: [
+    { A:43,  status:'development', type:'diagnostic',  modality:'PET',          indications:[] },
     { A:44,  status:'development', type:'diagnostic',  modality:'PET',          indications:[] },
     { A:47,  status:'development', type:'theranostic', modality:'beta',         indications:['neuroendocrine'] }
   ],
-  // Cu — Cu-64 theranostic PET
-  29: [{ A:64,  status:'established', type:'theranostic', modality:'PET',          indications:['lymphoma','breast'] }],
-  // Ga — Ga-68 PSMA / DOTATATE PET
-  31: [{ A:68,  status:'established', type:'diagnostic',  modality:'PET',          indications:['neuroendocrine','prostate'] }],
+  // Co — Co-57 imaging marker / flood source (SPECT), Co-60 teletherapy + HDR brachytherapy
+  27: [
+    { A:57,  status:'established', type:'diagnostic',  modality:'SPECT',        indications:[] },
+    { A:60,  status:'established', type:'therapy',     modality:'brachytherapy',indications:[] }
+  ],
+  // Cu — Cu-61/62 PET, Cu-64 theranostic PET, Cu-67 therapy beta (Cu theranostic family)
+  29: [
+    { A:61,  status:'development', type:'diagnostic',  modality:'PET',          indications:['prostate'] },
+    { A:62,  status:'development', type:'diagnostic',  modality:'PET',          indications:['cardiac'] },
+    { A:64,  status:'established', type:'theranostic', modality:'PET',          indications:['lymphoma','breast'] },
+    { A:67,  status:'development', type:'theranostic', modality:'beta',         indications:['lymphoma','neuroendocrine','prostate'] }
+  ],
+  // Ga — Ga-67 citrate SPECT (lymphoma / infection), Ga-68 PSMA / DOTATATE PET
+  31: [
+    { A:67,  status:'established', type:'diagnostic',  modality:'SPECT',        indications:['lymphoma','infection'] },
+    { A:68,  status:'established', type:'diagnostic',  modality:'PET',          indications:['neuroendocrine','prostate'] }
+  ],
+  // Se — Se-75 SeHCAT bile-acid malabsorption / selenomethionine SPECT
+  34: [{ A:75,  status:'established', type:'diagnostic',  modality:'SPECT',        indications:[] }],
+  // Kr — Kr-81m lung ventilation SPECT
+  36: [{ A:81,  status:'established', type:'diagnostic',  modality:'SPECT',        indications:['lung'] }],
   // Rb — Rb-82 cardiac PET
   37: [{ A:82,  status:'established', type:'diagnostic',  modality:'PET',          indications:['cardiac'] }],
   // Sr — Sr-89 bone pain palliation
   38: [{ A:89,  status:'established', type:'therapy',     modality:'beta',         indications:['bone'] }],
-  // Y  — Y-90 microspheres / SIRT / DOTATATE
-  39: [{ A:90,  status:'established', type:'therapy',     modality:'brachytherapy',indications:['liver','neuroendocrine'] }],
+  // Y  — Y-86 PET surrogate, Y-90 microspheres / SIRT / DOTATATE
+  39: [
+    { A:86,  status:'development', type:'diagnostic',  modality:'PET',          indications:['neuroendocrine'] },
+    { A:90,  status:'established', type:'therapy',     modality:'brachytherapy',indications:['liver','neuroendocrine'] }
+  ],
   // Zr — Zr-89 immuno-PET
   40: [{ A:89,  status:'established', type:'diagnostic',  modality:'PET',          indications:[] }],
   // Tc — Tc-99m (world's most used diagnostic)
   43: [{ A:99,  status:'established', type:'diagnostic',  modality:'SPECT',        indications:['bone','cardiac'] }],
+  // Pd — Pd-103 LDR brachytherapy seeds (prostate)
+  46: [{ A:103, status:'established', type:'therapy',     modality:'brachytherapy',indications:['prostate'] }],
   // In — In-111 Octreoscan SPECT
   49: [{ A:111, status:'established', type:'diagnostic',  modality:'SPECT',        indications:['neuroendocrine'] }],
-  // I  — I-123 SPECT + I-131 theranostic thyroid
+  // Sn — Sn-117m conversion-electron therapy (bone pain, atherosclerotic plaque)
+  50: [{ A:117, status:'development', type:'therapy',     modality:'beta',         indications:['bone'] }],
+  // I  — I-123 SPECT, I-124 immuno-PET, I-125 brachytherapy seeds, I-131 theranostic thyroid
   53: [
     { A:123, status:'established', type:'diagnostic',  modality:'SPECT',        indications:['thyroid'] },
+    { A:124, status:'development', type:'diagnostic',  modality:'PET',          indications:['thyroid'] },
+    { A:125, status:'established', type:'therapy',     modality:'brachytherapy',indications:['prostate'] },
     { A:131, status:'established', type:'theranostic', modality:'beta',         indications:['thyroid'] }
   ],
+  // Xe — Xe-133 lung ventilation / cerebral blood flow SPECT
+  54: [{ A:133, status:'established', type:'diagnostic',  modality:'SPECT',        indications:['lung','brain'] }],
+  // Cs — Cs-131 LDR brachytherapy seeds (prostate / brain)
+  55: [{ A:131, status:'established', type:'therapy',     modality:'brachytherapy',indications:['prostate','brain'] }],
   // Sm — Sm-153 bone pain
   62: [{ A:153, status:'established', type:'therapy',     modality:'beta',         indications:['bone'] }],
-  // Tb — Tb-149 alpha / Tb-161 beta (theranostic quartet)
+  // Tb — the "Swiss-army" theranostic quartet: 149 alpha, 152 PET, 155 SPECT, 161 beta
   65: [
     { A:149, status:'development', type:'therapy',     modality:'alpha',        indications:[] },
+    { A:152, status:'development', type:'diagnostic',  modality:'PET',          indications:[] },
+    { A:155, status:'development', type:'diagnostic',  modality:'SPECT',        indications:[] },
     { A:161, status:'development', type:'theranostic', modality:'beta',         indications:['neuroendocrine','prostate'] }
   ],
   // Dy — Dy-165 radiation synovectomy
@@ -65,18 +104,30 @@ const MEDICAL_ISOTOPES = {
     { A:186, status:'established', type:'therapy',     modality:'beta',         indications:['bone'] },
     { A:188, status:'established', type:'therapy',     modality:'beta',         indications:['bone','liver'] }
   ],
+  // Ir — Ir-192 HDR brachytherapy (most common HDR source)
+  77: [{ A:192, status:'established', type:'therapy',     modality:'brachytherapy',indications:['prostate','breast'] }],
+  // Au — Au-198 brachytherapy (beta/gamma seeds)
+  79: [{ A:198, status:'established', type:'therapy',     modality:'brachytherapy',indications:[] }],
   // Tl — Tl-201 cardiac SPECT
   81: [{ A:201, status:'established', type:'diagnostic',  modality:'SPECT',        indications:['cardiac'] }],
-  // Pb — Pb-212 Pb-DOTAMTATE (alpha cascade)
-  82: [{ A:212, status:'development', type:'therapy',     modality:'alpha',        indications:['neuroendocrine','prostate'] }],
-  // Bi — Bi-213 alpha TAT
-  83: [{ A:213, status:'development', type:'therapy',     modality:'alpha',        indications:[] }],
+  // Pb — Pb-203 SPECT imaging surrogate, Pb-212 Pb-DOTAMTATE alpha cascade (matched pair)
+  82: [
+    { A:203, status:'development', type:'diagnostic',  modality:'SPECT',        indications:['neuroendocrine','prostate'] },
+    { A:212, status:'development', type:'therapy',     modality:'alpha',        indications:['neuroendocrine','prostate'] }
+  ],
+  // Bi — Bi-212 / Bi-213 alpha TAT
+  83: [
+    { A:212, status:'development', type:'therapy',     modality:'alpha',        indications:[] },
+    { A:213, status:'development', type:'therapy',     modality:'alpha',        indications:[] }
+  ],
   // At — At-211 alpha TAT
   85: [{ A:211, status:'development', type:'therapy',     modality:'alpha',        indications:[] }],
   // Ra — Ra-223 dichloride bone mets (first approved alpha therapy)
   88: [{ A:223, status:'established', type:'therapy',     modality:'alpha',        indications:['bone'] }],
   // Ac — Ac-225 PSMA alpha TAT
   89: [{ A:225, status:'development', type:'therapy',     modality:'alpha',        indications:['prostate'] }],
+  // Th — Th-227 targeted thorium conjugates (alpha TAT)
+  90: [{ A:227, status:'development', type:'therapy',     modality:'alpha',        indications:['prostate','breast'] }],
 };
 
 /* Medical type -> dot color */
@@ -251,7 +302,7 @@ function computeCounts() {
   document.getElementById('count-beta').textContent         = countFor('modality','beta');
   document.getElementById('count-synovectomy').textContent  = countFor('modality','synovectomy');
   // Indication
-  ['neuroendocrine','prostate','thyroid','liver','bone','lymphoma','breast','cardiac','brain'].forEach(ind => {
+  ['neuroendocrine','prostate','thyroid','liver','bone','lymphoma','breast','cardiac','brain','lung','infection'].forEach(ind => {
     const el = document.getElementById('count-' + ind);
     if (el) el.textContent = countFor('indication', ind);
   });
