@@ -439,7 +439,7 @@ function selectElement(Z) {
     chip.tabIndex = 0;
     chip.setAttribute('role', 'button');
     chip.innerHTML = `
-      <sup style="font-size:8px;color:#fff;font-weight:700;display:block;">${iso.A}</sup>${el.symbol}
+      <sup style="font-size:8px;color:var(--text);font-weight:700;display:block;">${iso.A}</sup>${el.symbol}
       <div class="chip-strip" style="background:${DECAY_COLORS[cat]}"></div>
     `;
     chip.addEventListener('click', () => selectIsotope(iso, chip));
@@ -456,7 +456,7 @@ function selectElement(Z) {
         ichip.tabIndex = 0;
         ichip.setAttribute('role', 'button');
         ichip.innerHTML = `
-          <sup style="font-size:8px;color:#fff;font-weight:700;display:block;">${isomer.isomer_label}</sup>${el.symbol}
+          <sup style="font-size:8px;color:var(--text);font-weight:700;display:block;">${isomer.isomer_label}</sup>${el.symbol}
           <span class="chip-m">ISOMER</span>
           <div class="chip-strip" style="background:${DECAY_COLORS[icat]}"></div>
         `;
