@@ -216,6 +216,15 @@ function getMedicalIsotopesForZ(Z) {
   return MEDICAL_ISOTOPES[Z] || [];
 }
 
+/* Small medical-cross badge shown on an isotope chip when that exact
+   mass number has a clinical use entry. */
+function medicalBadge(medMatches, symbol, massLabel) {
+  if (!medMatches || medMatches.length === 0) return '';
+  const color = MED_COLORS[medMatches[0].type] || 'var(--accent-cyan)';
+  const label = medMatches.map(m => `${m.type} / ${m.modality}`).join(', ');
+  return `<span class="chip-med-badge" style="background:${color};" title="${symbol}-${massLabel}: ${label}">✚</span>`;
+}
+
 function computeCounts() {
   // Flatten all medical isotopes
   const all = Object.values(MEDICAL_ISOTOPES).flat();
@@ -431,14 +440,17 @@ function selectElement(Z) {
   // Isotope strip
   const strip = document.getElementById('isoStrip');
   strip.innerHTML = '';
+  const allMedIsos = getMedicalIsotopesForZ(el.Z);
   el.isotopes.forEach(iso => {
     const cat = decayCategory(iso.decay_modes, iso.is_stable);
+    const medMatches = allMedIsos.filter(m => m.A === iso.A);
     const chip = document.createElement('div');
-    chip.className = 'iso-chip';
+    chip.className = `iso-chip${medMatches.length ? ' has-medical' : ''}`;
     chip.dataset.a = iso.A;
     chip.tabIndex = 0;
     chip.setAttribute('role', 'button');
     chip.innerHTML = `
+      ${medicalBadge(medMatches, el.symbol, iso.A)}
       <sup style="font-size:8px;color:var(--text);font-weight:700;display:block;">${iso.A}</sup>${el.symbol}
       <div class="chip-strip" style="background:${DECAY_COLORS[cat]}"></div>
     `;
@@ -451,11 +463,13 @@ function selectElement(Z) {
     if (iso.isomers && iso.isomers.length) {
       iso.isomers.forEach(isomer => {
         const icat = decayCategory(isomer.decay_modes, false);
+        const imedMatches = allMedIsos.filter(m => m.A === iso.A);
         const ichip = document.createElement('div');
-        ichip.className = 'iso-chip';
+        ichip.className = `iso-chip${imedMatches.length ? ' has-medical' : ''}`;
         ichip.tabIndex = 0;
         ichip.setAttribute('role', 'button');
         ichip.innerHTML = `
+          ${medicalBadge(imedMatches, el.symbol, isomer.isomer_label)}
           <sup style="font-size:8px;color:var(--text);font-weight:700;display:block;">${isomer.isomer_label}</sup>${el.symbol}
           <span class="chip-m">ISOMER</span>
           <div class="chip-strip" style="background:${DECAY_COLORS[icat]}"></div>
