@@ -371,6 +371,7 @@ body {
   align-items: stretch;
   width: var(--tile);
   height: var(--tile);
+  aspect-ratio: 1 / 1;
   overflow: hidden;
 }
 .element-tile:hover {
@@ -432,20 +433,9 @@ body {
   /* Responsive font size within square tile */
   font-size: calc(var(--tile) * 0.42);
 }
-/* Bottom: name + mass */
+/* Bottom: mass */
 .tile-bottom {
   text-align: center;
-}
-.tile-name {
-  font-family: var(--font-bb);
-  font-size: calc(var(--tile) * 0.1);
-  color: rgba(255,255,255,0.75);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-  letter-spacing: 0.2px;
-  line-height: 1.1;
 }
 .tile-mass {
   font-family: var(--font-mono);
@@ -516,6 +506,7 @@ body {
   background: rgba(8,20,8,0.5);
   width: var(--tile);
   height: var(--tile);
+  aspect-ratio: 1 / 1;
 }
 
 /* ============================================================
