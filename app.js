@@ -847,7 +847,7 @@ async function init() {
     <div class="loading-bar"></div>
   </div>`;
   try {
-    const res = await fetch('data.json');
+    const res = await fetch('data.json?v=20260625-1');
     ELEMENT_DATA = await res.json();
     document.getElementById('dataStatus').textContent = `${Object.keys(ELEMENT_DATA).length} elements loaded`;
     buildPeriodicTable();
