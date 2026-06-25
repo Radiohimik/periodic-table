@@ -848,11 +848,33 @@ body {
   color: var(--text);
   min-width: 56px;
 }
+.prod-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
 .prod-rxn {
   font-family: var(--font-mono);
   font-size: 13px;
   color: var(--accent-amber);
   letter-spacing: 0.3px;
+}
+.prod-energy {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+.prod-energy-label {
+  display: inline-block;
+  font-size: 8.5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-faint);
+  background: var(--bg-elev3);
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-right: 7px;
+  vertical-align: middle;
 }
 .prod-note {
   font-size: 10.5px;
@@ -1276,6 +1298,6 @@ body {
 
 </div><!-- /main-col -->
 
-<script src="app.js?v=20260625-2" defer></script>
+<script src="app.js?v=20260625-3" defer></script>
 </body>
 </html>
