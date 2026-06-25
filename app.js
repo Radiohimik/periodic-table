@@ -14,120 +14,120 @@ let activeIsotope = null;
    ============================================================ */
 const MEDICAL_ISOTOPES = {
   // C  — C-11 PET tracers (choline, methionine, acetate, raclopride)
-  6:  [{ A:11,  status:'established', type:'diagnostic',  modality:'PET',          indications:['prostate','brain'] }],
+  6:  [{ A:11,  status:'established', type:'diagnostic',  modality:'PET',          indications:['prostate','brain'], production:'¹⁴N(p,α)¹¹C · cyclotron' }],
   // N  — N-13 ammonia myocardial perfusion PET
-  7:  [{ A:13,  status:'established', type:'diagnostic',  modality:'PET',          indications:['cardiac'] }],
+  7:  [{ A:13,  status:'established', type:'diagnostic',  modality:'PET',          indications:['cardiac'], production:'¹⁶O(p,α)¹³N · cyclotron' }],
   // O  — O-15 water perfusion PET (brain / cardiac)
-  8:  [{ A:15,  status:'established', type:'diagnostic',  modality:'PET',          indications:['brain','cardiac'] }],
+  8:  [{ A:15,  status:'established', type:'diagnostic',  modality:'PET',          indications:['brain','cardiac'], production:'¹⁴N(d,n)¹⁵O · cyclotron' }],
   // F  — F-18 FDG / PSMA / NaF PET
-  9:  [{ A:18,  status:'established', type:'diagnostic',  modality:'PET',          indications:['neuroendocrine','prostate','cardiac','brain','lymphoma','bone'] }],
+  9:  [{ A:18,  status:'established', type:'diagnostic',  modality:'PET',          indications:['neuroendocrine','prostate','cardiac','brain','lymphoma','bone'], production:'¹⁸O(p,n)¹⁸F · cyclotron' }],
   // Na — Na-22 (research PET)
-  11: [{ A:22,  status:'development', type:'diagnostic',  modality:'PET',          indications:[] }],
+  11: [{ A:22,  status:'development', type:'diagnostic',  modality:'PET',          indications:[], production:'²⁴Mg(d,α)²²Na · accelerator' }],
   // P  — P-32 brachytherapy
-  15: [{ A:32,  status:'established', type:'therapy',     modality:'brachytherapy',indications:[] }],
+  15: [{ A:32,  status:'established', type:'therapy',     modality:'brachytherapy',indications:[], production:'³¹P(n,γ)³²P · reactor' }],
   // Sc — Sc-43/44 PET, Sc-47 theranostic beta (matched pair with Lu-177-type ligands)
   21: [
-    { A:43,  status:'development', type:'diagnostic',  modality:'PET',          indications:[] },
-    { A:44,  status:'development', type:'diagnostic',  modality:'PET',          indications:[] },
-    { A:47,  status:'development', type:'theranostic', modality:'beta',         indications:['neuroendocrine'] }
+    { A:43,  status:'development', type:'diagnostic',  modality:'PET',          indications:[], production:'⁴²Ca(d,n)⁴³Sc · cyclotron' },
+    { A:44,  status:'development', type:'diagnostic',  modality:'PET',          indications:[], production:'⁴⁴Ca(p,n)⁴⁴Sc · cyclotron; ⁴⁴Ti/⁴⁴Sc generator' },
+    { A:47,  status:'development', type:'theranostic', modality:'beta',         indications:['neuroendocrine'], production:'⁴⁷Ti(n,p)⁴⁷Sc · reactor; ⁴⁸Ca(p,2n) accelerator' }
   ],
   // Co — Co-57 imaging marker / flood source (SPECT), Co-60 teletherapy + HDR brachytherapy
   27: [
-    { A:57,  status:'established', type:'diagnostic',  modality:'SPECT',        indications:[] },
-    { A:60,  status:'established', type:'therapy',     modality:'brachytherapy',indications:[] }
+    { A:57,  status:'established', type:'diagnostic',  modality:'SPECT',        indications:[], production:'⁵⁸Ni(p,2n)⁵⁷Cu→⁵⁷Co · cyclotron' },
+    { A:60,  status:'established', type:'therapy',     modality:'brachytherapy',indications:[], production:'⁵⁹Co(n,γ)⁶⁰Co · reactor' }
   ],
   // Cu — Cu-61/62 PET, Cu-64 theranostic PET, Cu-67 therapy beta (Cu theranostic family)
   29: [
-    { A:61,  status:'development', type:'diagnostic',  modality:'PET',          indications:['prostate'] },
-    { A:62,  status:'development', type:'diagnostic',  modality:'PET',          indications:['cardiac'] },
-    { A:64,  status:'established', type:'theranostic', modality:'PET',          indications:['lymphoma','breast'] },
-    { A:67,  status:'development', type:'theranostic', modality:'beta',         indications:['lymphoma','neuroendocrine','prostate'] }
+    { A:61,  status:'development', type:'diagnostic',  modality:'PET',          indications:['prostate'], production:'⁶¹Ni(p,n)⁶¹Cu · cyclotron' },
+    { A:62,  status:'development', type:'diagnostic',  modality:'PET',          indications:['cardiac'], production:'⁶²Zn/⁶²Cu generator (⁶²Zn ← ⁶³Cu(p,2n))' },
+    { A:64,  status:'established', type:'theranostic', modality:'PET',          indications:['lymphoma','breast'], production:'⁶⁴Ni(p,n)⁶⁴Cu · cyclotron' },
+    { A:67,  status:'development', type:'theranostic', modality:'beta',         indications:['lymphoma','neuroendocrine','prostate'], production:'⁷⁰Zn(p,α)⁶⁷Cu; ⁶⁸Zn(p,2p)⁶⁷Cu · accelerator' }
   ],
   // Ga — Ga-67 citrate SPECT (lymphoma / infection), Ga-68 PSMA / DOTATATE PET
   31: [
-    { A:67,  status:'established', type:'diagnostic',  modality:'SPECT',        indications:['lymphoma','infection'] },
-    { A:68,  status:'established', type:'diagnostic',  modality:'PET',          indications:['neuroendocrine','prostate'] }
+    { A:67,  status:'established', type:'diagnostic',  modality:'SPECT',        indications:['lymphoma','infection'], production:'⁶⁸Zn(p,2n)⁶⁷Ga · cyclotron' },
+    { A:68,  status:'established', type:'diagnostic',  modality:'PET',          indications:['neuroendocrine','prostate'], production:'⁶⁸Ge/⁶⁸Ga generator (⁶⁸Ge ← ⁶⁹Ga(p,2n))' }
   ],
   // Se — Se-75 SeHCAT bile-acid malabsorption / selenomethionine SPECT
-  34: [{ A:75,  status:'established', type:'diagnostic',  modality:'SPECT',        indications:[] }],
+  34: [{ A:75,  status:'established', type:'diagnostic',  modality:'SPECT',        indications:[], production:'⁷⁴Se(n,γ)⁷⁵Se · reactor' }],
   // Kr — Kr-81m lung ventilation SPECT
-  36: [{ A:81,  status:'established', type:'diagnostic',  modality:'SPECT',        indications:['lung'] }],
+  36: [{ A:81,  status:'established', type:'diagnostic',  modality:'SPECT',        indications:['lung'], production:'⁸¹Rb/⁸¹ᵐKr generator (⁸¹Rb ← ⁸²Kr(p,2n))' }],
   // Rb — Rb-82 cardiac PET
-  37: [{ A:82,  status:'established', type:'diagnostic',  modality:'PET',          indications:['cardiac'] }],
+  37: [{ A:82,  status:'established', type:'diagnostic',  modality:'PET',          indications:['cardiac'], production:'⁸²Sr/⁸²Rb generator (⁸²Sr ← ⁸⁵Rb(p,4n))' }],
   // Sr — Sr-89 bone pain palliation
-  38: [{ A:89,  status:'established', type:'therapy',     modality:'beta',         indications:['bone'] }],
+  38: [{ A:89,  status:'established', type:'therapy',     modality:'beta',         indications:['bone'], production:'⁸⁸Sr(n,γ)⁸⁹Sr · reactor' }],
   // Y  — Y-86 PET surrogate, Y-90 microspheres / SIRT / DOTATATE
   39: [
-    { A:86,  status:'development', type:'diagnostic',  modality:'PET',          indications:['neuroendocrine'] },
-    { A:90,  status:'established', type:'therapy',     modality:'brachytherapy',indications:['liver','neuroendocrine'] }
+    { A:86,  status:'development', type:'diagnostic',  modality:'PET',          indications:['neuroendocrine'], production:'⁸⁶Sr(p,n)⁸⁶Y · cyclotron' },
+    { A:90,  status:'established', type:'therapy',     modality:'brachytherapy',indications:['liver','neuroendocrine'], production:'⁹⁰Sr/⁹⁰Y generator (⁹⁰Sr fission product)' }
   ],
   // Zr — Zr-89 immuno-PET
-  40: [{ A:89,  status:'established', type:'diagnostic',  modality:'PET',          indications:[] }],
+  40: [{ A:89,  status:'established', type:'diagnostic',  modality:'PET',          indications:[], production:'⁸⁹Y(p,n)⁸⁹Zr · cyclotron' }],
   // Tc — Tc-99m (world's most used diagnostic)
-  43: [{ A:99,  status:'established', type:'diagnostic',  modality:'SPECT',        indications:['bone','cardiac'] }],
+  43: [{ A:99,  status:'established', type:'diagnostic',  modality:'SPECT',        indications:['bone','cardiac'], production:'⁹⁹Mo/⁹⁹ᵐTc generator (⁹⁹Mo ← ²³⁵U fission)' }],
   // Pd — Pd-103 LDR brachytherapy seeds (prostate)
-  46: [{ A:103, status:'established', type:'therapy',     modality:'brachytherapy',indications:['prostate'] }],
+  46: [{ A:103, status:'established', type:'therapy',     modality:'brachytherapy',indications:['prostate'], production:'¹⁰²Pd(n,γ)¹⁰³Pd · reactor; ¹⁰³Rh(p,n) cyclotron' }],
   // In — In-111 Octreoscan SPECT
-  49: [{ A:111, status:'established', type:'diagnostic',  modality:'SPECT',        indications:['neuroendocrine'] }],
+  49: [{ A:111, status:'established', type:'diagnostic',  modality:'SPECT',        indications:['neuroendocrine'], production:'¹¹²Cd(p,2n)¹¹¹In · cyclotron' }],
   // Sn — Sn-117m conversion-electron therapy (bone pain, atherosclerotic plaque)
-  50: [{ A:117, status:'development', type:'therapy',     modality:'beta',         indications:['bone'] }],
+  50: [{ A:117, status:'development', type:'therapy',     modality:'beta',         indications:['bone'], production:'¹¹⁶Sn(n,γ) / ¹¹⁷Sn(n,n′γ)¹¹⁷ᵐSn · reactor' }],
   // I  — I-123 SPECT, I-124 immuno-PET, I-125 brachytherapy seeds, I-131 theranostic thyroid
   53: [
-    { A:123, status:'established', type:'diagnostic',  modality:'SPECT',        indications:['thyroid'] },
-    { A:124, status:'development', type:'diagnostic',  modality:'PET',          indications:['thyroid'] },
-    { A:125, status:'established', type:'therapy',     modality:'brachytherapy',indications:['prostate'] },
-    { A:131, status:'established', type:'theranostic', modality:'beta',         indications:['thyroid'] }
+    { A:123, status:'established', type:'diagnostic',  modality:'SPECT',        indications:['thyroid'], production:'¹²⁴Xe(p,2n)¹²³Xe→¹²³I · cyclotron' },
+    { A:124, status:'development', type:'diagnostic',  modality:'PET',          indications:['thyroid'], production:'¹²⁴Te(p,n)¹²⁴I · cyclotron' },
+    { A:125, status:'established', type:'therapy',     modality:'brachytherapy',indications:['prostate'], production:'¹²⁴Xe(n,γ)¹²⁵Xe→¹²⁵I · reactor' },
+    { A:131, status:'established', type:'theranostic', modality:'beta',         indications:['thyroid'], production:'¹³⁰Te(n,γ)¹³¹Te→¹³¹I · reactor; ²³⁵U fission' }
   ],
   // Xe — Xe-133 lung ventilation / cerebral blood flow SPECT
-  54: [{ A:133, status:'established', type:'diagnostic',  modality:'SPECT',        indications:['lung','brain'] }],
+  54: [{ A:133, status:'established', type:'diagnostic',  modality:'SPECT',        indications:['lung','brain'], production:'²³⁵U fission · reactor' }],
   // Cs — Cs-131 LDR brachytherapy seeds (prostate / brain)
-  55: [{ A:131, status:'established', type:'therapy',     modality:'brachytherapy',indications:['prostate','brain'] }],
+  55: [{ A:131, status:'established', type:'therapy',     modality:'brachytherapy',indications:['prostate','brain'], production:'¹³⁰Ba(n,γ)¹³¹Ba→¹³¹Cs · reactor' }],
   // Sm — Sm-153 bone pain
-  62: [{ A:153, status:'established', type:'therapy',     modality:'beta',         indications:['bone'] }],
+  62: [{ A:153, status:'established', type:'therapy',     modality:'beta',         indications:['bone'], production:'¹⁵²Sm(n,γ)¹⁵³Sm · reactor' }],
   // Tb — the "Swiss-army" theranostic quartet: 149 alpha, 152 PET, 155 SPECT, 161 beta
   65: [
-    { A:149, status:'development', type:'therapy',     modality:'alpha',        indications:[] },
-    { A:152, status:'development', type:'diagnostic',  modality:'PET',          indications:[] },
-    { A:155, status:'development', type:'diagnostic',  modality:'SPECT',        indications:[] },
-    { A:161, status:'development', type:'theranostic', modality:'beta',         indications:['neuroendocrine','prostate'] }
+    { A:149, status:'development', type:'therapy',     modality:'alpha',        indications:[], production:'¹⁴¹Pr(¹²C,4n) / spallation + mass separation · accelerator' },
+    { A:152, status:'development', type:'diagnostic',  modality:'PET',          indications:[], production:'¹⁵²Gd(p,n) / spallation · accelerator' },
+    { A:155, status:'development', type:'diagnostic',  modality:'SPECT',        indications:[], production:'¹⁵⁵Gd(p,n)¹⁵⁵Tb · cyclotron; spallation' },
+    { A:161, status:'development', type:'theranostic', modality:'beta',         indications:['neuroendocrine','prostate'], production:'¹⁶⁰Gd(n,γ)¹⁶¹Gd→¹⁶¹Tb · reactor' }
   ],
   // Dy — Dy-165 radiation synovectomy
-  66: [{ A:165, status:'established', type:'therapy',     modality:'synovectomy',  indications:[] }],
+  66: [{ A:165, status:'established', type:'therapy',     modality:'synovectomy',  indications:[], production:'¹⁶⁴Dy(n,γ)¹⁶⁵Dy · reactor' }],
   // Ho — Ho-166 TARE liver / microspheres
-  67: [{ A:166, status:'established', type:'therapy',     modality:'brachytherapy',indications:['liver'] }],
+  67: [{ A:166, status:'established', type:'therapy',     modality:'brachytherapy',indications:['liver'], production:'¹⁶⁵Ho(n,γ)¹⁶⁶Ho · reactor' }],
   // Er — Er-169 radiation synovectomy
-  68: [{ A:169, status:'established', type:'therapy',     modality:'synovectomy',  indications:[] }],
+  68: [{ A:169, status:'established', type:'therapy',     modality:'synovectomy',  indications:[], production:'¹⁶⁸Er(n,γ)¹⁶⁹Er · reactor' }],
   // Lu — Lu-177 PSMA-617 / DOTATATE (fastest growing)
-  71: [{ A:177, status:'established', type:'theranostic', modality:'beta',         indications:['neuroendocrine','prostate'] }],
+  71: [{ A:177, status:'established', type:'theranostic', modality:'beta',         indications:['neuroendocrine','prostate'], production:'¹⁷⁶Lu(n,γ)¹⁷⁷Lu (direct); ¹⁷⁶Yb(n,γ)¹⁷⁷Yb→¹⁷⁷Lu (c.a.) · reactor' }],
   // Re — Re-186 / Re-188 bone / liver
   75: [
-    { A:186, status:'established', type:'therapy',     modality:'beta',         indications:['bone'] },
-    { A:188, status:'established', type:'therapy',     modality:'beta',         indications:['bone','liver'] }
+    { A:186, status:'established', type:'therapy',     modality:'beta',         indications:['bone'], production:'¹⁸⁵Re(n,γ)¹⁸⁶Re · reactor' },
+    { A:188, status:'established', type:'therapy',     modality:'beta',         indications:['bone','liver'], production:'¹⁸⁸W/¹⁸⁸Re generator (¹⁸⁸W ← double n-capture on ¹⁸⁶W)' }
   ],
   // Ir — Ir-192 HDR brachytherapy (most common HDR source)
-  77: [{ A:192, status:'established', type:'therapy',     modality:'brachytherapy',indications:['prostate','breast'] }],
+  77: [{ A:192, status:'established', type:'therapy',     modality:'brachytherapy',indications:['prostate','breast'], production:'¹⁹¹Ir(n,γ)¹⁹²Ir · reactor' }],
   // Au — Au-198 brachytherapy (beta/gamma seeds)
-  79: [{ A:198, status:'established', type:'therapy',     modality:'brachytherapy',indications:[] }],
+  79: [{ A:198, status:'established', type:'therapy',     modality:'brachytherapy',indications:[], production:'¹⁹⁷Au(n,γ)¹⁹⁸Au · reactor' }],
   // Tl — Tl-201 cardiac SPECT
-  81: [{ A:201, status:'established', type:'diagnostic',  modality:'SPECT',        indications:['cardiac'] }],
+  81: [{ A:201, status:'established', type:'diagnostic',  modality:'SPECT',        indications:['cardiac'], production:'²⁰³Tl(p,3n)²⁰¹Pb→²⁰¹Tl · cyclotron' }],
   // Pb — Pb-203 SPECT imaging surrogate, Pb-212 Pb-DOTAMTATE alpha cascade (matched pair)
   82: [
-    { A:203, status:'development', type:'diagnostic',  modality:'SPECT',        indications:['neuroendocrine','prostate'] },
-    { A:212, status:'development', type:'therapy',     modality:'alpha',        indications:['neuroendocrine','prostate'] }
+    { A:203, status:'development', type:'diagnostic',  modality:'SPECT',        indications:['neuroendocrine','prostate'], production:'²⁰⁵Tl(p,3n)²⁰³Pb · cyclotron' },
+    { A:212, status:'development', type:'therapy',     modality:'alpha',        indications:['neuroendocrine','prostate'], production:'²²⁴Ra/²¹²Pb generator (²²⁸Th decay chain)' }
   ],
   // Bi — Bi-212 / Bi-213 alpha TAT
   83: [
-    { A:212, status:'development', type:'therapy',     modality:'alpha',        indications:[] },
-    { A:213, status:'development', type:'therapy',     modality:'alpha',        indications:[] }
+    { A:212, status:'development', type:'therapy',     modality:'alpha',        indications:[], production:'²²⁴Ra→²¹²Pb→²¹²Bi generator' },
+    { A:213, status:'development', type:'therapy',     modality:'alpha',        indications:[], production:'²²⁵Ac/²¹³Bi generator' }
   ],
   // At — At-211 alpha TAT
-  85: [{ A:211, status:'development', type:'therapy',     modality:'alpha',        indications:[] }],
+  85: [{ A:211, status:'development', type:'therapy',     modality:'alpha',        indications:[], production:'²⁰⁹Bi(α,2n)²¹¹At · cyclotron' }],
   // Ra — Ra-223 dichloride bone mets (first approved alpha therapy)
-  88: [{ A:223, status:'established', type:'therapy',     modality:'alpha',        indications:['bone'] }],
+  88: [{ A:223, status:'established', type:'therapy',     modality:'alpha',        indications:['bone'], production:'²²⁷Ac→²²⁷Th→²²³Ra (²²⁷Ac from ²²⁶Ra(n,γ))' }],
   // Ac — Ac-225 PSMA alpha TAT
-  89: [{ A:225, status:'development', type:'therapy',     modality:'alpha',        indications:['prostate'] }],
+  89: [{ A:225, status:'development', type:'therapy',     modality:'alpha',        indications:['prostate'], production:'²²⁹Th/²²⁵Ac generator; ²²⁶Ra(p,2n) accelerator' }],
   // Th — Th-227 targeted thorium conjugates (alpha TAT)
-  90: [{ A:227, status:'development', type:'therapy',     modality:'alpha',        indications:['prostate','breast'] }],
+  90: [{ A:227, status:'development', type:'therapy',     modality:'alpha',        indications:['prostate','breast'], production:'²²⁷Ac→²²⁷Th (from ²²⁷Ac decay)' }],
 };
 
 /* Medical type -> dot color */
@@ -620,6 +620,23 @@ function selectIsotope(iso, chipEl, isIsomer = false, parentIso = null) {
     `;
   }
 
+  /* ---- Production / nuclear reaction card ---- */
+  const prodIsos = medIsos.filter(m => m.production);
+  if (prodIsos.length > 0) {
+    html += `
+      <div class="detail-card production-card">
+        <h3>Production route <span class="src-tag">nuclear reaction</span></h3>
+        ${prodIsos.map(m => `
+          <div class="prod-row">
+            <span class="prod-iso">${el.symbol}-${m.A}</span>
+            <span class="prod-rxn">${m.production}</span>
+          </div>
+        `).join('')}
+        <div class="prod-note">Target(s) → product. &ldquo;/&rdquo; = radionuclide generator (parent/daughter); &ldquo;→&rdquo; = decay step; (p,n)/(n,γ)/(d,n)/(α,2n) are the bombardment channels.</div>
+      </div>
+    `;
+  }
+
   /* ---- Applications card (existing data) ---- */
   if (iso.application) {
     const isCurated = !!iso.application_curated;
@@ -835,6 +852,12 @@ function selectIsotope(iso, chipEl, isIsomer = false, parentIso = null) {
   const detail = document.getElementById('detailPanel');
   detail.innerHTML = `<div class="detail-grid">${html}</div>`;
   detail.classList.add('is-open');
+
+  // Auto-scroll down so the isotope properties are in view without the
+  // user having to scroll manually. Wait a frame so layout is settled.
+  requestAnimationFrame(() => {
+    detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 }
 
 /* ============================================================
@@ -847,7 +870,7 @@ async function init() {
     <div class="loading-bar"></div>
   </div>`;
   try {
-    const res = await fetch('data.json?v=20260625-1');
+    const res = await fetch('data.json?v=20260625-2');
     ELEMENT_DATA = await res.json();
     document.getElementById('dataStatus').textContent = `${Object.keys(ELEMENT_DATA).length} elements loaded`;
     buildPeriodicTable();
