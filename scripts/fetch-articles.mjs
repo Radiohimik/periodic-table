@@ -4,10 +4,13 @@
    Europe PMC REST API is open (no key) and returns JSON. Node 18+ has fetch. */
 import { writeFileSync } from 'node:fs';
 
+// Title-scoped terms keep the feed on-topic (articles actually *about* medical
+// isotopes / radiopharmaceuticals, not reviews that merely mention them).
 const QUERY =
-  '(theranostic* OR "radioligand therapy" OR radiopharmaceutical* OR ' +
-  '"radionuclide therapy" OR "medical radioisotope*" OR "medical radionuclide*" OR ' +
-  '"targeted alpha therapy" OR "peptide receptor radionuclide therapy")';
+  '(TITLE:theranostic* OR TITLE:radiotheranostic* OR TITLE:radioligand OR ' +
+  'TITLE:radiopharmaceutical* OR TITLE:radioisotope* OR TITLE:radionuclide* OR ' +
+  'TITLE:radiotracer* OR TITLE:radiolabel* OR TITLE:"targeted alpha therapy" OR ' +
+  'TITLE:"peptide receptor radionuclide therapy" OR TITLE:PSMA OR TITLE:DOTATATE)';
 
 const PAGE = 20;
 const url =
