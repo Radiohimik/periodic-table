@@ -5,12 +5,18 @@
 import { writeFileSync } from 'node:fs';
 
 // Title-scoped terms keep the feed on-topic (articles actually *about* medical
-// isotopes / radiopharmaceuticals, not reviews that merely mention them).
+// isotopes / radiopharmaceuticals). The bare radionuclide*/radioisotope*
+// wildcards are dropped (they pull in environmental-radioactivity papers);
+// "radionuclide therapy" is kept as a phrase, and a NOT clause filters the
+// remaining environmental-monitoring noise (soil / food / radon / etc.).
 const QUERY =
   '(TITLE:theranostic* OR TITLE:radiotheranostic* OR TITLE:radioligand OR ' +
-  'TITLE:radiopharmaceutical* OR TITLE:radioisotope* OR TITLE:radionuclide* OR ' +
-  'TITLE:radiotracer* OR TITLE:radiolabel* OR TITLE:"targeted alpha therapy" OR ' +
-  'TITLE:"peptide receptor radionuclide therapy" OR TITLE:PSMA OR TITLE:DOTATATE)';
+  'TITLE:radiopharmaceutical* OR TITLE:radiotracer* OR TITLE:radiolabel* OR ' +
+  'TITLE:"radionuclide therapy" OR TITLE:"targeted alpha therapy" OR ' +
+  'TITLE:"peptide receptor radionuclide therapy" OR TITLE:PSMA OR ' +
+  'TITLE:DOTATATE OR TITLE:DOTATOC OR TITLE:FAPI) ' +
+  'NOT (TITLE:soil OR TITLE:food OR TITLE:radon OR TITLE:environmental OR ' +
+  'TITLE:dietary OR TITLE:water OR TITLE:"risk assessment" OR TITLE:foodstuff*)';
 
 const PAGE = 20;
 const url =
