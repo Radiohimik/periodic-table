@@ -1,23 +1,15 @@
 {
   "updated": "2026-06-29",
   "source": "Europe PMC",
-  "query": "(theranostic* OR \"radioligand therapy\" OR radiopharmaceutical* OR \"radionuclide therapy\" OR \"medical radioisotope*\" OR \"medical radionuclide*\" OR \"targeted alpha therapy\" OR \"peptide receptor radionuclide therapy\")",
+  "query": "(TITLE:theranostic* OR TITLE:radiotheranostic* OR TITLE:radioligand OR TITLE:radiopharmaceutical* OR TITLE:radioisotope* OR TITLE:radionuclide* OR TITLE:radiotracer* OR TITLE:radiolabel* OR TITLE:\"targeted alpha therapy\" OR TITLE:\"peptide receptor radionuclide therapy\" OR TITLE:PSMA OR TITLE:DOTATATE)",
   "articles": [
     {
-      "title": "Nanozymes: bridging nanoscale characteristics and catalytic mechanisms for advanced biomedical applications.",
-      "authors": "Sun Y, Yang Y, Kang X, Wang Y.",
-      "journal": "J Enzyme Inhib Med Chem",
+      "title": "Radiological Risk Assessment of Natural Radionuclides in Baby Food Consumed in the Iraqi Kurdistan-Region Using Statistical and Monte Carlo-Based Methods.",
+      "authors": "Wais TY, Namq BF, Najam LA, Othman SQ, Hussein ZA, Živković MP, Isinkaye MO, Sayyed MI.",
+      "journal": "J Environ Health Sci Eng",
       "year": "2026",
-      "date": "2026-06-22",
-      "url": "https://doi.org/10.1080/14756366.2026.2690829"
-    },
-    {
-      "title": "Advances in liver transplantation for hepatic malignancies.",
-      "authors": "Woelfel I, Lowmaster S, Chavez-Villa M, Arias S, Jayasekera C, Barnhill M, Moss A, Mathur AK, Katariya NN.",
-      "journal": "Hepat Oncol",
-      "year": "2026",
-      "date": "2026-06-17",
-      "url": "https://doi.org/10.1080/20450923.2026.2689312"
+      "date": "2026-06-19",
+      "url": "https://doi.org/10.1007/s40201-026-00988-y"
     },
     {
       "title": "First-in-human evaluation of [&lt;sup&gt;18&lt;/sup&gt;F]-AlF-NOTA-neurotensin for NTSR1-targeted imaging of prostate cancer: a head-to-head comparison with [&lt;sup&gt;68&lt;/sup&gt;Ga]Ga-PSMA-617.",
@@ -28,46 +20,6 @@
       "url": "https://doi.org/10.1080/07853890.2026.2678019"
     },
     {
-      "title": "Bio-based nanomaterials in drug delivery: An updated review.",
-      "authors": "Edo GI, Ali ABM, Okolie MC, Orogu JO, Emumejaye K, Oghroro EEA, Jikah AN, Yousif E, Igbuku UA, Owheruo JO, Essaghah AEA, Ahmed DS, Makia RS, Umar H, Alamiery AA, Fuwape IA.",
-      "journal": "Pharm Sci Adv",
-      "year": "2026",
-      "date": "2026-05-22",
-      "url": "https://doi.org/10.1016/j.pscia.2026.100126"
-    },
-    {
-      "title": "Eukaryotic cell-free protein synthesis: Chassis diversification, system engineering, and emerging applications.",
-      "authors": "Tong S, Wang Y, Wang X, Jin X, Tan D, Wang Z, Lu Y.",
-      "journal": "Synth Syst Biotechnol",
-      "year": "2026",
-      "date": "2026-05-21",
-      "url": "https://doi.org/10.1016/j.synbio.2026.04.022"
-    },
-    {
-      "title": "Nanomedicine-based cancer immunotherapy: translational barriers, mechanistic strategies, and future perspectives.",
-      "authors": "Suo X, Liu Y, Zhang G, Li Y.",
-      "journal": "Drug Deliv",
-      "year": "2026",
-      "date": "2026-05-27",
-      "url": "https://doi.org/10.1080/10717544.2026.2679846"
-    },
-    {
-      "title": "Blood transcriptomic signatures distinguish &lt;i&gt;Mycobacterium avium&lt;/i&gt; complex pulmonary disease from colonization: a multicenter cohort study.",
-      "authors": "Lin WY, Huang HL, Hsiung CN, Huang YY, Lee MR, Cheng MH, Chong IW, Wang JY.",
-      "journal": "Emerg Microbes Infect",
-      "year": "2026",
-      "date": "2026-06-04",
-      "url": "https://doi.org/10.1080/22221751.2026.2678657"
-    },
-    {
-      "title": "Radioiodinated compound FJR01: a novel P2X7R-targeted SPECT tracer for visualizing glioma-associated microglia/macrophages in a rat glioblastoma model.",
-      "authors": "Rui X, Sun S, Ding Y, Li Y, Zhao X, Hu F, Zhou Z, Zhang N, Zhang C, Cheng C, Ji B.",
-      "journal": "J Enzyme Inhib Med Chem",
-      "year": "2026",
-      "date": "2026-05-11",
-      "url": "https://doi.org/10.1080/14756366.2026.2659995"
-    },
-    {
       "title": "Repurposing radiopharmaceutical carriers for targeted drug delivery and theranostics: A translational framework.",
       "authors": "Shahiwala AF.",
       "journal": "Pharm Sci Adv",
@@ -76,92 +28,140 @@
       "url": "https://doi.org/10.1016/j.pscia.2026.100122"
     },
     {
-      "title": "Therapeutic ultrasound in ophthalmology: a comprehensive review.",
-      "authors": "Zhang Y, Yi L, Kong L, Zhou S, He M, Liu J, Liu Y, Fang S.",
-      "journal": "Int J Hyperthermia",
-      "year": "2026",
-      "date": "2026-04-20",
-      "url": "https://doi.org/10.1080/02656736.2026.2658736"
-    },
-    {
-      "title": "Angiopep-2-decorated bacterial outer membrane vesicles penetrate the blood-brain barrier for glioblastoma chemo-immunotherapy.",
-      "authors": "Shah PT, Lou Z, Zhu X, Jin W, Chen C, Hu T, Guo P, Zhao X, Li F, Xiaoliang Y, Wu Z, Wu C.",
+      "title": "Harnessing fluorescent probes for molecular diagnosis and theranostics of atherosclerosis.",
+      "authors": "Mao X, Zhao X, Ni Z, Xu X, Liu Q, Qu P.",
       "journal": "Drug Deliv",
       "year": "2026",
-      "date": "2026-04-16",
-      "url": "https://doi.org/10.1080/10717544.2026.2660007"
+      "date": "2026-01-09",
+      "url": "https://doi.org/10.1080/10717544.2025.2595728"
     },
     {
-      "title": "Toxicity of nanostructures in drug delivery applications.",
-      "authors": "Edo GI, Ali ABM, Okolie MC, Orogu JO, Emumejaye K, Oghroro EEA, Jikah AN, Yousif E, Igbuku UA, Owheruo JO, Essaghah AEA, Ahmed DS, Makia RS, Umar H, Alamiery AA, Fuwape IA.",
-      "journal": "Pharm Sci Adv",
+      "title": "A closed-loop myocardial infarction theranostic platform activated by macrophage-derived nitric oxide and acidic microenvironment.",
+      "authors": "Xu X, Li S, Chen Y, Li M, Li R, Lu H, Yang F, Tong J.",
+      "journal": "Bioact Mater",
       "year": "2026",
-      "date": "2026-03-20",
-      "url": "https://doi.org/10.1016/j.pscia.2026.100117"
+      "date": "2026-05-30",
+      "url": "https://doi.org/10.1016/j.bioactmat.2026.05.045"
     },
     {
-      "title": "Unleashing the power of DNA-encoded libraries for challenging targets in drug discovery.",
-      "authors": "Du N, Li Y, Lou Q, Zhang G, Li Y, Li Y.",
-      "journal": "Pharm Sci Adv",
+      "title": "Advances in research on radiopharmaceuticals targeting NTSR1.",
+      "authors": "Zhao Y, Wang Y, Cui Y, Xu F, Wang W, Hou W, Li Y, Wei H.",
+      "journal": "Eur J Med Chem",
       "year": "2026",
-      "date": "2026-03-10",
-      "url": "https://doi.org/10.1016/j.pscia.2026.100115"
+      "date": "2026-05-13",
+      "url": "https://doi.org/10.1016/j.ejmech.2026.118954"
     },
     {
-      "title": "Sex determines the natural killer cell-mediated immunity against pancreatic cancer.",
-      "authors": "Arlt E, Bley N, Rausch A, Hauser S, Pietzsch J, Misiak D, Liehr T, Kankel S, Dautz T, Dreher L, Kǒng X, Kielstein H, Bazwinsky-Wutschke I.",
-      "journal": "Oncoimmunology",
+      "title": "Defect-engineered metal-organic framework as a universal platform for theranostic applications.",
+      "authors": "Yang S, Xiong X, Zhong Q, Xian S, Jiang Y, Hou Y, Xiao Z, Xiao H, Shuai X.",
+      "journal": "Biomaterials",
       "year": "2026",
-      "date": "2026-03-23",
-      "url": "https://doi.org/10.1080/2162402x.2026.2645298"
+      "date": "2026-04-17",
+      "url": "https://doi.org/10.1016/j.biomaterials.2026.124213"
     },
     {
-      "title": "Overcoming the blood‒brain barrier: nanomedicine strategies for targeted delivery and multimodal therapy in Alzheimer's disease.",
-      "authors": "Li J, Guo L, Cai W, Mei J, Liu J, Liu Y.",
-      "journal": "Drug Deliv",
+      "title": "Engineering an ultra-low background nitroreductase-activated near infrared targeted theranostic probe for lung tumor surgery navigation.",
+      "authors": "Cheng T, Zhang L, Cao J, Li H, Jiang Z, Cheng D, Wu J, Pan C.",
+      "journal": "Spectrochim Acta A Mol Biomol Spectrosc",
       "year": "2026",
-      "date": "2026-03-20",
-      "url": "https://doi.org/10.1080/10717544.2026.2645830"
+      "date": "2026-04-08",
+      "url": "https://doi.org/10.1016/j.saa.2026.127879"
     },
     {
-      "title": "Recent advances in chemiluminescence probes for Tumor microenvironment with applications in cancer diagnosis and therapy.",
-      "authors": "Guo D, Hou X, Wang S.",
-      "journal": "Pharm Sci Adv",
+      "title": "A liver-targeting fluorescent nano-drug for theranostics in non-alcoholic fatty liver disease.",
+      "authors": "Wei C, Cheng S, Zhang Y, Zhao Y, Wei H, Wang F, Wang JH, Jiang D, Wang Z.",
+      "journal": "Biomaterials",
       "year": "2026",
-      "date": "2026-02-16",
-      "url": "https://doi.org/10.1016/j.pscia.2026.100113"
+      "date": "2026-03-30",
+      "url": "https://doi.org/10.1016/j.biomaterials.2026.124182"
     },
     {
-      "title": "The efficacy of immune checkpoint inhibitors in metastatic castration-resistant prostate cancer: A meta-analysis and reconstructed individual patient data analysis.",
-      "authors": "Zhang F, Xiong Y, Luo Z, Xue Q, Wang L, Fu Q, Zhang W, Alisha PA, Okoli UA, Zhang G.",
-      "journal": "Hum Vaccin Immunother",
+      "title": "Nanoplasmid PSMA DNA vaccine primes antitumor immunity and enhances response to PD-1 blockade against prostate cancer.",
+      "authors": "Maza PAMA, Flores L, Cyril-Ramirez D, Neeli P, Ni H, Li Y.",
+      "journal": "Cancer Lett",
       "year": "2026",
-      "date": "2026-02-11",
-      "url": "https://doi.org/10.1080/21645515.2026.2626084"
+      "date": "2026-05-22",
+      "url": "https://doi.org/10.1016/j.canlet.2026.218591"
     },
     {
-      "title": "Modified tumor uptake and biodistribution of nanoparticles coated with small extracellular vesicle membranes derived from distinct tumor cell lines.",
-      "authors": "Jenkins SV, Carlton H, Scott B, Stahr SD, Vinson W, Fletcher G, Jamshidi-Parsian A, Hsu PC, Dings RPM, Huitink D, Griffin RJ.",
-      "journal": "Int J Hyperthermia",
+      "title": "Laboratory-scale setup for radon transport monitoring in radionuclide-rich soils: Key points identification and protocols development.",
+      "authors": "Trull-Hernandis C, Moreno-Ramón H, Sancho M, Lidón A, Juste B.",
+      "journal": "Appl Radiat Isot",
       "year": "2026",
-      "date": "2026-02-08",
-      "url": "https://doi.org/10.1080/02656736.2026.2624448"
+      "date": "2026-05-20",
+      "url": "https://doi.org/10.1016/j.apradiso.2026.112715"
     },
     {
-      "title": "Synthetic strategies and therapeutic insights into FDA-approved indole-containing drugs.",
-      "authors": "Yang T, Zhang Y, Liu P, Qi P, Li X, Zhi W, Zhao L.",
-      "journal": "J Enzyme Inhib Med Chem",
+      "title": "Migration characteristics of &lt;sup&gt;226&lt;/sup&gt;Ra radionuclide in topsoil: a case study for water spinach soil.",
+      "authors": "Hao Nguyen NA, Dieu Huynh TK, Nguyen VT, Dao Lam XA, Le CH.",
+      "journal": "Appl Radiat Isot",
       "year": "2026",
-      "date": "2026-01-27",
-      "url": "https://doi.org/10.1080/14756366.2026.2616556"
+      "date": "2026-05-19",
+      "url": "https://doi.org/10.1016/j.apradiso.2026.112716"
     },
     {
-      "title": "Infection-targeted innovations in anastomotic leak management: endoscopic advances, antimicrobial biomaterials, and precision strategies.",
-      "authors": "Xu Y.",
-      "journal": "Ann Med",
+      "title": "Radiological safety assessment of chestnut (Castanea sativa) from Sinop province, Türkiye: Gamma spectrometric determination of natural radionuclides and associated health risks.",
+      "authors": "Umar M, Dizman S, Şahin T, Özçelik AE.",
+      "journal": "Appl Radiat Isot",
       "year": "2026",
-      "date": "2026-01-23",
-      "url": "https://doi.org/10.1080/07853890.2026.2619218"
+      "date": "2026-05-15",
+      "url": "https://doi.org/10.1016/j.apradiso.2026.112707"
+    },
+    {
+      "title": "Gadolinium-functionalized carbon dot drug delivery systems: Synthesis, properties, dual-mode imaging, and tumor theranostics.",
+      "authors": "Shi Y, Zhong Y, Jia F, Fan J, Wei Y, Chen L, Yang Y, Yu S.",
+      "journal": "Spectrochim Acta A Mol Biomol Spectrosc",
+      "year": "2026",
+      "date": "2026-03-15",
+      "url": "https://doi.org/10.1016/j.saa.2026.127721"
+    },
+    {
+      "title": "Estimation of Future Patient Populations Eligible for Radioligand Therapies in the EU and the UK: A Modelling Study.",
+      "authors": "Holzwarth U, Cirillo R, Goulart M, Hernandez D, Peristeris P, Poschenrieder A, Papaioannou P, Kanavos P, la Fougère C, Schaetz L.",
+      "journal": "Lancet Reg Health Eur",
+      "year": "2026",
+      "date": "2026-06-04",
+      "url": "https://doi.org/10.1016/j.lanepe.2026.101733"
+    },
+    {
+      "title": "Engineering nanozymes for cancer theranostics: Chemical design, catalytic intelligence, and translational oncology frontiers.",
+      "authors": "Garg P, Horne D, Salgia R, Singhal SS.",
+      "journal": "Transl Oncol",
+      "year": "2026",
+      "date": "2026-06-06",
+      "url": "https://doi.org/10.1016/j.tranon.2026.102851"
+    },
+    {
+      "title": "Composition of natural radionuclides and elemental profile in traditional biodiversity-sourced flours: radiological risk assessment and development of the radiological benefit-risk index for food (I&lt;sub&gt;RBRF&lt;/sub&gt;).",
+      "authors": "Faria da Silva L, Almeida EL, Thalhofer JL, Orejuela COP, Barbosa da Silva L, Xavier da Silva A.",
+      "journal": "Food Chem",
+      "year": "2026",
+      "date": "2026-05-20",
+      "url": "https://doi.org/10.1016/j.foodchem.2026.149707"
+    },
+    {
+      "title": "Preclinical evaluation of &lt;sup&gt;89&lt;/sup&gt;Zr/&lt;sup&gt;177&lt;/sup&gt;Lu/&lt;sup&gt;161&lt;/sup&gt;Tb-labeled anti-CD228 monoclonal antibody for theranostics in skin cutaneous melanoma.",
+      "authors": "Hao X, Du H, Lin B, Tang M, Zhang H, Wang D, Zhu Y, Long H, Liu H, Du X.",
+      "journal": "Eur J Pharm Biopharm",
+      "year": "2026",
+      "date": "2026-05-26",
+      "url": "https://doi.org/10.1016/j.ejpb.2026.115123"
+    },
+    {
+      "title": "Evidence of anorectal involvement by prostate cancer on GA-68-PSMA-11 PET/CT portends inguinal nodal metastasis.",
+      "authors": "Ruggiero CM, Oldan JD, Johnson SM, Rowe SP.",
+      "journal": "Radiol Case Rep",
+      "year": "2026",
+      "date": "2026-05-16",
+      "url": "https://doi.org/10.1016/j.radcr.2026.04.029"
+    },
+    {
+      "title": "Preclinical evaluation of the antibody fragment targeting fibronectin EDB in the theranostics of radioactive iodine-resistant thyroid cancer.",
+      "authors": "Luo W, Zhang X, Liu Q, Shi Y, Jiang X.",
+      "journal": "Bioorg Chem",
+      "year": "2026",
+      "date": "2026-05-10",
+      "url": "https://doi.org/10.1016/j.bioorg.2026.109980"
     }
   ]
 }
