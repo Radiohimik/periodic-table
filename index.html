@@ -151,6 +151,57 @@ body {
   line-height: 1.5;
 }
 
+/* Latest research section */
+.sb-research { border-bottom: none; }
+.lr-meta {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-faint);
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.lr-list { display: flex; flex-direction: column; gap: 8px; }
+.lr-item {
+  display: block;
+  text-decoration: none;
+  padding: 6px 7px;
+  border-radius: 4px;
+  background: var(--bg-elev2);
+  border: 1px solid var(--line-soft);
+  transition: background 0.12s, border-color 0.12s;
+}
+.lr-item:hover { background: var(--bg-elev3); border-color: var(--accent-cyan-dim); }
+.lr-title {
+  font-size: 10.5px;
+  line-height: 1.35;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.lr-src {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  color: var(--text-dim);
+  margin-top: 3px;
+}
+.lr-empty {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--text-faint);
+  line-height: 1.5;
+}
+.lr-all {
+  display: inline-block;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent-cyan);
+  text-decoration: none;
+}
+.lr-all:hover { text-decoration: underline; }
+
 /* Filter section */
 .sb-section {
   padding: 10px 14px;
@@ -1201,6 +1252,14 @@ body {
       <span class="filter-count" id="count-infection">0</span>
     </label>
   </div>
+
+  <!-- Latest research — auto-refreshed every 2 weeks from Europe PMC -->
+  <div class="sb-section sb-research">
+    <div class="sb-section-title">Latest research</div>
+    <div class="lr-meta" id="lrMeta">New applications &amp; developments · refreshed every 2 weeks</div>
+    <div class="lr-list" id="lrList"><div class="lr-empty">Loading latest articles…</div></div>
+    <a class="lr-all" id="lrAll" href="https://pubmed.ncbi.nlm.nih.gov/?term=theranostics+OR+%22radioligand+therapy%22+OR+radiopharmaceuticals+OR+%22radionuclide+therapy%22+OR+%22targeted+alpha+therapy%22&amp;sort=date" target="_blank" rel="noopener noreferrer">View all on PubMed →</a>
+  </div>
 </aside>
 
 <!-- ======== MAIN COLUMN ======== -->
@@ -1298,6 +1357,6 @@ body {
 
 </div><!-- /main-col -->
 
-<script src="app.js?v=20260625-5" defer></script>
+<script src="app.js?v=20260629-1" defer></script>
 </body>
 </html>

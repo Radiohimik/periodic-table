@@ -923,4 +923,40 @@ async function init() {
   }
 }
 
+/* ============================================================
+   LATEST RESEARCH FEED
+   Reads articles.json (refreshed every 2 weeks by the
+   "Update latest research" GitHub Action, sourced from Europe PMC).
+   ============================================================ */
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"']/g, c => (
+    { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]
+  ));
+}
+async function loadLatestResearch() {
+  const list = document.getElementById('lrList');
+  const meta = document.getElementById('lrMeta');
+  if (!list) return;
+  try {
+    // cache-bust so a fresh biweekly update shows immediately
+    const res = await fetch('articles.json?t=' + Date.now());
+    if (!res.ok) throw new Error('articles.json not found');
+    const data = await res.json();
+    const articles = Array.isArray(data.articles) ? data.articles : [];
+    if (!articles.length) throw new Error('empty');
+    list.innerHTML = articles.slice(0, 20).map(a => `
+      <a class="lr-item" href="${escapeHTML(a.url)}" target="_blank" rel="noopener noreferrer" title="${escapeHTML(a.title)}">
+        <div class="lr-title">${escapeHTML(a.title)}</div>
+        <div class="lr-src">${escapeHTML([a.journal, a.year].filter(Boolean).join(' · '))}</div>
+      </a>
+    `).join('');
+    if (meta && data.updated) {
+      meta.textContent = `New applications & developments · ${articles.length} newest · updated ${data.updated} · refreshed every 2 weeks`;
+    }
+  } catch (e) {
+    list.innerHTML = `<div class="lr-empty">The auto-updated list will populate on the next scheduled refresh. Use the link below for the current articles.</div>`;
+  }
+}
+
 init();
+loadLatestResearch();
