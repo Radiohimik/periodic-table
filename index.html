@@ -151,16 +151,71 @@ body {
   line-height: 1.5;
 }
 
-/* Latest research section */
-.sb-research { border-bottom: none; }
-.lr-meta {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  color: var(--text-faint);
-  line-height: 1.4;
-  margin-bottom: 8px;
+/* Latest research dock — floating panel, bottom-right of the screen.
+   position:fixed keeps it out of layout flow so the periodic table still
+   fits the viewport. */
+.research-dock {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  width: min(380px, calc(100vw - 24px));
+  max-height: min(260px, 48vh);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  background: var(--sidebar-bg);
+  border: 1px solid var(--accent-cyan-dim);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 30px -8px rgba(0,0,0,0.75);
+  overflow: hidden;
 }
-.lr-list { display: flex; flex-direction: column; gap: 8px; }
+.rd-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--sidebar-line);
+  flex-shrink: 0;
+}
+.rd-title {
+  font-family: var(--font-bb);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--accent-cyan);
+}
+.rd-meta {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  color: var(--text-faint);
+  flex: 1;
+  line-height: 1.3;
+}
+.rd-toggle {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 2px 4px;
+  transition: transform 0.15s, color 0.12s;
+}
+.rd-toggle:hover { color: var(--text); }
+.research-dock.is-collapsed { max-height: none; }
+.research-dock.is-collapsed .lr-list,
+.research-dock.is-collapsed .lr-all { display: none; }
+.research-dock.is-collapsed .rd-toggle { transform: rotate(180deg); }
+
+.lr-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  overflow-y: auto;
+  padding: 9px 10px;
+}
+.lr-list::-webkit-scrollbar { width: 5px; }
+.lr-list::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
 .lr-item {
   display: block;
   text-decoration: none;
@@ -172,11 +227,11 @@ body {
 }
 .lr-item:hover { background: var(--bg-elev3); border-color: var(--accent-cyan-dim); }
 .lr-title {
-  font-size: 10.5px;
+  font-size: 11px;
   line-height: 1.35;
   color: var(--text);
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -191,16 +246,23 @@ body {
   font-size: 9.5px;
   color: var(--text-faint);
   line-height: 1.5;
+  padding: 4px 2px;
 }
 .lr-all {
-  display: inline-block;
-  margin-top: 10px;
+  display: block;
+  padding: 7px 10px 9px;
+  border-top: 1px solid var(--sidebar-line);
   font-family: var(--font-mono);
   font-size: 10px;
   color: var(--accent-cyan);
   text-decoration: none;
+  flex-shrink: 0;
 }
 .lr-all:hover { text-decoration: underline; }
+
+@media (max-width: 720px) {
+  .research-dock { width: calc(100vw - 16px); right: 8px; bottom: 8px; max-height: 42vh; }
+}
 
 /* Filter section */
 .sb-section {
@@ -1253,13 +1315,6 @@ body {
     </label>
   </div>
 
-  <!-- Latest research — auto-refreshed every 2 weeks from Europe PMC -->
-  <div class="sb-section sb-research">
-    <div class="sb-section-title">Latest research</div>
-    <div class="lr-meta" id="lrMeta">New applications &amp; developments · refreshed every 2 weeks</div>
-    <div class="lr-list" id="lrList"><div class="lr-empty">Loading latest articles…</div></div>
-    <a class="lr-all" id="lrAll" href="https://pubmed.ncbi.nlm.nih.gov/?term=theranostics%5BTitle%5D+OR+radioligand+therapy%5BTitle%5D+OR+radiopharmaceutical%5BTitle%5D+OR+radionuclide+therapy%5BTitle%5D+OR+targeted+alpha+therapy%5BTitle%5D&amp;sort=date" target="_blank" rel="noopener noreferrer">View all on PubMed →</a>
-  </div>
 </aside>
 
 <!-- ======== MAIN COLUMN ======== -->
@@ -1355,8 +1410,19 @@ body {
 
   </div><!-- /pt-area -->
 
+  <!-- Latest research dock — bottom-right; auto-refreshed every 2 weeks from Europe PMC -->
+  <aside class="research-dock" id="researchDock">
+    <div class="rd-head">
+      <span class="rd-title">Latest research</span>
+      <span class="rd-meta" id="lrMeta">recent publications · refreshed every 2 weeks</span>
+      <button class="rd-toggle" id="rdToggle" type="button" aria-label="Collapse latest research" title="Collapse / expand">▾</button>
+    </div>
+    <div class="lr-list" id="lrList"><div class="lr-empty">Loading latest publications…</div></div>
+    <a class="lr-all" id="lrAll" href="https://pubmed.ncbi.nlm.nih.gov/?term=theranostics%5BTitle%5D+OR+radioligand+therapy%5BTitle%5D+OR+radiopharmaceutical%5BTitle%5D+OR+radionuclide+therapy%5BTitle%5D+OR+targeted+alpha+therapy%5BTitle%5D&amp;sort=date" target="_blank" rel="noopener noreferrer">View all on PubMed →</a>
+  </aside>
+
 </div><!-- /main-col -->
 
-<script src="app.js?v=20260629-1" defer></script>
+<script src="app.js?v=20260629-2" defer></script>
 </body>
 </html>

@@ -958,5 +958,14 @@ async function loadLatestResearch() {
   }
 }
 
+// Collapse / expand the bottom-right research dock
+(function wireResearchDock() {
+  const toggle = document.getElementById('rdToggle');
+  const dock = document.getElementById('researchDock');
+  if (toggle && dock) {
+    toggle.addEventListener('click', () => dock.classList.toggle('is-collapsed'));
+  }
+})();
+
 init();
 loadLatestResearch();
