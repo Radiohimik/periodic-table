@@ -1,6 +1,167 @@
 {
-  "updated": null,
+  "updated": "2026-06-29",
   "source": "Europe PMC",
   "query": "(theranostic* OR \"radioligand therapy\" OR radiopharmaceutical* OR \"radionuclide therapy\" OR \"medical radioisotope*\" OR \"medical radionuclide*\" OR \"targeted alpha therapy\" OR \"peptide receptor radionuclide therapy\")",
-  "articles": []
+  "articles": [
+    {
+      "title": "Nanozymes: bridging nanoscale characteristics and catalytic mechanisms for advanced biomedical applications.",
+      "authors": "Sun Y, Yang Y, Kang X, Wang Y.",
+      "journal": "J Enzyme Inhib Med Chem",
+      "year": "2026",
+      "date": "2026-06-22",
+      "url": "https://doi.org/10.1080/14756366.2026.2690829"
+    },
+    {
+      "title": "Advances in liver transplantation for hepatic malignancies.",
+      "authors": "Woelfel I, Lowmaster S, Chavez-Villa M, Arias S, Jayasekera C, Barnhill M, Moss A, Mathur AK, Katariya NN.",
+      "journal": "Hepat Oncol",
+      "year": "2026",
+      "date": "2026-06-17",
+      "url": "https://doi.org/10.1080/20450923.2026.2689312"
+    },
+    {
+      "title": "First-in-human evaluation of [&lt;sup&gt;18&lt;/sup&gt;F]-AlF-NOTA-neurotensin for NTSR1-targeted imaging of prostate cancer: a head-to-head comparison with [&lt;sup&gt;68&lt;/sup&gt;Ga]Ga-PSMA-617.",
+      "authors": "He J, Wang Y, Tang W, Gao X, Cai Y, Tang Y, Hu S.",
+      "journal": "Ann Med",
+      "year": "2026",
+      "date": "2026-06-17",
+      "url": "https://doi.org/10.1080/07853890.2026.2678019"
+    },
+    {
+      "title": "Bio-based nanomaterials in drug delivery: An updated review.",
+      "authors": "Edo GI, Ali ABM, Okolie MC, Orogu JO, Emumejaye K, Oghroro EEA, Jikah AN, Yousif E, Igbuku UA, Owheruo JO, Essaghah AEA, Ahmed DS, Makia RS, Umar H, Alamiery AA, Fuwape IA.",
+      "journal": "Pharm Sci Adv",
+      "year": "2026",
+      "date": "2026-05-22",
+      "url": "https://doi.org/10.1016/j.pscia.2026.100126"
+    },
+    {
+      "title": "Eukaryotic cell-free protein synthesis: Chassis diversification, system engineering, and emerging applications.",
+      "authors": "Tong S, Wang Y, Wang X, Jin X, Tan D, Wang Z, Lu Y.",
+      "journal": "Synth Syst Biotechnol",
+      "year": "2026",
+      "date": "2026-05-21",
+      "url": "https://doi.org/10.1016/j.synbio.2026.04.022"
+    },
+    {
+      "title": "Nanomedicine-based cancer immunotherapy: translational barriers, mechanistic strategies, and future perspectives.",
+      "authors": "Suo X, Liu Y, Zhang G, Li Y.",
+      "journal": "Drug Deliv",
+      "year": "2026",
+      "date": "2026-05-27",
+      "url": "https://doi.org/10.1080/10717544.2026.2679846"
+    },
+    {
+      "title": "Blood transcriptomic signatures distinguish &lt;i&gt;Mycobacterium avium&lt;/i&gt; complex pulmonary disease from colonization: a multicenter cohort study.",
+      "authors": "Lin WY, Huang HL, Hsiung CN, Huang YY, Lee MR, Cheng MH, Chong IW, Wang JY.",
+      "journal": "Emerg Microbes Infect",
+      "year": "2026",
+      "date": "2026-06-04",
+      "url": "https://doi.org/10.1080/22221751.2026.2678657"
+    },
+    {
+      "title": "Radioiodinated compound FJR01: a novel P2X7R-targeted SPECT tracer for visualizing glioma-associated microglia/macrophages in a rat glioblastoma model.",
+      "authors": "Rui X, Sun S, Ding Y, Li Y, Zhao X, Hu F, Zhou Z, Zhang N, Zhang C, Cheng C, Ji B.",
+      "journal": "J Enzyme Inhib Med Chem",
+      "year": "2026",
+      "date": "2026-05-11",
+      "url": "https://doi.org/10.1080/14756366.2026.2659995"
+    },
+    {
+      "title": "Repurposing radiopharmaceutical carriers for targeted drug delivery and theranostics: A translational framework.",
+      "authors": "Shahiwala AF.",
+      "journal": "Pharm Sci Adv",
+      "year": "2026",
+      "date": "2026-04-16",
+      "url": "https://doi.org/10.1016/j.pscia.2026.100122"
+    },
+    {
+      "title": "Therapeutic ultrasound in ophthalmology: a comprehensive review.",
+      "authors": "Zhang Y, Yi L, Kong L, Zhou S, He M, Liu J, Liu Y, Fang S.",
+      "journal": "Int J Hyperthermia",
+      "year": "2026",
+      "date": "2026-04-20",
+      "url": "https://doi.org/10.1080/02656736.2026.2658736"
+    },
+    {
+      "title": "Angiopep-2-decorated bacterial outer membrane vesicles penetrate the blood-brain barrier for glioblastoma chemo-immunotherapy.",
+      "authors": "Shah PT, Lou Z, Zhu X, Jin W, Chen C, Hu T, Guo P, Zhao X, Li F, Xiaoliang Y, Wu Z, Wu C.",
+      "journal": "Drug Deliv",
+      "year": "2026",
+      "date": "2026-04-16",
+      "url": "https://doi.org/10.1080/10717544.2026.2660007"
+    },
+    {
+      "title": "Toxicity of nanostructures in drug delivery applications.",
+      "authors": "Edo GI, Ali ABM, Okolie MC, Orogu JO, Emumejaye K, Oghroro EEA, Jikah AN, Yousif E, Igbuku UA, Owheruo JO, Essaghah AEA, Ahmed DS, Makia RS, Umar H, Alamiery AA, Fuwape IA.",
+      "journal": "Pharm Sci Adv",
+      "year": "2026",
+      "date": "2026-03-20",
+      "url": "https://doi.org/10.1016/j.pscia.2026.100117"
+    },
+    {
+      "title": "Unleashing the power of DNA-encoded libraries for challenging targets in drug discovery.",
+      "authors": "Du N, Li Y, Lou Q, Zhang G, Li Y, Li Y.",
+      "journal": "Pharm Sci Adv",
+      "year": "2026",
+      "date": "2026-03-10",
+      "url": "https://doi.org/10.1016/j.pscia.2026.100115"
+    },
+    {
+      "title": "Sex determines the natural killer cell-mediated immunity against pancreatic cancer.",
+      "authors": "Arlt E, Bley N, Rausch A, Hauser S, Pietzsch J, Misiak D, Liehr T, Kankel S, Dautz T, Dreher L, Kǒng X, Kielstein H, Bazwinsky-Wutschke I.",
+      "journal": "Oncoimmunology",
+      "year": "2026",
+      "date": "2026-03-23",
+      "url": "https://doi.org/10.1080/2162402x.2026.2645298"
+    },
+    {
+      "title": "Overcoming the blood‒brain barrier: nanomedicine strategies for targeted delivery and multimodal therapy in Alzheimer's disease.",
+      "authors": "Li J, Guo L, Cai W, Mei J, Liu J, Liu Y.",
+      "journal": "Drug Deliv",
+      "year": "2026",
+      "date": "2026-03-20",
+      "url": "https://doi.org/10.1080/10717544.2026.2645830"
+    },
+    {
+      "title": "Recent advances in chemiluminescence probes for Tumor microenvironment with applications in cancer diagnosis and therapy.",
+      "authors": "Guo D, Hou X, Wang S.",
+      "journal": "Pharm Sci Adv",
+      "year": "2026",
+      "date": "2026-02-16",
+      "url": "https://doi.org/10.1016/j.pscia.2026.100113"
+    },
+    {
+      "title": "The efficacy of immune checkpoint inhibitors in metastatic castration-resistant prostate cancer: A meta-analysis and reconstructed individual patient data analysis.",
+      "authors": "Zhang F, Xiong Y, Luo Z, Xue Q, Wang L, Fu Q, Zhang W, Alisha PA, Okoli UA, Zhang G.",
+      "journal": "Hum Vaccin Immunother",
+      "year": "2026",
+      "date": "2026-02-11",
+      "url": "https://doi.org/10.1080/21645515.2026.2626084"
+    },
+    {
+      "title": "Modified tumor uptake and biodistribution of nanoparticles coated with small extracellular vesicle membranes derived from distinct tumor cell lines.",
+      "authors": "Jenkins SV, Carlton H, Scott B, Stahr SD, Vinson W, Fletcher G, Jamshidi-Parsian A, Hsu PC, Dings RPM, Huitink D, Griffin RJ.",
+      "journal": "Int J Hyperthermia",
+      "year": "2026",
+      "date": "2026-02-08",
+      "url": "https://doi.org/10.1080/02656736.2026.2624448"
+    },
+    {
+      "title": "Synthetic strategies and therapeutic insights into FDA-approved indole-containing drugs.",
+      "authors": "Yang T, Zhang Y, Liu P, Qi P, Li X, Zhi W, Zhao L.",
+      "journal": "J Enzyme Inhib Med Chem",
+      "year": "2026",
+      "date": "2026-01-27",
+      "url": "https://doi.org/10.1080/14756366.2026.2616556"
+    },
+    {
+      "title": "Infection-targeted innovations in anastomotic leak management: endoscopic advances, antimicrobial biomaterials, and precision strategies.",
+      "authors": "Xu Y.",
+      "journal": "Ann Med",
+      "year": "2026",
+      "date": "2026-01-23",
+      "url": "https://doi.org/10.1080/07853890.2026.2619218"
+    }
+  ]
 }
