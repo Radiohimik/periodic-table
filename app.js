@@ -253,6 +253,36 @@ function unitLabel(u) {
     m:'min', h:'h', d:'days', y:'years', Y:'years', ky:'kyr', My:'Myr', Gy:'Gyr', Py:'Pyr', Ey:'Eyr', Ty:'Tyr' };
   return map[u] || u;
 }
+
+/* Express a half-life (given in seconds, the authoritative IAEA-derived value)
+   in the single most natural unit, restricted to exactly one of:
+   years, days, hours, minutes, seconds, milliseconds. The largest unit for
+   which the value is ≥ 1 is chosen (so Co-60 → years, F-18 → minutes). */
+const HL_UNIT_SECONDS = [
+  ['years',        31557600],   // Julian year (365.25 d)
+  ['days',         86400],
+  ['hours',        3600],
+  ['minutes',      60],
+  ['seconds',      1],
+  ['milliseconds', 1e-3],
+];
+function bestHalfLife(sec) {
+  if (sec == null || isNaN(sec)) return null;
+  let chosen = HL_UNIT_SECONDS[HL_UNIT_SECONDS.length - 1];
+  for (const pair of HL_UNIT_SECONDS) {
+    if (sec / pair[1] >= 1) { chosen = pair; break; }
+  }
+  return { value: sec / chosen[1], unit: chosen[0] };
+}
+// Readable value: up to 4 significant figures (trimmed), scientific when very
+// large/small so the chosen unit still reads cleanly.
+function fmtHLValue(v) {
+  if (v === 0) return '0';
+  if (v >= 1e5 || v < 1e-2) return sciHTML(v, 4);
+  let s = v.toPrecision(4);
+  if (s.indexOf('.') >= 0) s = s.replace(/\.?0+$/, '');
+  return s;
+}
 function spinParityHTML(jp) {
   if (!jp) return '—';
   const m = jp.match(/^(\(?[\d/]+\)?)\s*([+\-])$/);
@@ -679,22 +709,22 @@ function selectIsotope(iso, chipEl, isIsomer = false, parentIso = null) {
     `;
   } else {
     /* ---- Half-life card ---- */
+    const bestHL = bestHalfLife(iso.half_life_seconds);
+    const hlPrimary = bestHL
+      ? `${fmtHLValue(bestHL.value)} ${bestHL.unit}`
+      : hl.primary;
+    const hlCopy = bestHL ? sciPlain(bestHL.value) : iso.half_life_value;
     html += `
       <div class="detail-card">
         <h3>Half-life <span class="src-tag">IAEA / ENSDF</span></h3>
         <div class="value-row copyable">
-          <span class="v-label">Reported value</span>
-          <span class="v-value"><span class="v-num">${hl.primary}</span> ${copyBtn(iso.half_life_value,'reported half-life')}</span>
+          <span class="v-label">Half-life</span>
+          <span class="v-value"><span class="v-num">${hlPrimary}</span> ${copyBtn(hlCopy,'half-life')}</span>
         </div>
         <div class="value-row copyable">
           <span class="v-label">In seconds</span>
           <span class="v-value"><span class="v-num">${hl.secondary}<span class="unit"> s</span></span> ${copyBtn(sciPlain(iso.half_life_seconds),'half-life in seconds')}</span>
         </div>
-        ${iso.half_life_seconds ? `
-        <div class="value-row copyable">
-          <span class="v-label">In years</span>
-          <span class="v-value"><span class="v-num">${sciHTML(iso.half_life_seconds / 31557600)}<span class="unit"> yr</span></span> ${copyBtn(sciPlain(iso.half_life_seconds / 31557600),'half-life in years')}</span>
-        </div>` : ''}
         ${iso.half_life_seconds ? `
         <div class="value-row copyable">
           <span class="v-label">Decay constant λ = ln2/T½</span>
@@ -851,7 +881,7 @@ function selectIsotope(iso, chipEl, isIsomer = false, parentIso = null) {
           <h3>Relation to ground state</h3>
           <div class="value-row"><span class="v-label">Ground state nuclide</span><span class="v-value"><sup>${parentIso.A}</sup>${el.symbol}</span></div>
           <div class="value-row"><span class="v-label">Excitation energy above g.s.</span><span class="v-value">${iso.excitation_energy_keV.toFixed(3)}<span class="unit"> keV</span></span></div>
-          <div class="value-row"><span class="v-label">Ground-state half-life</span><span class="v-value">${parentIso.is_stable ? 'Stable' : `${parentIso.half_life_value} ${unitLabel(parentIso.half_life_unit)}`}</span></div>
+          <div class="value-row"><span class="v-label">Ground-state half-life</span><span class="v-value">${parentIso.is_stable ? 'Stable' : (bestHalfLife(parentIso.half_life_seconds) ? `${fmtHLValue(bestHalfLife(parentIso.half_life_seconds).value)} ${bestHalfLife(parentIso.half_life_seconds).unit}` : `${parentIso.half_life_value} ${unitLabel(parentIso.half_life_unit)}`)}</span></div>
         </div>
       `;
     }
