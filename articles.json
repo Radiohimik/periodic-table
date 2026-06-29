@@ -1,16 +1,8 @@
 {
   "updated": "2026-06-29",
   "source": "Europe PMC",
-  "query": "(TITLE:theranostic* OR TITLE:radiotheranostic* OR TITLE:radioligand OR TITLE:radiopharmaceutical* OR TITLE:radioisotope* OR TITLE:radionuclide* OR TITLE:radiotracer* OR TITLE:radiolabel* OR TITLE:\"targeted alpha therapy\" OR TITLE:\"peptide receptor radionuclide therapy\" OR TITLE:PSMA OR TITLE:DOTATATE)",
+  "query": "(TITLE:theranostic* OR TITLE:radiotheranostic* OR TITLE:radioligand OR TITLE:radiopharmaceutical* OR TITLE:radiotracer* OR TITLE:radiolabel* OR TITLE:\"radionuclide therapy\" OR TITLE:\"targeted alpha therapy\" OR TITLE:\"peptide receptor radionuclide therapy\" OR TITLE:PSMA OR TITLE:DOTATATE OR TITLE:DOTATOC OR TITLE:FAPI) NOT (TITLE:soil OR TITLE:food OR TITLE:radon OR TITLE:environmental OR TITLE:dietary OR TITLE:water OR TITLE:\"risk assessment\" OR TITLE:foodstuff*)",
   "articles": [
-    {
-      "title": "Radiological Risk Assessment of Natural Radionuclides in Baby Food Consumed in the Iraqi Kurdistan-Region Using Statistical and Monte Carlo-Based Methods.",
-      "authors": "Wais TY, Namq BF, Najam LA, Othman SQ, Hussein ZA, Živković MP, Isinkaye MO, Sayyed MI.",
-      "journal": "J Environ Health Sci Eng",
-      "year": "2026",
-      "date": "2026-06-19",
-      "url": "https://doi.org/10.1007/s40201-026-00988-y"
-    },
     {
       "title": "First-in-human evaluation of [&lt;sup&gt;18&lt;/sup&gt;F]-AlF-NOTA-neurotensin for NTSR1-targeted imaging of prostate cancer: a head-to-head comparison with [&lt;sup&gt;68&lt;/sup&gt;Ga]Ga-PSMA-617.",
       "authors": "He J, Wang Y, Tang W, Gao X, Cai Y, Tang Y, Hu S.",
@@ -84,30 +76,6 @@
       "url": "https://doi.org/10.1016/j.canlet.2026.218591"
     },
     {
-      "title": "Laboratory-scale setup for radon transport monitoring in radionuclide-rich soils: Key points identification and protocols development.",
-      "authors": "Trull-Hernandis C, Moreno-Ramón H, Sancho M, Lidón A, Juste B.",
-      "journal": "Appl Radiat Isot",
-      "year": "2026",
-      "date": "2026-05-20",
-      "url": "https://doi.org/10.1016/j.apradiso.2026.112715"
-    },
-    {
-      "title": "Migration characteristics of &lt;sup&gt;226&lt;/sup&gt;Ra radionuclide in topsoil: a case study for water spinach soil.",
-      "authors": "Hao Nguyen NA, Dieu Huynh TK, Nguyen VT, Dao Lam XA, Le CH.",
-      "journal": "Appl Radiat Isot",
-      "year": "2026",
-      "date": "2026-05-19",
-      "url": "https://doi.org/10.1016/j.apradiso.2026.112716"
-    },
-    {
-      "title": "Radiological safety assessment of chestnut (Castanea sativa) from Sinop province, Türkiye: Gamma spectrometric determination of natural radionuclides and associated health risks.",
-      "authors": "Umar M, Dizman S, Şahin T, Özçelik AE.",
-      "journal": "Appl Radiat Isot",
-      "year": "2026",
-      "date": "2026-05-15",
-      "url": "https://doi.org/10.1016/j.apradiso.2026.112707"
-    },
-    {
       "title": "Gadolinium-functionalized carbon dot drug delivery systems: Synthesis, properties, dual-mode imaging, and tumor theranostics.",
       "authors": "Shi Y, Zhong Y, Jia F, Fan J, Wei Y, Chen L, Yang Y, Yu S.",
       "journal": "Spectrochim Acta A Mol Biomol Spectrosc",
@@ -132,14 +100,6 @@
       "url": "https://doi.org/10.1016/j.tranon.2026.102851"
     },
     {
-      "title": "Composition of natural radionuclides and elemental profile in traditional biodiversity-sourced flours: radiological risk assessment and development of the radiological benefit-risk index for food (I&lt;sub&gt;RBRF&lt;/sub&gt;).",
-      "authors": "Faria da Silva L, Almeida EL, Thalhofer JL, Orejuela COP, Barbosa da Silva L, Xavier da Silva A.",
-      "journal": "Food Chem",
-      "year": "2026",
-      "date": "2026-05-20",
-      "url": "https://doi.org/10.1016/j.foodchem.2026.149707"
-    },
-    {
       "title": "Preclinical evaluation of &lt;sup&gt;89&lt;/sup&gt;Zr/&lt;sup&gt;177&lt;/sup&gt;Lu/&lt;sup&gt;161&lt;/sup&gt;Tb-labeled anti-CD228 monoclonal antibody for theranostics in skin cutaneous melanoma.",
       "authors": "Hao X, Du H, Lin B, Tang M, Zhang H, Wang D, Zhu Y, Long H, Liu H, Du X.",
       "journal": "Eur J Pharm Biopharm",
@@ -162,6 +122,46 @@
       "year": "2026",
       "date": "2026-05-10",
       "url": "https://doi.org/10.1016/j.bioorg.2026.109980"
+    },
+    {
+      "title": "Recent advances in dual-function fluorescent ligands targeting mitochondrial DNA G-Quadruplexes for Cancer Theranostics.",
+      "authors": "Hu MH.",
+      "journal": "Bioorg Med Chem",
+      "year": "2026",
+      "date": "2026-05-07",
+      "url": "https://doi.org/10.1016/j.bmc.2026.118697"
+    },
+    {
+      "title": "The design, synthesis and evaluation of the first carbon-11 positron emission tomography radiotracer for ASK1 imaging.",
+      "authors": "Huang Y, Wang Y, Wang Y, Cheng H, Yang H, Wang C, Xu Y.",
+      "journal": "Bioorg Chem",
+      "year": "2026",
+      "date": "2026-05-08",
+      "url": "https://doi.org/10.1016/j.bioorg.2026.109970"
+    },
+    {
+      "title": "Synthesis and evaluation of &lt;sup&gt;18&lt;/sup&gt;F-labeled small-molecular radiotracers as PET agents for imaging PD-L1 expression.",
+      "authors": "Zhu J, Ge M, He S, Zhang N, Yang J, Qiu L, Lin J, Lv G.",
+      "journal": "Appl Radiat Isot",
+      "year": "2026",
+      "date": "2026-04-28",
+      "url": "https://doi.org/10.1016/j.apradiso.2026.112665"
+    },
+    {
+      "title": "Yttrium-88 glass microsphere: A potential radiotracer for radioactive particle tracking applications.",
+      "authors": "Biswal J, Sinharoy P, Sharma SC, Banerjee D, Gore JA, Sharma VK.",
+      "journal": "Appl Radiat Isot",
+      "year": "2026",
+      "date": "2026-04-25",
+      "url": "https://doi.org/10.1016/j.apradiso.2026.112666"
+    },
+    {
+      "title": "Nanozymes for ferroptosis-based cancer theranostics.",
+      "authors": "Khan RU, Qian L, Min J, Peng H, Wang F.",
+      "journal": "Bioact Mater",
+      "year": "2026",
+      "date": "2026-04-03",
+      "url": "https://doi.org/10.1016/j.bioactmat.2026.03.043"
     }
   ]
 }
