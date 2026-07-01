@@ -479,16 +479,6 @@ function buildPeriodicTable() {
     grid.appendChild(ref);
   });
 
-  // Dock the "Latest research" panel into the empty bottom-left cells
-  // (columns 1-3 of the lanthanide/actinide rows) so it fills the black space
-  // to the left of that block and scales with the table.
-  const dock = document.getElementById('researchDock');
-  if (dock) {
-    dock.style.gridColumn = '1 / 4';
-    dock.style.gridRow = '9 / 11';
-    grid.appendChild(dock);
-  }
-
   // Apply any existing filters
   applyFilters();
 }
