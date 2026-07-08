@@ -190,39 +190,46 @@ body {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  grid-auto-rows: min-content;
-  align-content: start;
-  gap: 8px;
+  display: flex;
+  flex-direction: column;   /* single column: one publication per row */
+  gap: 7px;
   padding: 10px;
 }
-.lr-list::-webkit-scrollbar { width: 5px; }
+.lr-list::-webkit-scrollbar { width: 6px; }
 .lr-list::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
 .lr-item {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 14px;
   text-decoration: none;
-  padding: 6px 7px;
-  border-radius: 4px;
+  padding: 7px 11px;
+  border-radius: 5px;
   background: var(--bg-elev2);
   border: 1px solid var(--line-soft);
   transition: background 0.12s, border-color 0.12s;
 }
 .lr-item:hover { background: var(--bg-elev3); border-color: var(--accent-cyan-dim); }
 .lr-title {
-  font-size: 11px;
+  flex: 1;
+  min-width: 0;
+  font-size: 11.5px;
   line-height: 1.35;
   color: var(--text);
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 .lr-src {
+  flex-shrink: 0;
+  max-width: 38%;
+  text-align: right;
   font-family: var(--font-mono);
   font-size: 8.5px;
   color: var(--text-dim);
-  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .lr-empty {
   font-family: var(--font-mono);
@@ -1414,6 +1421,6 @@ body {
 
 </div><!-- /main-col -->
 
-<script src="app.js?v=20260708-4" defer></script>
+<script src="app.js?v=20260708-5" defer></script>
 </body>
 </html>
