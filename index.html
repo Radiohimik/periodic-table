@@ -15,10 +15,14 @@
   --sidebar-w: 188px;
   --topbar-h: 44px;
   --gap: 2px;
-  /* Square tile sized so the 18-column table fills the FULL available width
-     (edge-to-edge, no black margin). Height follows; if the table ends up
-     taller than the viewport, .pt-area scrolls vertically. */
-  --tile: max(34px, calc((100vw - var(--sidebar-w) - 60px) / 18));
+  --pubw: 340px;   /* Latest-research panel width (right of the table) */
+  /* Tile sized so ALL elements fit the viewport — bounded by height (all 10
+     rows visible) and by width (18 cols) while leaving --pubw for the research
+     panel on the right. min() picks the tighter fit. */
+  --tile: max(30px, min(
+    calc((100vw - var(--sidebar-w) - var(--pubw) - 56px) / 18),
+    calc((100vh - var(--topbar-h) - 84px) / 9)
+  ));
 
   --bg: #080e08;
   --bg-elev1: #0b130b;
@@ -150,8 +154,8 @@ body {
    (the table's alkali/group-1 column sits to its right). Fixed width, full
    height, with its own scrolling list. */
 .research-dock {
-  width: 100%;
-  margin-top: 12px;
+  flex: 1 1 var(--pubw);
+  min-width: 280px;
   display: flex;
   flex-direction: column;
   background: rgba(9,15,9,0.82);
@@ -183,11 +187,18 @@ body {
 }
 
 .lr-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  grid-auto-rows: min-content;
+  align-content: start;
   gap: 8px;
   padding: 10px;
 }
+.lr-list::-webkit-scrollbar { width: 5px; }
+.lr-list::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
 .lr-item {
   display: block;
   text-decoration: none;
@@ -415,6 +426,11 @@ body {
 .pt-area {
   flex: 1;
   min-height: 0;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: stretch;
+  align-content: flex-start;
+  gap: 10px;
   overflow-y: auto;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -423,7 +439,9 @@ body {
 .pt-area::-webkit-scrollbar { height: 5px; width: 5px; }
 .pt-area::-webkit-scrollbar-track { background: var(--bg); }
 .pt-area::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
-.pt-main { display: block; }
+/* Table column: pinned to the grid's width so the cards below it don't widen
+   the column and squeeze the research panel. */
+.pt-main { flex: 0 0 auto; width: calc(18 * var(--tile) + 17 * var(--gap)); min-width: 0; }
 
 /* ============================================================
    PERIODIC TABLE GRID
@@ -1396,6 +1414,6 @@ body {
 
 </div><!-- /main-col -->
 
-<script src="app.js?v=20260708-3" defer></script>
+<script src="app.js?v=20260708-4" defer></script>
 </body>
 </html>
