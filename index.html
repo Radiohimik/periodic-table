@@ -158,11 +158,12 @@ body {
 .research-dock {
   width: var(--pubw);
   flex-shrink: 0;
-  height: 100%;
+  height: 33%;          /* ~1/3 of the table area height */
+  align-self: flex-start; /* anchored to the top-left */
+  min-height: 150px;
   display: flex;
   flex-direction: column;
   min-width: 0;
-  min-height: 0;
   background: rgba(9,15,9,0.82);
   border: 1px solid var(--accent-cyan-dim);
   border-radius: var(--radius-md);
@@ -472,7 +473,7 @@ body {
     var(--tile);             /* actinides */
   gap: var(--gap);
   width: fit-content;
-  margin: 0 auto;  /* center the table on wide screens */
+  margin: 0;  /* left-align next to the research panel (no black gap) */
 }
 
 /* ---- Element tile ---- */
@@ -1430,6 +1431,6 @@ body {
 
 </div><!-- /main-col -->
 
-<script src="app.js?v=20260629-4" defer></script>
+<script src="app.js?v=20260708-1" defer></script>
 </body>
 </html>
