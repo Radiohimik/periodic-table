@@ -15,15 +15,10 @@
   --sidebar-w: 188px;
   --topbar-h: 44px;
   --gap: 2px;
-  /* Square tile sized so the WHOLE 18-col table fits the viewport on a
-     desktop screen — constrained by both available width (18 columns) and
-     available height (7 periods + lanthanide/actinide rows). min() picks
-     whichever is the tighter fit; max(34px,…) keeps tiles usable on mobile
-     (where .pt-area falls back to scrolling). */
-  --tile: max(34px, min(
-    calc((100vw - var(--sidebar-w) - 56px) / 18),
-    calc((100vh - var(--topbar-h) - 64px) / 9)
-  ));
+  /* Square tile sized so the 18-column table fills the FULL available width
+     (edge-to-edge, no black margin). Height follows; if the table ends up
+     taller than the viewport, .pt-area scrolls vertically. */
+  --tile: max(34px, calc((100vw - var(--sidebar-w) - 60px) / 18));
 
   --bg: #080e08;
   --bg-elev1: #0b130b;
@@ -1401,6 +1396,6 @@ body {
 
 </div><!-- /main-col -->
 
-<script src="app.js?v=20260708-2" defer></script>
+<script src="app.js?v=20260708-3" defer></script>
 </body>
 </html>
