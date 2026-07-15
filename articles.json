@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-01",
+  "updated": "2026-07-15",
   "source": "Europe PMC",
   "query": "(TITLE:theranostic* OR TITLE:radiotheranostic* OR TITLE:radioligand OR TITLE:radiopharmaceutical* OR TITLE:radiotracer* OR TITLE:radiolabel* OR TITLE:\"radionuclide therapy\" OR TITLE:\"targeted alpha therapy\" OR TITLE:\"peptide receptor radionuclide therapy\" OR TITLE:PSMA OR TITLE:DOTATATE OR TITLE:DOTATOC OR TITLE:FAPI) NOT (TITLE:soil OR TITLE:food OR TITLE:radon OR TITLE:environmental OR TITLE:dietary OR TITLE:water OR TITLE:\"risk assessment\" OR TITLE:foodstuff*)",
   "articles": [
@@ -28,12 +28,28 @@
       "url": "https://doi.org/10.1080/10717544.2025.2595728"
     },
     {
+      "title": "Visual theranostic oral nanozymes for IBD from principles to preclinical design.",
+      "authors": "Zuo S, Li K, Feng L, Yu X, Wang Y, Wu C, Weng W, He Y, Cai X, Cheng K.",
+      "journal": "Bioact Mater",
+      "year": "2026",
+      "date": "2026-06-24",
+      "url": "https://doi.org/10.1016/j.bioactmat.2026.06.002"
+    },
+    {
       "title": "A closed-loop myocardial infarction theranostic platform activated by macrophage-derived nitric oxide and acidic microenvironment.",
       "authors": "Xu X, Li S, Chen Y, Li M, Li R, Lu H, Yang F, Tong J.",
       "journal": "Bioact Mater",
       "year": "2026",
       "date": "2026-05-30",
       "url": "https://doi.org/10.1016/j.bioactmat.2026.05.045"
+    },
+    {
+      "title": "Evolution of PSMA-GRPr heterobivalent radiolabeled conjugates for the diagnosis and therapy of prostate cancer.",
+      "authors": "Grigoriev GP, Beloglazkina EK, Petrov SA.",
+      "journal": "Eur J Med Chem",
+      "year": "2026",
+      "date": "2026-06-01",
+      "url": "https://doi.org/10.1016/j.ejmech.2026.119026"
     },
     {
       "title": "Advances in research on radiopharmaceuticals targeting NTSR1.",
@@ -84,6 +100,46 @@
       "url": "https://doi.org/10.1016/j.saa.2026.127721"
     },
     {
+      "title": "Seeing Beyond 68GA-DOTANOC and 18F-FDG PET/CT: 68GA-FAPI Only Uptake in a Rare Metastatic Well-differentiated Grade I Pancreatic Neuroendocrine Tumor.",
+      "authors": "Singareddy CTR, Baa AK, Kankara SR, Bukelo MF.",
+      "journal": "Clin Nucl Med",
+      "year": "2026",
+      "date": "2026-02-20",
+      "url": "https://doi.org/10.1097/rlu.0000000000006389"
+    },
+    {
+      "title": "Rare Case of Penile Metastasis in Prostate Carcinoma Following Radical Prostatectomy on 68Ga-PSMA PET/CT.",
+      "authors": "Bhat S, Agarwal KK, Patel D, Patangiyawala Y, Patel D.",
+      "journal": "Clin Nucl Med",
+      "year": "2026",
+      "date": "2026-01-20",
+      "url": "https://doi.org/10.1097/rlu.0000000000006316"
+    },
+    {
+      "title": "Fibrous Dysplasia With 99m Tc-FAPI Uptake in a Patient Under Long-term Antiresorptive Therapy.",
+      "authors": "Samadi MH, Sahafi P, Emadi Toghabeh A, Kamali H, Aghaee A.",
+      "journal": "Clin Nucl Med",
+      "year": "2026",
+      "date": "2026-07-01",
+      "url": "https://doi.org/10.1097/rlu.0000000000006109"
+    },
+    {
+      "title": "Similar Findings on 18F-FDG PET/CT and 68Ga-DOTATATE PET/CT in a Patient With Extraskeletal Ewing Sarcoma.",
+      "authors": "Deng M, Shu Q, Feng Y, Zhang W, Cai L.",
+      "journal": "Clin Nucl Med",
+      "year": "2026",
+      "date": "2026-04-27",
+      "url": "https://doi.org/10.1097/rlu.0000000000006417"
+    },
+    {
+      "title": "Toward molecular and pathology-confirmed completeness in advanced ovarian cancer cytoreduction: Intraoperative molecular imaging and integrated theranostic strategies.",
+      "authors": "Xu Y, Hua Y, Ou L, Jin W, Zhang Y, Rao M, Lin H, Ji F, Ding B, Shen Y.",
+      "journal": "Mol Aspects Med",
+      "year": "2026",
+      "date": "2026-06-27",
+      "url": "https://doi.org/10.1016/j.mam.2026.101489"
+    },
+    {
       "title": "Estimation of Future Patient Populations Eligible for Radioligand Therapies in the EU and the UK: A Modelling Study.",
       "authors": "Holzwarth U, Cirillo R, Goulart M, Hernandez D, Peristeris P, Poschenrieder A, Papaioannou P, Kanavos P, la Fougère C, Schaetz L.",
       "journal": "Lancet Reg Health Eur",
@@ -92,76 +148,20 @@
       "url": "https://doi.org/10.1016/j.lanepe.2026.101733"
     },
     {
-      "title": "Engineering nanozymes for cancer theranostics: Chemical design, catalytic intelligence, and translational oncology frontiers.",
-      "authors": "Garg P, Horne D, Salgia R, Singhal SS.",
-      "journal": "Transl Oncol",
+      "title": "Assessment of Capillary Permeability Using Radiolabeled Albumin and 3D CZT-ring Gamma Camera.",
+      "authors": "Metrard G, Mazet R, Cardoso G, Bailly M.",
+      "journal": "Clin Nucl Med",
       "year": "2026",
-      "date": "2026-06-06",
-      "url": "https://doi.org/10.1016/j.tranon.2026.102851"
+      "date": "2026-06-17",
+      "url": "https://doi.org/10.1097/rlu.0000000000006559"
     },
     {
-      "title": "Preclinical evaluation of &lt;sup&gt;89&lt;/sup&gt;Zr/&lt;sup&gt;177&lt;/sup&gt;Lu/&lt;sup&gt;161&lt;/sup&gt;Tb-labeled anti-CD228 monoclonal antibody for theranostics in skin cutaneous melanoma.",
-      "authors": "Hao X, Du H, Lin B, Tang M, Zhang H, Wang D, Zhu Y, Long H, Liu H, Du X.",
-      "journal": "Eur J Pharm Biopharm",
+      "title": "Nuclear Medicine Imaging in Tumor Diagnostics Using FAPI-PET/CT: A Case-based Perspective on Malignant Peripheral Nerve Sheath Tumor.",
+      "authors": "Göller S, Spektor AM, Stockinger M, Kaufmann J, Röhrich M.",
+      "journal": "Clin Nucl Med",
       "year": "2026",
-      "date": "2026-05-26",
-      "url": "https://doi.org/10.1016/j.ejpb.2026.115123"
-    },
-    {
-      "title": "Evidence of anorectal involvement by prostate cancer on GA-68-PSMA-11 PET/CT portends inguinal nodal metastasis.",
-      "authors": "Ruggiero CM, Oldan JD, Johnson SM, Rowe SP.",
-      "journal": "Radiol Case Rep",
-      "year": "2026",
-      "date": "2026-05-16",
-      "url": "https://doi.org/10.1016/j.radcr.2026.04.029"
-    },
-    {
-      "title": "Preclinical evaluation of the antibody fragment targeting fibronectin EDB in the theranostics of radioactive iodine-resistant thyroid cancer.",
-      "authors": "Luo W, Zhang X, Liu Q, Shi Y, Jiang X.",
-      "journal": "Bioorg Chem",
-      "year": "2026",
-      "date": "2026-05-10",
-      "url": "https://doi.org/10.1016/j.bioorg.2026.109980"
-    },
-    {
-      "title": "Recent advances in dual-function fluorescent ligands targeting mitochondrial DNA G-Quadruplexes for Cancer Theranostics.",
-      "authors": "Hu MH.",
-      "journal": "Bioorg Med Chem",
-      "year": "2026",
-      "date": "2026-05-07",
-      "url": "https://doi.org/10.1016/j.bmc.2026.118697"
-    },
-    {
-      "title": "The design, synthesis and evaluation of the first carbon-11 positron emission tomography radiotracer for ASK1 imaging.",
-      "authors": "Huang Y, Wang Y, Wang Y, Cheng H, Yang H, Wang C, Xu Y.",
-      "journal": "Bioorg Chem",
-      "year": "2026",
-      "date": "2026-05-08",
-      "url": "https://doi.org/10.1016/j.bioorg.2026.109970"
-    },
-    {
-      "title": "Synthesis and evaluation of &lt;sup&gt;18&lt;/sup&gt;F-labeled small-molecular radiotracers as PET agents for imaging PD-L1 expression.",
-      "authors": "Zhu J, Ge M, He S, Zhang N, Yang J, Qiu L, Lin J, Lv G.",
-      "journal": "Appl Radiat Isot",
-      "year": "2026",
-      "date": "2026-04-28",
-      "url": "https://doi.org/10.1016/j.apradiso.2026.112665"
-    },
-    {
-      "title": "Yttrium-88 glass microsphere: A potential radiotracer for radioactive particle tracking applications.",
-      "authors": "Biswal J, Sinharoy P, Sharma SC, Banerjee D, Gore JA, Sharma VK.",
-      "journal": "Appl Radiat Isot",
-      "year": "2026",
-      "date": "2026-04-25",
-      "url": "https://doi.org/10.1016/j.apradiso.2026.112666"
-    },
-    {
-      "title": "Nanozymes for ferroptosis-based cancer theranostics.",
-      "authors": "Khan RU, Qian L, Min J, Peng H, Wang F.",
-      "journal": "Bioact Mater",
-      "year": "2026",
-      "date": "2026-04-03",
-      "url": "https://doi.org/10.1016/j.bioactmat.2026.03.043"
+      "date": "2026-05-28",
+      "url": "https://doi.org/10.1097/rlu.0000000000006537"
     }
   ]
 }
