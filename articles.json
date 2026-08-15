@@ -1,8 +1,32 @@
 {
-  "updated": "2026-08-01",
+  "updated": "2026-08-15",
   "source": "Europe PMC",
   "query": "(TITLE:theranostic* OR TITLE:radiotheranostic* OR TITLE:radioligand OR TITLE:radiopharmaceutical* OR TITLE:radiotracer* OR TITLE:radiolabel* OR TITLE:\"radionuclide therapy\" OR TITLE:\"targeted alpha therapy\" OR TITLE:\"peptide receptor radionuclide therapy\" OR TITLE:PSMA OR TITLE:DOTATATE OR TITLE:DOTATOC OR TITLE:FAPI) NOT (TITLE:soil OR TITLE:food OR TITLE:radon OR TITLE:environmental OR TITLE:dietary OR TITLE:water OR TITLE:\"risk assessment\" OR TITLE:foodstuff*)",
   "articles": [
+    {
+      "title": "A theranostic wearable laser-induced graphene-hydrogel dressing for synergistic treatment and real-time monitoring of dermatophytosis.",
+      "authors": "Chen L, Li Z, Shen C, Chen SL, Cheng L, Niu W, Yuan Y, Zhou Y, Li J, Su J, Lin N, Chen S, Lai Z, Ye R, Gu M.",
+      "journal": "Bioact Mater",
+      "year": "2026",
+      "date": "2026-07-28",
+      "url": "https://doi.org/10.1016/j.bioactmat.2026.07.018"
+    },
+    {
+      "title": "Clinical and economic outcomes of cabazitaxel versus Lu-PSMA in mCRPC: a US perspective.",
+      "authors": "Nault B, Garcia D, Cameron H, Revel A, Steele K, Flannery K, Barata P.",
+      "journal": "J Med Econ",
+      "year": "2026",
+      "date": "2026-08-07",
+      "url": "https://doi.org/10.1080/13696998.2026.2709297"
+    },
+    {
+      "title": "Merocyanine derivatives as theranostic agents for cognitive improvement and real-time imaging of amyloid-β in APP/PS1 transgenic mice.",
+      "authors": "Li X, Li S, Su J, Zheng F, Li S, Zhao X, Chen D, Yan J, Xia C.",
+      "journal": "Spectrochim Acta A Mol Biomol Spectrosc",
+      "year": "2026",
+      "date": "2026-07-15",
+      "url": "https://doi.org/10.1016/j.saa.2026.128458"
+    },
     {
       "title": "Cost-effectiveness of ferumoxtran-enhanced macrophage-specific-MRI and PSMA-PET/CT versus ePLND for nodal staging in primary prostate cancer: a decision analysis based on updated phase-3 trial data.",
       "authors": "Zamecnik P, Feuerstein J, Berghahn M, Barentsz J.",
@@ -42,6 +66,14 @@
       "year": "2026",
       "date": "2026-01-09",
       "url": "https://doi.org/10.1080/10717544.2025.2595728"
+    },
+    {
+      "title": "Aptamer-functionalized nanomaterials for circulating tumor cell detection: From liquid biopsy to cancer theranostic.",
+      "authors": "Jiang M, Zheng K, Li N, Yang L, Liu L, Ren Z, Han H, Qu Z, Li J, Wang Y, Zhang W, Chen S, Kou Q, Hao F.",
+      "journal": "Anal Biochem",
+      "year": "2026",
+      "date": "2026-07-23",
+      "url": "https://doi.org/10.1016/j.ab.2026.116197"
     },
     {
       "title": "Visual theranostic oral nanozymes for IBD from principles to preclinical design.",
@@ -92,6 +124,22 @@
       "url": "https://doi.org/10.1016/j.jinorgbio.2026.113397"
     },
     {
+      "title": "Assessment of active fibrotic remodeling in patients with idiopathic pulmonary fibrosis (IPF)/progressive pulmonary fibrosis (PPF) using dual-time-point [&lt;sup&gt;68&lt;/sup&gt;Ga]Ga-FAPI-46-PET/CT.",
+      "authors": "Grunert M, Horn V, Baudrexl JC, Buechele P, Hackenbroch C, Klemenz B, Beer AJ, Steinestel K, Gagiannis D.",
+      "journal": "Eur J Radiol",
+      "year": "2026",
+      "date": "2026-06-23",
+      "url": "https://doi.org/10.1016/j.ejrad.2026.113036"
+    },
+    {
+      "title": "Diagnostic performance of FAPI PET/CT for the detection of peritoneal metastases: an updated systematic review and bivariate meta-analysis.",
+      "authors": "Qi-Chang W, Kai-Yin M, Cheng-Yi W, Bin J.",
+      "journal": "Eur J Radiol",
+      "year": "2026",
+      "date": "2026-06-16",
+      "url": "https://doi.org/10.1016/j.ejrad.2026.113011"
+    },
+    {
       "title": "Cross-section measurements of lanthanum radioisotopes towards an optimized production of &lt;sup&gt;133&lt;/sup&gt;La and &lt;sup&gt;135&lt;/sup&gt;La for theranostic applications.",
       "authors": "Dellepiane G, Eggimann L, Gottstein A, Juillerat S, Kasanda E, Mateu I, Scampoli P, Braccini S.",
       "journal": "Appl Radiat Isot",
@@ -108,60 +156,12 @@
       "url": "https://doi.org/10.1016/j.ejmech.2026.119026"
     },
     {
-      "title": "Advances in research on radiopharmaceuticals targeting NTSR1.",
-      "authors": "Zhao Y, Wang Y, Cui Y, Xu F, Wang W, Hou W, Li Y, Wei H.",
-      "journal": "Eur J Med Chem",
+      "title": "Beyond the brain barrier: Hybrid nanoparticles orchestrating intelligent neuro-theranostics.",
+      "authors": "Saxena S, Kaur J, Singh TG, Kumar M, Awasthi A.",
+      "journal": "Adv Colloid Interface Sci",
       "year": "2026",
-      "date": "2026-05-13",
-      "url": "https://doi.org/10.1016/j.ejmech.2026.118954"
-    },
-    {
-      "title": "Defect-engineered metal-organic framework as a universal platform for theranostic applications.",
-      "authors": "Yang S, Xiong X, Zhong Q, Xian S, Jiang Y, Hou Y, Xiao Z, Xiao H, Shuai X.",
-      "journal": "Biomaterials",
-      "year": "2026",
-      "date": "2026-04-17",
-      "url": "https://doi.org/10.1016/j.biomaterials.2026.124213"
-    },
-    {
-      "title": "Engineering an ultra-low background nitroreductase-activated near infrared targeted theranostic probe for lung tumor surgery navigation.",
-      "authors": "Cheng T, Zhang L, Cao J, Li H, Jiang Z, Cheng D, Wu J, Pan C.",
-      "journal": "Spectrochim Acta A Mol Biomol Spectrosc",
-      "year": "2026",
-      "date": "2026-04-08",
-      "url": "https://doi.org/10.1016/j.saa.2026.127879"
-    },
-    {
-      "title": "A liver-targeting fluorescent nano-drug for theranostics in non-alcoholic fatty liver disease.",
-      "authors": "Wei C, Cheng S, Zhang Y, Zhao Y, Wei H, Wang F, Wang JH, Jiang D, Wang Z.",
-      "journal": "Biomaterials",
-      "year": "2026",
-      "date": "2026-03-30",
-      "url": "https://doi.org/10.1016/j.biomaterials.2026.124182"
-    },
-    {
-      "title": "Light It Up! The Use of DOTATATE in Diagnosis and Treatment of Neuroendocrine Neoplasms.",
-      "authors": "Schwarz JL, Williams JK, Keutgen XM, Liao CY.",
-      "journal": "Clin Lab Med",
-      "year": "2026",
-      "date": "2026-09-01",
-      "url": "https://doi.org/10.1016/j.cll.2026.06.012"
-    },
-    {
-      "title": "Dual-Chelator conjugates for [&lt;sup&gt;68&lt;/sup&gt;Ga]Ga- and [&lt;sup&gt;177&lt;/sup&gt;Lu]Lu-based PSMA Radiotheranostics.",
-      "authors": "Jin W, Luo Y, Zhu Z, Zhu L, Kung HF.",
-      "journal": "Bioorg Chem",
-      "year": "2026",
-      "date": "2026-07-10",
-      "url": "https://doi.org/10.1016/j.bioorg.2026.110236"
-    },
-    {
-      "title": "Preparation, in vitro evaluation, and biodistribution study of a novel PSMA-targeted radioligand.",
-      "authors": "Ji X, Kong X, Cai C, Wang Z, Zhang H, Long S.",
-      "journal": "Bioorg Chem",
-      "year": "2026",
-      "date": "2026-07-03",
-      "url": "https://doi.org/10.1016/j.bioorg.2026.110207"
+      "date": "2026-05-25",
+      "url": "https://doi.org/10.1016/j.cis.2026.103954"
     }
   ]
 }
