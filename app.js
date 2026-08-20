@@ -933,6 +933,85 @@ function escapeHTML(s) {
     { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]
   ));
 }
+/* ---------- Isotope tagging for publications ----------
+   Detect which nuclide(s) a paper studies from its title. Mass numbers are
+   validated against a plausible A-range for the element, which keeps
+   protein/gene names that look like nuclides (PD-1, CD228, B7-H4, ASK1…)
+   out of the results. */
+const LR_ELEMENTS = {
+  H:1, He:2, Li:3, Be:4, B:5, C:6, N:7, O:8, F:9, Ne:10, Na:11, Mg:12, Al:13,
+  Si:14, P:15, S:16, Cl:17, Ar:18, K:19, Ca:20, Sc:21, Ti:22, V:23, Cr:24,
+  Mn:25, Fe:26, Co:27, Ni:28, Cu:29, Zn:30, Ga:31, Ge:32, As:33, Se:34, Br:35,
+  Kr:36, Rb:37, Sr:38, Y:39, Zr:40, Nb:41, Mo:42, Tc:43, Ru:44, Rh:45, Pd:46,
+  Ag:47, Cd:48, In:49, Sn:50, Sb:51, Te:52, I:53, Xe:54, Cs:55, Ba:56, La:57,
+  Ce:58, Pr:59, Nd:60, Pm:61, Sm:62, Eu:63, Gd:64, Tb:65, Dy:66, Ho:67, Er:68,
+  Tm:69, Yb:70, Lu:71, Hf:72, Ta:73, W:74, Re:75, Os:76, Ir:77, Pt:78, Au:79,
+  Hg:80, Tl:81, Pb:82, Bi:83, Po:84, At:85, Rn:86, Fr:87, Ra:88, Ac:89, Th:90,
+  Pa:91, U:92, Np:93, Pu:94, Am:95, Cm:96,
+};
+const LR_SYMBOL_BY_LOWER = {};
+for (const s of Object.keys(LR_ELEMENTS)) LR_SYMBOL_BY_LOWER[s.toLowerCase()] = s;
+const LR_ELEMENT_NAMES = {
+  hydrogen:'H', carbon:'C', nitrogen:'N', oxygen:'O', fluorine:'F', sodium:'Na',
+  phosphorus:'P', scandium:'Sc', cobalt:'Co', copper:'Cu', gallium:'Ga',
+  selenium:'Se', krypton:'Kr', rubidium:'Rb', strontium:'Sr', yttrium:'Y',
+  zirconium:'Zr', technetium:'Tc', molybdenum:'Mo', palladium:'Pd', indium:'In',
+  tin:'Sn', iodine:'I', xenon:'Xe', cesium:'Cs', caesium:'Cs', samarium:'Sm',
+  terbium:'Tb', dysprosium:'Dy', holmium:'Ho', erbium:'Er', ytterbium:'Yb',
+  lutetium:'Lu', rhenium:'Re', iridium:'Ir', gold:'Au', thallium:'Tl', lead:'Pb',
+  bismuth:'Bi', astatine:'At', radium:'Ra', actinium:'Ac', thorium:'Th',
+  uranium:'U', gadolinium:'Gd', germanium:'Ge', tungsten:'W', zinc:'Zn',
+  titanium:'Ti', calcium:'Ca', tellurium:'Te', lanthanum:'La',
+};
+function lrPlausibleA(sym, A) {
+  const Z = LR_ELEMENTS[sym];
+  if (!Z || A < Z) return false;
+  const lo = Z <= 20 ? Z : Math.floor(1.7 * Z);
+  const hi = Z <= 20 ? 3 * Z + 4 : Math.ceil(3.0 * Z);
+  return A >= lo && A <= hi;
+}
+function lrStripMarkup(s) {
+  return String(s)
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+    .replace(/<[^>]*>/g, '')
+    .replace(/\s+/g, ' ');
+}
+function extractIsotopes(rawTitle) {
+  const t = lrStripMarkup(rawTitle);
+  const found = new Map();
+  const add = (sym, A, m) => {
+    if (!lrPlausibleA(sym, A)) return;
+    const key = `${sym}-${A}${m ? 'm' : ''}`;
+    if (!found.has(key)) found.set(key, true);
+  };
+  // mass-first: 177Lu, [18F], 99mTc
+  for (const mt of t.matchAll(/(?<![A-Za-z0-9-])(\d{1,3})\s*(m?)\s*-?\s*([A-Za-z]{1,2})(?![a-z])/g)) {
+    const sym = LR_SYMBOL_BY_LOWER[mt[3].toLowerCase()];
+    if (sym) add(sym, parseInt(mt[1], 10), mt[2]);
+  }
+  // symbol-first: Lu-177, GA-68, Tc-99m
+  for (const mt of t.matchAll(/(?<![A-Za-z0-9])([A-Za-z]{1,2})\s*-\s*(\d{1,3})(m?)(?![0-9])/g)) {
+    const sym = LR_SYMBOL_BY_LOWER[mt[1].toLowerCase()];
+    if (sym) add(sym, parseInt(mt[2], 10), mt[3]);
+  }
+  // full element names: carbon-11, yttrium-88
+  for (const mt of t.matchAll(/\b([A-Za-z]{3,12})\s*-\s*(\d{1,3})(m?)\b/g)) {
+    const sym = LR_ELEMENT_NAMES[mt[1].toLowerCase()];
+    if (sym) add(sym, parseInt(mt[2], 10), mt[3]);
+  }
+  return [...found.keys()];
+}
+
+/* Colour the isotope chip by the medical role of that nuclide when we know it. */
+function isotopeChipColor(tag) {
+  const m = /^([A-Za-z]{1,2})-(\d{1,3})m?$/.exec(tag);
+  if (!m) return null;
+  const Z = LR_ELEMENTS[m[1]];
+  const A = parseInt(m[2], 10);
+  const entry = (MEDICAL_ISOTOPES[Z] || []).find(e => e.A === A);
+  return entry ? MED_COLORS[entry.type] : null;
+}
+
 async function loadLatestResearch() {
   const list = document.getElementById('lrList');
   const meta = document.getElementById('lrMeta');
@@ -944,14 +1023,26 @@ async function loadLatestResearch() {
     const data = await res.json();
     const articles = Array.isArray(data.articles) ? data.articles : [];
     if (!articles.length) throw new Error('empty');
-    list.innerHTML = articles.slice(0, 20).map(a => `
+    list.innerHTML = articles.slice(0, 20).map(a => {
+      // prefer isotopes computed at fetch time, else derive from the title
+      const tags = (Array.isArray(a.isotopes) && a.isotopes.length)
+        ? a.isotopes : extractIsotopes(a.title);
+      const chips = tags.length
+        ? tags.slice(0, 3).map(t => {
+            const c = isotopeChipColor(t);
+            const style = c ? ` style="color:${c};border-color:${c}55;"` : '';
+            return `<span class="lr-iso"${style}>${escapeHTML(t)}</span>`;
+          }).join('')
+        : `<span class="lr-iso lr-iso-none" title="No specific nuclide named in the title">—</span>`;
+      return `
       <a class="lr-item" href="${escapeHTML(a.url)}" target="_blank" rel="noopener noreferrer" title="${escapeHTML(a.title)}">
+        <div class="lr-isos">${chips}</div>
         <div class="lr-title">${escapeHTML(a.title)}</div>
         <div class="lr-src">${escapeHTML([a.journal, a.year].filter(Boolean).join(' · '))}</div>
-      </a>
-    `).join('');
+      </a>`;
+    }).join('');
     if (meta && data.updated) {
-      meta.textContent = `New applications & developments · ${articles.length} newest · updated ${data.updated} · refreshed every 2 weeks`;
+      meta.textContent = `New applications & developments · ${articles.length} newest · US/EU/UK/SG/JP/TW/KR affiliations · updated ${data.updated} · every 2 weeks`;
     }
   } catch (e) {
     list.innerHTML = `<div class="lr-empty">The auto-updated list will populate on the next scheduled refresh. Use the link below for the current articles.</div>`;

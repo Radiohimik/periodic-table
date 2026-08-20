@@ -209,6 +209,33 @@ body {
   transition: background 0.12s, border-color 0.12s;
 }
 .lr-item:hover { background: var(--bg-elev3); border-color: var(--accent-cyan-dim); }
+/* Isotope tag(s) — which nuclide the paper studies */
+.lr-isos {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 58px;
+}
+.lr-iso {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-align: center;
+  padding: 2px 4px;
+  border-radius: 3px;
+  border: 1px solid var(--accent-cyan-dim);
+  background: rgba(94,234,212,0.07);
+  color: var(--accent-cyan);
+  white-space: nowrap;
+}
+.lr-iso-none {
+  color: var(--text-faint);
+  border-color: var(--line-soft);
+  background: transparent;
+  font-weight: 400;
+}
 .lr-title {
   flex: 1;
   min-width: 0;
@@ -1421,6 +1448,6 @@ body {
 
 </div><!-- /main-col -->
 
-<script src="app.js?v=20260708-5" defer></script>
+<script src="app.js?v=20260708-6" defer></script>
 </body>
 </html>
