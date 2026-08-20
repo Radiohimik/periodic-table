@@ -118,11 +118,11 @@ function stripMarkup(s) {
 }
 function extractIsotopes(rawTitle) {
   const t = stripMarkup(rawTitle);
-  const found = new Map();
+  const found = new Map();   // key -> occurrence count
   const add = (sym, A, m) => {
     if (!plausibleA(sym, A)) return;
     const key = `${sym}-${A}${m ? 'm' : ''}`;
-    if (!found.has(key)) found.set(key, true);
+    found.set(key, (found.get(key) || 0) + 1);
   };
   for (const mt of t.matchAll(/(?<![A-Za-z0-9-])(\d{1,3})\s*(m?)\s*-?\s*([A-Za-z]{1,2})(?![a-z])/g)) {
     const sym = SYMBOL_BY_LOWER[mt[3].toLowerCase()];
@@ -136,7 +136,25 @@ function extractIsotopes(rawTitle) {
     const sym = ELEMENT_NAMES[mt[1].toLowerCase()];
     if (sym) add(sym, parseInt(mt[2], 10), mt[3]);
   }
-  return [...found.keys()];
+  return found;   // Map: "Lu-177" -> count
+}
+
+/* Prefer nuclides named in the title. When the title names none (common for
+   clinical PSMA/FAPI papers), fall back to the abstract and keep only the
+   most-mentioned ones, so a review that lists many nuclides in passing does
+   not produce a wall of chips. Both are evidence from the paper itself —
+   nothing is inferred or guessed. */
+function isotopesFor(title, abstract) {
+  const fromTitle = [...extractIsotopes(title).keys()];
+  if (fromTitle.length) return fromTitle.slice(0, 3);
+  if (!abstract) return [];
+  const counts = extractIsotopes(abstract);
+  if (!counts.size) return [];
+  const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+  const top = ranked[0][1];
+  return ranked.filter(([, n]) => n >= Math.max(2, top * 0.5))
+               .slice(0, 2)
+               .map(([k]) => k);
 }
 
 /* ---------------------------- fetch ---------------------------- */
@@ -178,7 +196,7 @@ for (const a of result) {
     year: a.pubYear || '',
     date: a.firstPublicationDate || '',
     country,
-    isotopes: extractIsotopes(title),
+    isotopes: isotopesFor(title, a.abstractText || ''),
     url: link,
   });
 }
