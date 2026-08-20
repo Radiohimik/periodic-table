@@ -256,7 +256,10 @@
       "year": "2026",
       "date": "2026-08-11",
       "country": "Spain",
-      "isotopes": [],
+      "isotopes": [
+        "Tc-99m",
+        "In-111"
+      ],
       "url": "https://doi.org/10.1016/j.farma.2026.07.006"
     }
   ]
