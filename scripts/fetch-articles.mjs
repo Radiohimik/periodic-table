@@ -161,12 +161,33 @@ function isotopesFor(title, abstract) {
    the paper is about at a glance. These are the paper's own sentences, lightly
    trimmed — nothing is generated or paraphrased. Structured-abstract section
    labels (BACKGROUND:, METHODS: …) are stripped. */
-const SECTION_LABEL =
-  /\b(background|objectives?|purpose|aims?|introduction|methods?|materials and methods|results?|conclusions?|significance|rationale|summary)s?\s*[:.]\s*/gi;
+const LABEL_WORDS =
+  'background|objectives?|purpose|aims?|introduction|methods?|materials and methods|' +
+  'results?|conclusions?|significance|rationale|summary|findings|interpretation';
+// "BACKGROUND:" / "Methods." — label followed by a delimiter
+const SECTION_LABEL = new RegExp(`\\b(${LABEL_WORDS})\\s*[:.]\\s*`, 'gi');
+// "BackgroundProgressive…" — heading tags stripped away leave no delimiter, so
+// the label runs straight into the next sentence. This pattern must stay
+// case-SENSITIVE: with the /i flag the [A-Z] lookahead would also match
+// lowercase and mangle ordinary prose ("the results showed" -> "the s showed").
+// Headings are either Capitalised or ALL-CAPS, so both are listed explicitly.
+const LABEL_LIST = [
+  'materials and methods', 'objectives', 'objective', 'conclusions', 'conclusion',
+  'interpretation', 'significance', 'introduction', 'background', 'rationale',
+  'findings', 'methods', 'method', 'results', 'result', 'purpose', 'summary',
+  'aims', 'aim',
+].sort((a, b) => b.length - a.length);
+const titleCase = s => s.replace(/\b\w/g, c => c.toUpperCase());
+const LABEL_VARIANTS = LABEL_LIST.flatMap(w => [titleCase(w), w.toUpperCase()]);
+const SECTION_LABEL_RUNON =
+  new RegExp(`\\b(?:${LABEL_VARIANTS.join('|')})(?=[A-Z])`, 'g');
 
 function condenseAbstract(raw, maxChars = 260) {
   if (!raw) return '';
-  let t = stripMarkup(raw).replace(SECTION_LABEL, ' ').replace(/\s+/g, ' ').trim();
+  let t = stripMarkup(raw)
+    .replace(SECTION_LABEL, ' ')
+    .replace(SECTION_LABEL_RUNON, ' ')
+    .replace(/\s+/g, ' ').trim();
   if (!t) return '';
   // Protect common abbreviations and decimals from the sentence splitter.
   const GUARD = '';
