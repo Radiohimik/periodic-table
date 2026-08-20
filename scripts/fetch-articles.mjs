@@ -157,9 +157,39 @@ function isotopesFor(title, abstract) {
                .map(([k]) => k);
 }
 
+/* Condense an abstract to the first 2-3 sentences so the reader can tell what
+   the paper is about at a glance. These are the paper's own sentences, lightly
+   trimmed — nothing is generated or paraphrased. Structured-abstract section
+   labels (BACKGROUND:, METHODS: …) are stripped. */
+const SECTION_LABEL =
+  /\b(background|objectives?|purpose|aims?|introduction|methods?|materials and methods|results?|conclusions?|significance|rationale|summary)s?\s*[:.]\s*/gi;
+
+function condenseAbstract(raw, maxChars = 260) {
+  if (!raw) return '';
+  let t = stripMarkup(raw).replace(SECTION_LABEL, ' ').replace(/\s+/g, ' ').trim();
+  if (!t) return '';
+  // Protect common abbreviations and decimals from the sentence splitter.
+  const GUARD = '';
+  t = t.replace(/\b(e\.g|i\.e|vs|cf|approx|et al|Dr|Prof|Fig|no|ca)\./gi, (m) => m.replace('.', GUARD))
+       .replace(/(\d)\.(\d)/g, `$1${GUARD}$2`);
+  const parts = t.split(/(?<=[.!?])\s+(?=[A-Z(\[À-ſ])/);
+  const out = [];
+  for (const p of parts) {
+    const s = p.replace(new RegExp(GUARD, 'g'), '.').trim();
+    if (!s) continue;
+    if (out.length >= 3) break;
+    if (out.length && (out.join(' ').length + s.length) > maxChars) break;
+    out.push(s);
+    if (out.length >= 2 && out.join(' ').length >= maxChars * 0.7) break;
+  }
+  let s = out.join(' ');
+  if (s.length > maxChars + 60) s = s.slice(0, maxChars).replace(/\s+\S*$/, '') + '…';
+  return s;
+}
+
 /* ---------------------------- fetch ---------------------------- */
 const WANT = 20;
-const FETCH_SIZE = 200;   // over-fetch: most get filtered out by country
+const FETCH_SIZE = 500;   // over-fetch: most get filtered out by country+isotope
 const url =
   'https://www.ebi.ac.uk/europepmc/webservices/rest/search' +
   '?query=' + encodeURIComponent(QUERY + ' AND (SRC:MED) AND HAS_ABSTRACT:Y') +
@@ -174,7 +204,7 @@ if (!res.ok) {
 const data = await res.json();
 const result = (data.resultList && data.resultList.result) || [];
 
-let noAff = 0, notAllowed = 0;
+let noAff = 0, notAllowed = 0, noIsotope = 0;
 const articles = [];
 for (const a of result) {
   if (articles.length >= WANT) break;
@@ -183,26 +213,33 @@ for (const a of result) {
   const country = allowedCountry(aff);
   if (!country) { notAllowed++; continue; }
 
+  // Keep only papers that actually study a specific nuclide. This drops
+  // PSMA-protein biology, health-economics and non-radioactive nanoparticle
+  // papers that the TITLE:PSMA query otherwise pulls in.
+  const titleTxt = (a.title || '').replace(/\s+/g, ' ').trim();
+  const isotopes = isotopesFor(titleTxt, a.abstractText || '');
+  if (!isotopes.length) { noIsotope++; continue; }
+
   let link;
   if (a.doi) link = 'https://doi.org/' + a.doi;
   else if (a.pmid) link = 'https://pubmed.ncbi.nlm.nih.gov/' + a.pmid + '/';
   else link = 'https://europepmc.org/article/' + (a.source || 'MED') + '/' + a.id;
 
-  const title = (a.title || '(untitled)').replace(/\s+/g, ' ').trim();
   articles.push({
-    title,
+    title: titleTxt || '(untitled)',
+    summary: condenseAbstract(a.abstractText || ''),
     authors: a.authorString || '',
     journal: a.journalTitle || a.source || '',
     year: a.pubYear || '',
     date: a.firstPublicationDate || '',
     country,
-    isotopes: isotopesFor(title, a.abstractText || ''),
+    isotopes,
     url: link,
   });
 }
 
 if (!articles.length) {
-  console.error('No articles passed the affiliation filter — leaving articles.json unchanged.');
+  console.error('No articles passed the filters — leaving articles.json unchanged.');
   process.exit(1);
 }
 
@@ -215,6 +252,8 @@ const out = {
 };
 writeFileSync('articles.json', JSON.stringify(out, null, 2) + '\n');
 console.log(
-  `Scanned ${result.length} · kept ${articles.length} · ` +
-  `skipped ${notAllowed} (affiliation outside allow-list), ${noAff} (no affiliation data)`
+  `Scanned ${result.length} · kept ${articles.length} · skipped ` +
+  `${notAllowed} (affiliation outside allow-list), ${noAff} (no affiliation data), ` +
+  `${noIsotope} (no specific nuclide identified)`
 );
+console.log('With summary:', articles.filter(a => a.summary).length, '/', articles.length);

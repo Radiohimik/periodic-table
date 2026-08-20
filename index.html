@@ -20,7 +20,7 @@
      rows visible) and by width (18 cols) while leaving --pubw for the research
      panel on the right. min() picks the tighter fit. */
   --tile: max(30px, min(
-    calc((100vw - var(--sidebar-w) - var(--pubw) - 56px) / 18),
+    calc((100vw - var(--sidebar-w) - var(--pubw) - 76px) / 18),
     calc((100vh - var(--topbar-h) - 84px) / 9)
   ));
 
@@ -197,16 +197,30 @@ body {
 }
 .lr-list::-webkit-scrollbar { width: 6px; }
 .lr-list::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+/* Rows are sized so ~7 fit the panel at once; the rest scroll. */
 .lr-item {
   display: flex;
-  align-items: center;
-  gap: 14px;
+  align-items: flex-start;
+  gap: 11px;
+  flex: 0 0 auto;
+  height: calc((100% - 6 * 7px) / 7);
+  min-height: 76px;
   text-decoration: none;
-  padding: 7px 11px;
+  padding: 8px 11px;
   border-radius: 5px;
   background: var(--bg-elev2);
   border: 1px solid var(--line-soft);
+  overflow: hidden;
   transition: background 0.12s, border-color 0.12s;
+}
+.lr-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  height: 100%;
+  overflow: hidden;
 }
 .lr-item:hover { background: var(--bg-elev3); border-color: var(--accent-cyan-dim); }
 /* Isotope tag(s) — which nuclide the paper studies */
@@ -237,23 +251,33 @@ body {
   font-weight: 400;
 }
 .lr-title {
-  flex: 1;
-  min-width: 0;
+  flex-shrink: 0;
   font-size: 11.5px;
-  line-height: 1.35;
+  font-weight: 600;
+  line-height: 1.3;
   color: var(--text);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+/* Condensed abstract — first 2-3 sentences of the paper */
+.lr-summary {
+  flex: 1;
+  min-height: 0;
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--text-dim);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .lr-src {
   flex-shrink: 0;
-  max-width: 38%;
-  text-align: right;
   font-family: var(--font-mono);
   font-size: 8.5px;
-  color: var(--text-dim);
+  color: var(--text-faint);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -464,7 +488,7 @@ body {
   flex-flow: row wrap;
   align-items: stretch;
   align-content: flex-start;
-  gap: 10px;
+  gap: 30px;              /* breathing room between the noble-gas column and the papers */
   overflow-y: auto;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -1448,6 +1472,6 @@ body {
 
 </div><!-- /main-col -->
 
-<script src="app.js?v=20260708-6" defer></script>
+<script src="app.js?v=20260820-1" defer></script>
 </body>
 </html>

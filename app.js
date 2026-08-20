@@ -1023,26 +1023,36 @@ async function loadLatestResearch() {
     const data = await res.json();
     const articles = Array.isArray(data.articles) ? data.articles : [];
     if (!articles.length) throw new Error('empty');
-    list.innerHTML = articles.slice(0, 20).map(a => {
-      // prefer isotopes computed at fetch time, else derive from the title
-      const tags = (Array.isArray(a.isotopes) && a.isotopes.length)
-        ? a.isotopes : extractIsotopes(a.title);
-      const chips = tags.length
-        ? tags.slice(0, 3).map(t => {
-            const c = isotopeChipColor(t);
-            const style = c ? ` style="color:${c};border-color:${c}55;"` : '';
-            return `<span class="lr-iso"${style}>${escapeHTML(t)}</span>`;
-          }).join('')
-        : `<span class="lr-iso lr-iso-none" title="No specific nuclide named in the title">—</span>`;
+    // Only papers that study a specific nuclide. (The fetch step already
+    // enforces this; re-checking here keeps a stale cached articles.json from
+    // showing untagged rows.)
+    const withIsotope = articles
+      .map(a => ({
+        ...a,
+        tags: (Array.isArray(a.isotopes) && a.isotopes.length)
+          ? a.isotopes : extractIsotopes(a.title),
+      }))
+      .filter(a => a.tags.length);
+    if (!withIsotope.length) throw new Error('none with isotope');
+
+    list.innerHTML = withIsotope.slice(0, 20).map(a => {
+      const chips = a.tags.slice(0, 3).map(t => {
+        const c = isotopeChipColor(t);
+        const style = c ? ` style="color:${c};border-color:${c}55;"` : '';
+        return `<span class="lr-iso"${style}>${escapeHTML(t)}</span>`;
+      }).join('');
       return `
       <a class="lr-item" href="${escapeHTML(a.url)}" target="_blank" rel="noopener noreferrer" title="${escapeHTML(a.title)}">
         <div class="lr-isos">${chips}</div>
-        <div class="lr-title">${escapeHTML(a.title)}</div>
-        <div class="lr-src">${escapeHTML([a.journal, a.year].filter(Boolean).join(' · '))}</div>
+        <div class="lr-body">
+          <div class="lr-title">${escapeHTML(a.title)}</div>
+          ${a.summary ? `<div class="lr-summary">${escapeHTML(a.summary)}</div>` : ''}
+          <div class="lr-src">${escapeHTML([a.journal, a.year, a.country].filter(Boolean).join(' · '))}</div>
+        </div>
       </a>`;
     }).join('');
     if (meta && data.updated) {
-      meta.textContent = `New applications & developments · ${articles.length} newest · US/EU/UK/SG/JP/TW/KR affiliations · updated ${data.updated} · every 2 weeks`;
+      meta.textContent = `Isotope-specific studies · ${withIsotope.length} newest · US/EU/UK/SG/JP/TW/KR affiliations · updated ${data.updated} · every 2 weeks`;
     }
   } catch (e) {
     list.innerHTML = `<div class="lr-empty">The auto-updated list will populate on the next scheduled refresh. Use the link below for the current articles.</div>`;
