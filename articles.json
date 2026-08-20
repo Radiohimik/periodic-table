@@ -1,167 +1,263 @@
 {
-  "updated": "2026-08-15",
+  "updated": "2026-08-20",
   "source": "Europe PMC",
   "query": "(TITLE:theranostic* OR TITLE:radiotheranostic* OR TITLE:radioligand OR TITLE:radiopharmaceutical* OR TITLE:radiotracer* OR TITLE:radiolabel* OR TITLE:\"radionuclide therapy\" OR TITLE:\"targeted alpha therapy\" OR TITLE:\"peptide receptor radionuclide therapy\" OR TITLE:PSMA OR TITLE:DOTATATE OR TITLE:DOTATOC OR TITLE:FAPI) NOT (TITLE:soil OR TITLE:food OR TITLE:radon OR TITLE:environmental OR TITLE:dietary OR TITLE:water OR TITLE:\"risk assessment\" OR TITLE:foodstuff*)",
+  "affiliationFilter": [
+    "USA",
+    "U\\.S\\.A",
+    "United States",
+    "United Kingdom",
+    "UK",
+    "England",
+    "Scotland",
+    "Wales",
+    "Northern Ireland",
+    "Austria",
+    "Belgium",
+    "Bulgaria",
+    "Croatia",
+    "Cyprus",
+    "Czech Republic",
+    "Czechia",
+    "Denmark",
+    "Estonia",
+    "Finland",
+    "France",
+    "Germany",
+    "Greece",
+    "Hungary",
+    "Ireland",
+    "Italy",
+    "Latvia",
+    "Lithuania",
+    "Luxembourg",
+    "Malta",
+    "Netherlands",
+    "The Netherlands",
+    "Poland",
+    "Portugal",
+    "Romania",
+    "Slovakia",
+    "Slovenia",
+    "Spain",
+    "Sweden",
+    "Singapore",
+    "Japan",
+    "Taiwan",
+    "South Korea",
+    "Republic of Korea",
+    "Korea"
+  ],
   "articles": [
-    {
-      "title": "A theranostic wearable laser-induced graphene-hydrogel dressing for synergistic treatment and real-time monitoring of dermatophytosis.",
-      "authors": "Chen L, Li Z, Shen C, Chen SL, Cheng L, Niu W, Yuan Y, Zhou Y, Li J, Su J, Lin N, Chen S, Lai Z, Ye R, Gu M.",
-      "journal": "Bioact Mater",
-      "year": "2026",
-      "date": "2026-07-28",
-      "url": "https://doi.org/10.1016/j.bioactmat.2026.07.018"
-    },
-    {
-      "title": "Clinical and economic outcomes of cabazitaxel versus Lu-PSMA in mCRPC: a US perspective.",
-      "authors": "Nault B, Garcia D, Cameron H, Revel A, Steele K, Flannery K, Barata P.",
-      "journal": "J Med Econ",
-      "year": "2026",
-      "date": "2026-08-07",
-      "url": "https://doi.org/10.1080/13696998.2026.2709297"
-    },
-    {
-      "title": "Merocyanine derivatives as theranostic agents for cognitive improvement and real-time imaging of amyloid-β in APP/PS1 transgenic mice.",
-      "authors": "Li X, Li S, Su J, Zheng F, Li S, Zhao X, Chen D, Yan J, Xia C.",
-      "journal": "Spectrochim Acta A Mol Biomol Spectrosc",
-      "year": "2026",
-      "date": "2026-07-15",
-      "url": "https://doi.org/10.1016/j.saa.2026.128458"
-    },
     {
       "title": "Cost-effectiveness of ferumoxtran-enhanced macrophage-specific-MRI and PSMA-PET/CT versus ePLND for nodal staging in primary prostate cancer: a decision analysis based on updated phase-3 trial data.",
       "authors": "Zamecnik P, Feuerstein J, Berghahn M, Barentsz J.",
-      "journal": "J Med Econ",
+      "journal": "MED",
       "year": "2026",
       "date": "2026-07-16",
+      "country": "The Netherlands",
+      "isotopes": [],
       "url": "https://doi.org/10.1080/13696998.2026.2699645"
     },
     {
-      "title": "First-in-human evaluation of [&lt;sup&gt;18&lt;/sup&gt;F]-AlF-NOTA-neurotensin for NTSR1-targeted imaging of prostate cancer: a head-to-head comparison with [&lt;sup&gt;68&lt;/sup&gt;Ga]Ga-PSMA-617.",
-      "authors": "He J, Wang Y, Tang W, Gao X, Cai Y, Tang Y, Hu S.",
-      "journal": "Ann Med",
+      "title": "Outcomes of peptide receptor radionuclide therapy after progression following hepatic cytoreductive operation for neuroendocrine tumors.",
+      "authors": "Kozuma K, Aaron R, Pommier R.",
+      "journal": "MED",
       "year": "2026",
-      "date": "2026-06-17",
-      "url": "https://doi.org/10.1080/07853890.2026.2678019"
-    },
-    {
-      "title": "Dual-pathway blockade overcomes ferroptosis resistance in pancreatic ductal adenocarcinoma via a CD133-targeted manganese-porphyrin theranostic nanoplatform.",
-      "authors": "Xu K, Xie C, Wu R, Luo J, Ye Y, Zhang Y, Song M, Xue M, Zeng A, Ren W, Wu A, Wang J.",
-      "journal": "Biomaterials",
-      "year": "2026",
-      "date": "2026-05-26",
-      "url": "https://doi.org/10.1016/j.biomaterials.2026.124340"
-    },
-    {
-      "title": "Repurposing radiopharmaceutical carriers for targeted drug delivery and theranostics: A translational framework.",
-      "authors": "Shahiwala AF.",
-      "journal": "Pharm Sci Adv",
-      "year": "2026",
-      "date": "2026-04-16",
-      "url": "https://doi.org/10.1016/j.pscia.2026.100122"
-    },
-    {
-      "title": "Harnessing fluorescent probes for molecular diagnosis and theranostics of atherosclerosis.",
-      "authors": "Mao X, Zhao X, Ni Z, Xu X, Liu Q, Qu P.",
-      "journal": "Drug Deliv",
-      "year": "2026",
-      "date": "2026-01-09",
-      "url": "https://doi.org/10.1080/10717544.2025.2595728"
-    },
-    {
-      "title": "Aptamer-functionalized nanomaterials for circulating tumor cell detection: From liquid biopsy to cancer theranostic.",
-      "authors": "Jiang M, Zheng K, Li N, Yang L, Liu L, Ren Z, Han H, Qu Z, Li J, Wang Y, Zhang W, Chen S, Kou Q, Hao F.",
-      "journal": "Anal Biochem",
-      "year": "2026",
-      "date": "2026-07-23",
-      "url": "https://doi.org/10.1016/j.ab.2026.116197"
-    },
-    {
-      "title": "Visual theranostic oral nanozymes for IBD from principles to preclinical design.",
-      "authors": "Zuo S, Li K, Feng L, Yu X, Wang Y, Wu C, Weng W, He Y, Cai X, Cheng K.",
-      "journal": "Bioact Mater",
-      "year": "2026",
-      "date": "2026-06-24",
-      "url": "https://doi.org/10.1016/j.bioactmat.2026.06.002"
-    },
-    {
-      "title": "A closed-loop myocardial infarction theranostic platform activated by macrophage-derived nitric oxide and acidic microenvironment.",
-      "authors": "Xu X, Li S, Chen Y, Li M, Li R, Lu H, Yang F, Tong J.",
-      "journal": "Bioact Mater",
-      "year": "2026",
-      "date": "2026-05-30",
-      "url": "https://doi.org/10.1016/j.bioactmat.2026.05.045"
+      "date": "2026-06-10",
+      "country": "USA",
+      "isotopes": [],
+      "url": "https://doi.org/10.1016/j.amjsurg.2026.117099"
     },
     {
       "title": "Review: Phosphorus-33 - Analysis of nuclear reactor production methods for potential application in radionuclide therapy for bone metastases.",
       "authors": "Davenport B, Mendelsohn R, Landsberger S.",
-      "journal": "Appl Radiat Isot",
+      "journal": "MED",
       "year": "2026",
       "date": "2026-07-01",
+      "country": "USA",
+      "isotopes": [
+        "P-33"
+      ],
       "url": "https://doi.org/10.1016/j.apradiso.2026.112785"
-    },
-    {
-      "title": "Development and biodistribution of &lt;sup&gt;131&lt;/sup&gt;I-radiolabeled silver-doped indium oxide nanoparticles as a novel nanoplatform for tumor targeting in tumor bearing mice.",
-      "authors": "Aboumanei MH, El Refaye MS, Khater SI.",
-      "journal": "Appl Radiat Isot",
-      "year": "2026",
-      "date": "2026-06-23",
-      "url": "https://doi.org/10.1016/j.apradiso.2026.112771"
-    },
-    {
-      "title": "[&lt;sup&gt;225&lt;/sup&gt;Ac]Ac-Macropa-PEG&lt;sub&gt;4&lt;/sub&gt;-FPA150 enables targeted alpha therapy of B7-H4-Expressing tumors.",
-      "authors": "Amjad F, Shah SQ.",
-      "journal": "Appl Radiat Isot",
-      "year": "2026",
-      "date": "2026-06-26",
-      "url": "https://doi.org/10.1016/j.apradiso.2026.112778"
-    },
-    {
-      "title": "From PET to targeted radionuclide therapy in the Brain: The emerging role of radiometal-based platforms.",
-      "authors": "Cawthray J.",
-      "journal": "J Inorg Biochem",
-      "year": "2026",
-      "date": "2026-06-24",
-      "url": "https://doi.org/10.1016/j.jinorgbio.2026.113397"
     },
     {
       "title": "Assessment of active fibrotic remodeling in patients with idiopathic pulmonary fibrosis (IPF)/progressive pulmonary fibrosis (PPF) using dual-time-point [&lt;sup&gt;68&lt;/sup&gt;Ga]Ga-FAPI-46-PET/CT.",
       "authors": "Grunert M, Horn V, Baudrexl JC, Buechele P, Hackenbroch C, Klemenz B, Beer AJ, Steinestel K, Gagiannis D.",
-      "journal": "Eur J Radiol",
+      "journal": "MED",
       "year": "2026",
       "date": "2026-06-23",
+      "country": "Germany",
+      "isotopes": [
+        "Ga-68"
+      ],
       "url": "https://doi.org/10.1016/j.ejrad.2026.113036"
     },
     {
       "title": "Diagnostic performance of FAPI PET/CT for the detection of peritoneal metastases: an updated systematic review and bivariate meta-analysis.",
       "authors": "Qi-Chang W, Kai-Yin M, Cheng-Yi W, Bin J.",
-      "journal": "Eur J Radiol",
+      "journal": "MED",
       "year": "2026",
       "date": "2026-06-16",
+      "country": "Japan",
+      "isotopes": [],
       "url": "https://doi.org/10.1016/j.ejrad.2026.113011"
     },
     {
-      "title": "Cross-section measurements of lanthanum radioisotopes towards an optimized production of &lt;sup&gt;133&lt;/sup&gt;La and &lt;sup&gt;135&lt;/sup&gt;La for theranostic applications.",
-      "authors": "Dellepiane G, Eggimann L, Gottstein A, Juillerat S, Kasanda E, Mateu I, Scampoli P, Braccini S.",
-      "journal": "Appl Radiat Isot",
+      "title": "Light It Up! The Use of DOTATATE in Diagnosis and Treatment of Neuroendocrine Neoplasms.",
+      "authors": "Schwarz JL, Williams JK, Keutgen XM, Liao CY.",
+      "journal": "MED",
       "year": "2026",
-      "date": "2026-06-01",
-      "url": "https://doi.org/10.1016/j.apradiso.2026.112727"
+      "date": "2026-09-01",
+      "country": "USA",
+      "isotopes": [],
+      "url": "https://doi.org/10.1016/j.cll.2026.06.012"
     },
     {
-      "title": "Evolution of PSMA-GRPr heterobivalent radiolabeled conjugates for the diagnosis and therapy of prostate cancer.",
-      "authors": "Grigoriev GP, Beloglazkina EK, Petrov SA.",
-      "journal": "Eur J Med Chem",
+      "title": "PSA persistence in the PSMA PET era: reassessing a risk factor after radical prostatectomy.",
+      "authors": "Scharl S, Thamm R, Zamboglou C, Strouthos I, Farolfi A, Serani F, Koerber SA, Peeken JC, Vogel MME, Kroeze SGC, Guckenberger M, Krafcsik M, Hruby G, Emmett L, Schmidt-Hegemann NS, Trapp C, Spohn SKB, Henkenberens C, Mayer B, Shelan M, Aebersold DM, Eberhardt N, Debus J, Wiegel T.",
+      "journal": "MED",
       "year": "2026",
-      "date": "2026-06-01",
-      "url": "https://doi.org/10.1016/j.ejmech.2026.119026"
+      "date": "2026-06-13",
+      "country": "Germany",
+      "isotopes": [],
+      "url": "https://doi.org/10.1016/j.radonc.2026.111640"
     },
     {
-      "title": "Beyond the brain barrier: Hybrid nanoparticles orchestrating intelligent neuro-theranostics.",
-      "authors": "Saxena S, Kaur J, Singh TG, Kumar M, Awasthi A.",
-      "journal": "Adv Colloid Interface Sci",
+      "title": "Nanoplasmid PSMA DNA vaccine primes antitumor immunity and enhances response to PD-1 blockade against prostate cancer.",
+      "authors": "Maza PAMA, Flores L, Cyril-Ramirez D, Neeli P, Ni H, Li Y.",
+      "journal": "MED",
       "year": "2026",
-      "date": "2026-05-25",
-      "url": "https://doi.org/10.1016/j.cis.2026.103954"
+      "date": "2026-05-22",
+      "country": "USA",
+      "isotopes": [],
+      "url": "https://doi.org/10.1016/j.canlet.2026.218591"
+    },
+    {
+      "title": "PSMA PET: the answer to MRI-occult prostate cancer… or another mirage?",
+      "authors": "Wagner T, Emberton M, Caglic I, Priftakis D, Giganti F, Kasivisvanathan V, Punwani S.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-04-30",
+      "country": "UK",
+      "isotopes": [],
+      "url": "https://doi.org/10.1007/s00330-026-12596-3"
+    },
+    {
+      "title": "Scrotal uptake on PSMA PET in prostate cancer: differentiating metastases from benign and physiologic findings using ultrasound correlation.",
+      "authors": "Takahashi H, Potretzke TA, Ehman EC, Lomas DJ, Alexander LF, Kwon ED, Kawashima A.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-03-09",
+      "country": "USA",
+      "isotopes": [],
+      "url": "https://doi.org/10.1007/s00261-026-05408-1"
+    },
+    {
+      "title": "Prostate specific membrane antigen focal ablation imaging (PSMA-FAB).",
+      "authors": "Lopci E, Lazzeri M, Fasulo V, Maffei D, Avolio PP, Tallari A, Moretto S, Cella L, Rodari M, Sposta FM, Casale P, Buffi NM, Lughezzani G.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2025-07-30",
+      "country": "Italy",
+      "isotopes": [],
+      "url": "https://doi.org/10.1038/s41391-025-01005-3"
+    },
+    {
+      "title": "Theranostic silica nanoparticles for selective and simultaneous delivery of paclitaxel and coumarin to hypoxic tumors.",
+      "authors": "Rodrigo-Martínez P, Ahmed Ali LM, Coll C, Gary-Bobo M, Winum JY, Arroyo P, Sáez JA, Gaviña P.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-08-16",
+      "country": "Spain",
+      "isotopes": [],
+      "url": "https://doi.org/10.1016/j.ijpharm.2026.127317"
+    },
+    {
+      "title": "Safety profile of therapeutic radiopharmaceuticals for bone metastases pain palliation: evidence from a systematic literature review.",
+      "authors": "Martins S, Oliveira D, Pinho C, Martín-Suárez A, Jesus Â.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-08-14",
+      "country": "Portugal",
+      "isotopes": [],
+      "url": "https://doi.org/10.1097/mnm.0000000000002221"
+    },
+    {
+      "title": "Prognostic Value of [&lt;sup&gt;18&lt;/sup&gt;F]FDG PET Combined with [&lt;sup&gt;68&lt;/sup&gt;Ga]Ga-PSMA PET as Pretreatment Imaging in Patients with Metastatic Castration-Resistant Prostate Cancer Treated with [&lt;sup&gt;177&lt;/sup&gt;Lu]Lu-PSMA-617.",
+      "authors": "Bekkhoucha A, Zaragori T, Olivier P, Claudin M, Marie PY, Kunsch J, Verger A, Raymond P, Heyer S, Imbert L, Boursier C.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-08-13",
+      "country": "France",
+      "isotopes": [
+        "F-18",
+        "Ga-68",
+        "Lu-177"
+      ],
+      "url": "https://doi.org/10.2967/jnumed.126.273113"
+    },
+    {
+      "title": "WSB1-Mediated PSMA Ubiquitination Promotes Enzalutamide-Induced Neuroendocrine-like Transition in Patient-Derived Prostate Cancer Spheroids.",
+      "authors": "Jung D, Kendi AT, Woodrum DA, Adamo DA, Thompson SM, In MH, Belge Bilgin G, Johnson DR, Horn IM, Kim EJ, Chung JO, Park SY, Curran GL, Lowe VJ, Lee S.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-08-01",
+      "country": "USA",
+      "isotopes": [],
+      "url": "https://doi.org/10.3390/ijms27156899"
+    },
+    {
+      "title": "Advances in Nuclear Medicine Diagnostics: The Promise of Radiolabeled Dendrimers.",
+      "authors": "Kołodziejczyk AM, Karwowski BT.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-08-04",
+      "country": "Poland",
+      "isotopes": [],
+      "url": "https://doi.org/10.3390/molecules31152709"
+    },
+    {
+      "title": "Head-to-Head &lt;sup&gt;18&lt;/sup&gt;F-rhPSMA-7.3 and &lt;sup&gt;18&lt;/sup&gt;F-PSMA-1007 PET/CT in Recurrent Prostate Cancer: Pulmonary and Nodal Uptake as a Diagnostic Challenge.",
+      "authors": "Chen YS, Shen DH, Huang YT, Lee MC, Chan HP.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-08-01",
+      "country": "Taiwan",
+      "isotopes": [
+        "F-18"
+      ],
+      "url": "https://doi.org/10.3390/diagnostics16152437"
+    },
+    {
+      "title": "Comparative assessment of KDIGO and CTCAE criteria for detecting renal function deterioration after peptide receptor radionuclide therapy.",
+      "authors": "Siegmund SC, Salem M, Dema E, Widjaja L, Gildehaus FJ, Spitzweg C, Auernhammer CJ, Brendel M, Werner RA.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-08-12",
+      "country": "Germany",
+      "isotopes": [],
+      "url": "https://doi.org/10.1007/s00259-026-08126-4"
+    },
+    {
+      "title": "PSMA Radio-guided Surgery to Identify Lymph Node Metastases in Prostate Cancer Patients Undergoing Robot-assisted Radical Prostatectomy and Extended Pelvic Lymph Node Dissection: Results of a Phase 2 Prospective Study.",
+      "authors": "Quarta L, Zaurito P, Viti A, Cosenza A, Scuderi S, Barletta F, Cucchiara V, Stabile A, Dambrosio L, Mazzone E, Tenace N, Brembilla G, De Cobelli F, Gajate AMS, Pini C, Picchio M, Chiti A, Montorsi F, Briganti A, Gandaglia G.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-08-11",
+      "country": "Italy",
+      "isotopes": [],
+      "url": "https://doi.org/10.1016/j.eururo.2026.07.027"
+    },
+    {
+      "title": "[Translated article] Guideline to radiopharmaceutical procedures for in vitro labeling of leukocytes.",
+      "authors": "Romero-Zayas I, de Arcocha-Torres M, Peñuelas I, Martínez Montalbán E, Plancha Mansanet MC, Fernández Sánchez AJ, Pérez Iruela JA.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-08-11",
+      "country": "Spain",
+      "isotopes": [],
+      "url": "https://doi.org/10.1016/j.farma.2026.07.006"
     }
   ]
 }
