@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-20",
+  "updated": "2026-08-21",
   "source": "Europe PMC",
   "query": "(TITLE:theranostic* OR TITLE:radiotheranostic* OR TITLE:radioligand OR TITLE:radiopharmaceutical* OR TITLE:radiotracer* OR TITLE:radiolabel* OR TITLE:\"radionuclide therapy\" OR TITLE:\"targeted alpha therapy\" OR TITLE:\"peptide receptor radionuclide therapy\" OR TITLE:PSMA OR TITLE:DOTATATE OR TITLE:DOTATOC OR TITLE:FAPI) NOT (TITLE:soil OR TITLE:food OR TITLE:radon OR TITLE:environmental OR TITLE:dietary OR TITLE:water OR TITLE:\"risk assessment\" OR TITLE:foodstuff*)",
   "affiliationFilter": [
@@ -51,7 +51,7 @@
   "articles": [
     {
       "title": "Review: Phosphorus-33 - Analysis of nuclear reactor production methods for potential application in radionuclide therapy for bone metastases.",
-      "summary": "Phosphorus-33 (33P) has attracted growing interest as an alternative to phosphorus-32 (32P) for targeted radionuclide therapy.",
+      "summary": "Phosphorus-33 (33P) has attracted growing interest as an alternative to phosphorus-32 (32P) for targeted radionuclide therapy. Its longer half-life (25.3 vs. 14.3 days), lower maximum beta energy (∼0.25 MeV vs. 1.7 MeV), and shorter median tissue penetration depth (0.135 mm vs. 3.65 mm) may make it particularly suitable for treating conditions such as bone metastases, where minimizing collateral damage to radiation-sensitive structures like red bone marrow is critical.",
       "authors": "Davenport B, Mendelsohn R, Landsberger S.",
       "journal": "MED",
       "year": "2026",
@@ -63,8 +63,8 @@
       "url": "https://doi.org/10.1016/j.apradiso.2026.112785"
     },
     {
-      "title": "Assessment of active fibrotic remodeling in patients with idiopathic pulmonary fibrosis (IPF)/progressive pulmonary fibrosis (PPF) using dual-time-point [&lt;sup&gt;68&lt;/sup&gt;Ga]Ga-FAPI-46-PET/CT.",
-      "summary": "Progressive fibrosing interstitial lung diseases (ILD) continue to have a poor prognosis. To date, there is no imaging method that can reliably detect fibrotic remodeling processes or distinguish between active and dormant fibrotic changes in the lungs.",
+      "title": "Assessment of active fibrotic remodeling in patients with idiopathic pulmonary fibrosis (IPF)/progressive pulmonary fibrosis (PPF) using dual-time-point [68Ga]Ga-FAPI-46-PET/CT.",
+      "summary": "Progressive fibrosing interstitial lung diseases (ILD) continue to have a poor prognosis. To date, there is no imaging method that can reliably detect fibrotic remodeling processes or distinguish between active and dormant fibrotic changes in the lungs. The novel PET/CT with fibroblast activation protein inhibitor (FAPI) targets activated fibroblasts.",
       "authors": "Grunert M, Horn V, Baudrexl JC, Buechele P, Hackenbroch C, Klemenz B, Beer AJ, Steinestel K, Gagiannis D.",
       "journal": "MED",
       "year": "2026",
@@ -76,8 +76,8 @@
       "url": "https://doi.org/10.1016/j.ejrad.2026.113036"
     },
     {
-      "title": "Prognostic Value of [&lt;sup&gt;18&lt;/sup&gt;F]FDG PET Combined with [&lt;sup&gt;68&lt;/sup&gt;Ga]Ga-PSMA PET as Pretreatment Imaging in Patients with Metastatic Castration-Resistant Prostate Cancer Treated with [&lt;sup&gt;177&lt;/sup&gt;Lu]Lu-PSMA-617.",
-      "summary": "Prostate-specific membrane antigen (PSMA)-targeted radiopharmaceutical therapy with [177Lu]Lu-PSMA-617 has reshaped the management of metastatic castration-resistant prostate cancer (mCRPC).",
+      "title": "Prognostic Value of [18F]FDG PET Combined with [68Ga]Ga-PSMA PET as Pretreatment Imaging in Patients with Metastatic Castration-Resistant Prostate Cancer Treated with [177Lu]Lu-PSMA-617.",
+      "summary": "Prostate-specific membrane antigen (PSMA)-targeted radiopharmaceutical therapy with [177Lu]Lu-PSMA-617 has reshaped the management of metastatic castration-resistant prostate cancer (mCRPC). This study aimed to assess the added prognostic value of [18F]FDG PET beyond [68Ga]Ga-PSMA-11 PET as pretreatment imaging and to develop an overall survival (OS) nomogram for patients with mCRPC who were treated with [177Lu]Lu-PSMA-617.",
       "authors": "Bekkhoucha A, Zaragori T, Olivier P, Claudin M, Marie PY, Kunsch J, Verger A, Raymond P, Heyer S, Imbert L, Boursier C.",
       "journal": "MED",
       "year": "2026",
@@ -91,8 +91,8 @@
       "url": "https://doi.org/10.2967/jnumed.126.273113"
     },
     {
-      "title": "Head-to-Head &lt;sup&gt;18&lt;/sup&gt;F-rhPSMA-7.3 and &lt;sup&gt;18&lt;/sup&gt;F-PSMA-1007 PET/CT in Recurrent Prostate Cancer: Pulmonary and Nodal Uptake as a Diagnostic Challenge.",
-      "summary": "This report presents a within-patient comparison of 18F-rhPSMA-7.3 and 18F-PSMA-1007 PET/CT in a 71-year-old man with Gleason score 4 + 3 = 7, pT3bN1 metastatic castration-resistant prostate cancer after robot-assisted radical prostatectomy, multiple…",
+      "title": "Head-to-Head 18F-rhPSMA-7.3 and 18F-PSMA-1007 PET/CT in Recurrent Prostate Cancer: Pulmonary and Nodal Uptake as a Diagnostic Challenge.",
+      "summary": "This report presents a within-patient comparison of 18F-rhPSMA-7.3 and 18F-PSMA-1007 PET/CT in a 71-year-old man with Gleason score 4 + 3 = 7, pT3bN1 metastatic castration-resistant prostate cancer after robot-assisted radical prostatectomy, multiple androgen-deprivation and androgen receptor-directed treatments, and radiotherapy for para-aortic nodal metastases.",
       "authors": "Chen YS, Shen DH, Huang YT, Lee MC, Chan HP.",
       "journal": "MED",
       "year": "2026",
@@ -105,7 +105,7 @@
     },
     {
       "title": "[Translated article] Guideline to radiopharmaceutical procedures for in vitro labeling of leukocytes.",
-      "summary": "This guide outlines the radiopharmaceutical procedure for the in vitro labelling of leukocytes.",
+      "summary": "This guide outlines the radiopharmaceutical procedure for the in vitro labelling of leukocytes. Scintigraphy using leukocytes labeled with [99mTc]Tc-exametazime or [111In]In-oxine is a highly valuable diagnostic tool in infectious and inflammatory diseases due to its high sensitivity and specificity.",
       "authors": "Romero-Zayas I, de Arcocha-Torres M, Peñuelas I, Martínez Montalbán E, Plancha Mansanet MC, Fernández Sánchez AJ, Pérez Iruela JA.",
       "journal": "MED",
       "year": "2026",
@@ -119,7 +119,7 @@
     },
     {
       "title": "Off-the-shelf microbrachytherapy using on-site fast radiolabeling for keloid treatment.",
-      "summary": "Keloids are fibroproliferative dermal tumors caused by aberrant healing after skin injury and represent refractory skin conditions with limited therapeutic options that often require prolonged treatment.",
+      "summary": "Keloids are fibroproliferative dermal tumors caused by aberrant healing after skin injury and represent refractory skin conditions with limited therapeutic options that often require prolonged treatment. Although radiotherapy lowers recurrence, external beams struggle to confine doses to small, irregular lesions. Herein, we report an off-the-shelf microbrachytherapy approach that uses on-site radiolabeled microgels for keloid treatment.",
       "authors": "Kim S, Kim K, Seong KY, Yu M, Kim JH, Yim SG, Choi S, Seo MS, Kim HS, Yang SY.",
       "journal": "MED",
       "year": "2026",
@@ -132,7 +132,7 @@
     },
     {
       "title": "Reducing renal radioactivity of radiolabeled tetravalent RGD peptides via cleavable linkers for targeted radionuclide therapy.",
-      "summary": "In targeted radionuclide therapy, high renal radioactivity raises concerns that nephrotoxicity may limit therapeutic utility.",
+      "summary": "In targeted radionuclide therapy, high renal radioactivity raises concerns that nephrotoxicity may limit therapeutic utility. Our recently developed 211At-labeled tetravalent RGD peptide ([211At]At-(RGD)4) also faces this challenge, despite achieving high and persistent tumor accumulation.",
       "authors": "Suebboonprathueng T, Mizuno Y, Uehara T, Kuge Y.",
       "journal": "MED",
       "year": "2026",
@@ -144,8 +144,8 @@
       "url": "https://doi.org/10.1016/j.nucmedbio.2026.109665"
     },
     {
-      "title": "High-Yield Room-Temperature Aryl &lt;sup&gt;211&lt;/sup&gt;At Radiolabeling via Redox-Activated Column-Shipped &lt;sup&gt;211&lt;/sup&gt;At.",
-      "summary": "Efficient late-stage formation of aryl-211At bonds is relevant to expanding the scope of targeted α-therapy radiopharmaceuticals.",
+      "title": "High-Yield Room-Temperature Aryl 211At Radiolabeling via Redox-Activated Column-Shipped 211At.",
+      "summary": "Efficient late-stage formation of aryl-211At bonds is relevant to expanding the scope of targeted α-therapy radiopharmaceuticals. In this work, a catalyst-enabled astatodeboronation approach is evaluated using wet chemically regenerated 211At recovered from shipped 3-octanone-impregnated columns.",
       "authors": "Perera JS, Pyles JM, Orsi AL, Lawrence CC, Le M, Tabacaru GC, McIntosh LA, Yennello SJ, Burns JD.",
       "journal": "MED",
       "year": "2026",
@@ -157,8 +157,8 @@
       "url": "https://doi.org/10.1021/acsorginorgau.6c00015"
     },
     {
-      "title": "Patient Survival and Its Relation to Tumor Absorbed Dose in [&lt;sup&gt;177&lt;/sup&gt;Lu]Lu-DOTATATE Therapy of Neuroendocrine Tumors.",
-      "summary": "[177Lu]Lu-DOTATATE is an established treatment for metastasized neuroendocrine tumors (NETs). It is postulated that a higher tumor absorbed dose (AD) improves clinical efficacy.",
+      "title": "Patient Survival and Its Relation to Tumor Absorbed Dose in [177Lu]Lu-DOTATATE Therapy of Neuroendocrine Tumors.",
+      "summary": "[177Lu]Lu-DOTATATE is an established treatment for metastasized neuroendocrine tumors (NETs). It is postulated that a higher tumor absorbed dose (AD) improves clinical efficacy. The aim of this study was to assess the average AD of the entire tumor burden and analyze its effect on survival outcomes. This post hoc analysis included 81 patients with metastasized grade 1 and grade 2 NETs treated with [177Lu]Lu-DOTATATE individualized based on renal dosimetry.",
       "authors": "Warfvinge CF, Kapidzic SC, Gustafsson J, Jessen L, Svensson J, Sundlöv A, Sjögreen Gleisner K.",
       "journal": "MED",
       "year": "2026",
@@ -170,8 +170,8 @@
       "url": "https://doi.org/10.2967/jnumed.125.271439"
     },
     {
-      "title": "Real-World Outcomes of [&lt;sup&gt;177&lt;/sup&gt;Lu]Lu-PSMA-617 in the French Early-Access Program for Patients with Metastatic Castration-Resistant Prostate Cancer.",
-      "summary": "Metastatic castration-resistant prostate cancer (mCRPC) remains challenging to treat, especially after failure of standard therapies, such as androgen receptor pathway inhibitors and taxane-based chemotherapy.",
+      "title": "Real-World Outcomes of [177Lu]Lu-PSMA-617 in the French Early-Access Program for Patients with Metastatic Castration-Resistant Prostate Cancer.",
+      "summary": "Metastatic castration-resistant prostate cancer (mCRPC) remains challenging to treat, especially after failure of standard therapies, such as androgen receptor pathway inhibitors and taxane-based chemotherapy. Radiopharmaceutical therapy with [177Lu]Lu-PSMA-617 targets prostate-specific membrane antigen (PSMA)-positive tumor cells.",
       "authors": "Bailly C, Vija L, Somme F, Massard V, Barthélémy P, Giraudet AL, Godbert Y, Fléchon A, Girault S, Abadie-Lacourtoisie S, Viala C, Douillet A, Chêne S, Olivier P, Roubaud G.",
       "journal": "MED",
       "year": "2026",
@@ -183,7 +183,7 @@
       "url": "https://doi.org/10.2967/jnumed.126.272721"
     },
     {
-      "title": "[&lt;sup&gt;177&lt;/sup&gt;Lu]Lu-PSMA-617 in patients with PSMA-positive metastatic androgen pathway modulator-naive/sensitive prostate cancer (PSMAddition): a phase 3 randomised, controlled trial.",
+      "title": "[177Lu]Lu-PSMA-617 in patients with PSMA-positive metastatic androgen pathway modulator-naive/sensitive prostate cancer (PSMAddition): a phase 3 randomised, controlled trial.",
       "summary": "A contemporary standard of care for patients with metastatic androgen pathway modulator-naive/sensitive (APMN/S) prostate cancer (also known as metastatic hormone-sensitive prostate cancer) is androgen deprivation therapy (ADT) plus an androgen receptor pathway inhibitor (ARPI) until progression.",
       "authors": "Tagawa ST, Sartor O, Piulats JM, Saad F, Fizazi K, Reid A, Beltran H, Kramer G, Mahammedi H, Eiber M, Gupta S, Castellano D, Hauke R, Kim H, Kwak C, Pang ST, Barthélémy P, Dai D, Lee JL, Nordquist L, Szmulewitz RZ, Wiechno P, Yovine A, Smith L, Bouillaud E, Sakharova O, Morris MJ, PSMAddition Investigators.",
       "journal": "MED",
@@ -209,8 +209,8 @@
       "url": "https://doi.org/10.1016/j.euf.2026.07.013"
     },
     {
-      "title": "Tumour-absorbed dose and efficacy of peptide receptor radionuclide therapy with [&lt;sup&gt;90&lt;/sup&gt;Y]Y-DOTATOC in patients with refractory meningioma: a single-centre experience.",
-      "summary": "The management of treatment-refractory meningioma in patients with previous surgical resection and radiation therapy remains challenging due to the lack of effective systemic treatment options.",
+      "title": "Tumour-absorbed dose and efficacy of peptide receptor radionuclide therapy with [90Y]Y-DOTATOC in patients with refractory meningioma: a single-centre experience.",
+      "summary": "The management of treatment-refractory meningioma in patients with previous surgical resection and radiation therapy remains challenging due to the lack of effective systemic treatment options. Therefore, novel therapeutic applications, such as peptide receptor radionuclide therapy (PRRT) targeting somatostatin receptors, may offer a promising therapeutic strategy.",
       "authors": "Schweiger L, Santo G, Kronthaler A, di Santo G, Iglseder S, Mangesius S, Mangesius J, Stock K, Virgolini I.",
       "journal": "MED",
       "year": "2026",
@@ -223,7 +223,7 @@
     },
     {
       "title": "Macropa-Based 225Ac-Labeled RGD Peptides for Targeted Alpha Therapy.",
-      "summary": "Macropa has formed more stable complexes with 225Ac, although DOTA has been extensively used as a chelator for 225Ac.",
+      "summary": "Macropa has formed more stable complexes with 225Ac, although DOTA has been extensively used as a chelator for 225Ac. This study aimed to design and synthesize two novel 225Ac-labeled RGD peptides, [225Ac]Ac-Macropa-c(RGDyK) ([225Ac]1) and [225Ac]Ac-Macropa-[c(RGDyK)]2 ([225Ac]2), and to evaluate their potential for targeted alpha therapy (TAT) of glioblastoma.",
       "authors": "Echigo H, Munekane M, Fuchigami T, Mishiro K, Kikunaga H, Tsukada K, Yokokita T, Shirasaki K, Ichinose J, Hinoi E, Kinuya S, Ogawa K.",
       "journal": "MED",
       "year": "2026",
@@ -235,7 +235,7 @@
       "url": "https://doi.org/10.1021/acs.molpharmaceut.6c00344"
     },
     {
-      "title": "Effect of neoadjuvant chemotherapy on [&lt;sup&gt;68&lt;/sup&gt;Ga]Ga-FAPI-46 PET/CT in peritoneal carcinomatosis: a prospective translational exploratory sub-cohort analysis.",
+      "title": "Effect of neoadjuvant chemotherapy on [68Ga]Ga-FAPI-46 PET/CT in peritoneal carcinomatosis: a prospective translational exploratory sub-cohort analysis.",
       "summary": "To evaluate whether [68Ga]Ga-FAPI-46 PET/CT (FAPI PET) is sensitive to neoadjuvant chemotherapy (NAC)-associated changes in peritoneal carcinomatosis (PC) and whether post-NAC FAPI PET parameters and pre-/post-NAC changes are associated with histopathologic and biochemical response.",
       "authors": "Arçay Öztürk A, Liberale G, Noël JC, Delbart W, Deleu AL, Woff E, Poenaru R, Polastro L, Theunissen L, Kristanto P, Vercauteren S, Marin C, Taraji L, Flamen P.",
       "journal": "MED",
@@ -249,7 +249,7 @@
     },
     {
       "title": "Imaging of ROR1 expression in tumors using radiolabeled affibody molecules.",
-      "summary": "Receptor tyrosine kinase-like orphan receptor 1 (ROR1) is an attractive molecular target for anti-tumor therapies undergoing late-stage clinical development.",
+      "summary": "Receptor tyrosine kinase-like orphan receptor 1 (ROR1) is an attractive molecular target for anti-tumor therapies undergoing late-stage clinical development. Quantitative imaging of ROR1 expression could enable identification of patients likely to respond to such treatments. This study aimed to assess the feasibility of specific in vivo imaging of ROR1 using radiolabeled affibody molecules.",
       "authors": "Westerberg C, Xu T, Marth M, Ud-Din M, Abushaia R, Hagelin T, Ståhl S, Orlova A, Tolmachev V, Löfblom J, Vorobyeva A.",
       "journal": "MED",
       "year": "2026",
@@ -261,8 +261,8 @@
       "url": "https://doi.org/10.1007/s00259-026-08106-8"
     },
     {
-      "title": "[&lt;sup&gt;18&lt;/sup&gt;F]PSMA-1007 PET-Based Recurrence Site Distribution and Predictors of Metastatic Disease in Patients With Biochemical Recurrence of Prostate Cancer.",
-      "summary": "Prostate-specific membrane antigen positron emission tomography (PSMA-PET) is a sensitive imaging modality for detecting recurrent prostate cancer following definitive local therapy.",
+      "title": "[18F]PSMA-1007 PET-Based Recurrence Site Distribution and Predictors of Metastatic Disease in Patients With Biochemical Recurrence of Prostate Cancer.",
+      "summary": "Prostate-specific membrane antigen positron emission tomography (PSMA-PET) is a sensitive imaging modality for detecting recurrent prostate cancer following definitive local therapy. However, evidence on 18F-labeled PSMA tracers in Japanese patients with biochemical recurrence (BCR) remains limited. The aim of this study was to examine the recurrence site distribution by [18F]PSMA-1007 PET in patients with BCR and identify factors associated with metastatic disease.",
       "authors": "Hatano K, Watabe T, Hirata T, Konishi M, Kanaki T, Tani M, Oka T, Ishizuya Y, Hayashi T, Yamamoto Y, Kato T, Kawashima A, Fujita K, Uemura M, Giesel FL, Nonomura N.",
       "journal": "MED",
       "year": "2026",
@@ -274,7 +274,7 @@
       "url": "https://doi.org/10.1111/iju.70587"
     },
     {
-      "title": "Toward Trustworthy PET Radiomics: Quantitative Repeatability Analysis of &lt;sup&gt;18&lt;/sup&gt;F-FDG and &lt;sup&gt;68&lt;/sup&gt;Ga-PSMA Features under Inherent Stochastic Noise.",
+      "title": "Toward Trustworthy PET Radiomics: Quantitative Repeatability Analysis of 18F-FDG and 68Ga-PSMA Features under Inherent Stochastic Noise.",
       "summary": "The reliability of PET radiomic features is fundamentally constrained by inherent stochastic noise originating from Poisson-distributed photon-counting statistics and additional fluctuations introduced by electronic signal processing.",
       "authors": "Tu SJ, Wu YC, Tseng JR.",
       "journal": "MED",
@@ -302,7 +302,7 @@
     },
     {
       "title": "Improving Pharmacokinetics of PSMA/GRPR-Targeting Radiolabeled Heterodimer through Enhanced Albumin Binding.",
-      "summary": "Radiolabeled heterodimers targeting prostate-specific membrane antigen (PSMA) and gastrin-releasing peptide receptor (GRPR) have been extensively investigated to overcome heterogeneous target expression in prostate cancer.",
+      "summary": "Radiolabeled heterodimers targeting prostate-specific membrane antigen (PSMA) and gastrin-releasing peptide receptor (GRPR) have been extensively investigated to overcome heterogeneous target expression in prostate cancer. However, low tumor retention and high kidney uptake remain major challenges. In this study, we designed and synthesized a novel albumin binder (ALB)-modified PSMA/GRPR-targeting heterodimer, PADA, to improve tumor retention and tumor-to-kidney ratios.",
       "authors": "Tsuchihashi S, Nakashima K, Watanabe H, Ono M.",
       "journal": "MED",
       "year": "2026",
