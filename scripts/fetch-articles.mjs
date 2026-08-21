@@ -157,7 +157,7 @@ function isotopesFor(title, abstract) {
                .map(([k]) => k);
 }
 
-/* Condense an abstract to the first 2-3 sentences so the reader can tell what
+/* Condense an abstract to its first few sentences (up to 5) so the reader can tell what
    the paper is about at a glance. These are the paper's own sentences, lightly
    trimmed — nothing is generated or paraphrased. Structured-abstract section
    labels (BACKGROUND:, METHODS: …) are stripped. */
@@ -182,7 +182,7 @@ const LABEL_VARIANTS = LABEL_LIST.flatMap(w => [titleCase(w), w.toUpperCase()]);
 const SECTION_LABEL_RUNON =
   new RegExp(`\\b(?:${LABEL_VARIANTS.join('|')})(?=[A-Z])`, 'g');
 
-function condenseAbstract(raw, maxChars = 260) {
+function condenseAbstract(raw, maxChars = 480) {
   if (!raw) return '';
   let t = stripMarkup(raw)
     .replace(SECTION_LABEL, ' ')
@@ -198,10 +198,9 @@ function condenseAbstract(raw, maxChars = 260) {
   for (const p of parts) {
     const s = p.replace(new RegExp(GUARD, 'g'), '.').trim();
     if (!s) continue;
-    if (out.length >= 3) break;
+    if (out.length >= 5) break;
     if (out.length && (out.join(' ').length + s.length) > maxChars) break;
     out.push(s);
-    if (out.length >= 2 && out.join(' ').length >= maxChars * 0.7) break;
   }
   let s = out.join(' ');
   if (s.length > maxChars + 60) s = s.slice(0, maxChars).replace(/\s+\S*$/, '') + '…';
@@ -237,7 +236,9 @@ for (const a of result) {
   // Keep only papers that actually study a specific nuclide. This drops
   // PSMA-protein biology, health-economics and non-radioactive nanoparticle
   // papers that the TITLE:PSMA query otherwise pulls in.
-  const titleTxt = (a.title || '').replace(/\s+/g, ' ').trim();
+  // stripMarkup also decodes the &lt;sup&gt; entities Europe PMC returns, so
+  // titles read "[18F]FDG" rather than "[&lt;sup&gt;18&lt;/sup&gt;F]FDG".
+  const titleTxt = stripMarkup(a.title || '').trim();
   const isotopes = isotopesFor(titleTxt, a.abstractText || '');
   if (!isotopes.length) { noIsotope++; continue; }
 

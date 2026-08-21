@@ -1042,10 +1042,10 @@ async function loadLatestResearch() {
         return `<span class="lr-iso"${style}>${escapeHTML(t)}</span>`;
       }).join('');
       return `
-      <a class="lr-item" href="${escapeHTML(a.url)}" target="_blank" rel="noopener noreferrer" title="${escapeHTML(a.title)}">
+      <a class="lr-item" href="${escapeHTML(a.url)}" target="_blank" rel="noopener noreferrer" title="${escapeHTML(lrStripMarkup(a.title))}">
         <div class="lr-isos">${chips}</div>
         <div class="lr-body">
-          <div class="lr-title">${escapeHTML(a.title)}</div>
+          <div class="lr-title">${escapeHTML(lrStripMarkup(a.title))}</div>
           ${a.summary ? `<div class="lr-summary">${escapeHTML(a.summary)}</div>` : ''}
           <div class="lr-src">${escapeHTML([a.journal, a.year, a.country].filter(Boolean).join(' · '))}</div>
         </div>
