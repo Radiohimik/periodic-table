@@ -20,7 +20,7 @@
      rows visible) and by width (18 cols) while leaving --pubw for the research
      panel on the right. min() picks the tighter fit. */
   --tile: max(30px, min(
-    calc((100vw - var(--sidebar-w) - var(--pubw) - 76px) / 18),
+    calc((100vw - var(--sidebar-w) - var(--pubw) - 100px) / 18),
     calc((100vh - var(--topbar-h) - 84px) / 9)
   ));
 
@@ -504,9 +504,12 @@ body {
   flex: 1;
   min-height: 0;
   display: flex;
-  flex-flow: row wrap;
+  /* nowrap: the publications panel must ALWAYS stay to the right of the table.
+     With wrap it silently dropped below the table whenever the row was even a
+     few px over. The --tile calc reserves --pubw + 100px (16 padding + 34 grid
+     gaps + 30 flex gap + headroom) so the row genuinely fits. */
+  flex-flow: row nowrap;
   align-items: stretch;
-  align-content: flex-start;
   gap: 30px;              /* breathing room between the noble-gas column and the papers */
   overflow-y: auto;
   overflow-x: auto;
@@ -519,6 +522,13 @@ body {
 /* Table column: pinned to the grid's width so the cards below it don't widen
    the column and squeeze the research panel. */
 .pt-main { flex: 0 0 auto; width: calc(18 * var(--tile) + 17 * var(--gap)); min-width: 0; }
+/* Too narrow for a side-by-side row (tablets/phones): stack instead of
+   forcing a horizontal scrollbar. On desktop the panel always stays right. */
+@media (max-width: 1200px) {
+  .pt-area { flex-direction: column; }
+  .pt-main { width: max-content; }
+  .research-dock { width: 100%; min-width: 0; flex: 0 0 auto; height: 380px; }
+}
 
 /* ============================================================
    PERIODIC TABLE GRID
@@ -1502,6 +1512,6 @@ body {
 
 </div><!-- /main-col -->
 
-<script src="app.js?v=20260820-3" defer></script>
+<script src="app.js?v=20260821-1" defer></script>
 </body>
 </html>
