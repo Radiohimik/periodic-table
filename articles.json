@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-01",
+  "updated": "2026-09-15",
   "source": "Europe PMC",
   "query": "(TITLE:theranostic* OR TITLE:radiotheranostic* OR TITLE:radioligand OR TITLE:radiopharmaceutical* OR TITLE:radiotracer* OR TITLE:radiolabel* OR TITLE:\"radionuclide therapy\" OR TITLE:\"targeted alpha therapy\" OR TITLE:\"peptide receptor radionuclide therapy\" OR TITLE:PSMA OR TITLE:DOTATATE OR TITLE:DOTATOC OR TITLE:FAPI) NOT (TITLE:soil OR TITLE:food OR TITLE:radon OR TITLE:environmental OR TITLE:dietary OR TITLE:water OR TITLE:\"risk assessment\" OR TITLE:foodstuff*)",
   "affiliationFilter": [
@@ -50,6 +50,59 @@
   ],
   "articles": [
     {
+      "title": "Upconversion nanoplatform unlocks the theranostic potential of Lu-177 radiotherapy via c-MET axis targeting in head and neck squamous cell carcinoma.",
+      "summary": "Upconversion nanoparticles (UCNPs) convert tissue-penetrating near-infrared photons into sharp visible emissions, offering background-free optical readouts for deep-tissue imaging. Here we report multilayer NaLuF4:Yb,Tm@NaLuF4 UCNPs that simultaneously act as fluorescent probes and radioisotope precursors. Under 980 nm excitation, the particles generate bright blue and red upconversion signals for real-time tracking.",
+      "authors": "Lin KH, Wu CY, Chang YC, Chan MH.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-08-25",
+      "country": "Taiwan",
+      "isotopes": [
+        "Lu-177"
+      ],
+      "url": "https://doi.org/10.1016/j.mtbio.2026.103585"
+    },
+    {
+      "title": "PSMA-avid Pleural Solitary Fibrous Tumor Incidentally Detected on [ 18 F] Piflufolastat PSMA PET/CT.",
+      "summary": "An 81-year-old man with biopsy-proven high-risk prostate cancer (PCa) underwent staging with [ 18 F]piflufolastat PET/CT. Imaging showed intense uptake in the prostate gland and an incidental PSMA-avid pleural lesion in the right costophrenic recess. A surgical resection of the pleural lesion was performed, revealing a well-circumscribed spindle-cell mesenchymal proliferation consistent with a solitary fibrous tumor of pleura (SFTP).",
+      "authors": "Guglielmo P, Rensi M, Bologna R, De Pellegrin A, Evangelista L.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-07-20",
+      "country": "Italy",
+      "isotopes": [
+        "F-18"
+      ],
+      "url": "https://doi.org/10.1097/rlu.0000000000006619"
+    },
+    {
+      "title": "Recurrent Metastatic Esthesioneuroblastoma: First-in-human α/β PRRT With Actinium-225/Lutetium-177-DOTA-LM3 SSTR Antagonist Achieving Partial Response After Failure of Lutetium-177-DOTATOC PRRT.",
+      "summary": "A 45-year-old woman with heavily pretreated, recurrent metastatic esthesioneuroblastoma and progressive symptomatic disease underwent first-in-human peptide receptor radionuclide therapy (PRRT) using the somatostatin receptor (SSTR) antagonist DOTA-LM3 labeled with actinium-225 and lutetium-177 (TANDEM). Two PRRT cycles were administered without acute adverse events.",
+      "authors": "Perrone E, Ghai K, Eismant A, Greifenstein L, Baum RP.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-07-17",
+      "country": "Germany",
+      "isotopes": [
+        "Ac-225",
+        "Lu-177"
+      ],
+      "url": "https://doi.org/10.1097/rlu.0000000000006623"
+    },
+    {
+      "title": "Rapid Lymphatic Clearance After Subcutaneous Extravasation of 177 Lu-PSMA-I&T Radioligand Therapy.",
+      "summary": "Extravasation of therapeutic radiopharmaceuticals during radioligand therapy is uncommon. We report the first published case of subcutaneous extravasation of 177 Lu-PSMA-I&T, presenting with acute upper-arm swelling, pain, and transient autonomic symptoms. Early planar scintigraphy and SPECT/CT demonstrated intense radiotracer accumulation in the left upper arm, with rapid redistribution and near-complete clearance by 20 hours.",
+      "authors": "Fakkert RK, van Nierop BJ, van Rooij R, Lam MGEH, de Keizer B.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-06-29",
+      "country": "The Netherlands",
+      "isotopes": [
+        "Lu-177"
+      ],
+      "url": "https://doi.org/10.1097/rlu.0000000000006595"
+    },
+    {
       "title": "Review: Phosphorus-33 - Analysis of nuclear reactor production methods for potential application in radionuclide therapy for bone metastases.",
       "summary": "Phosphorus-33 (33P) has attracted growing interest as an alternative to phosphorus-32 (32P) for targeted radionuclide therapy. Its longer half-life (25.3 vs. 14.3 days), lower maximum beta energy (∼0.25 MeV vs. 1.7 MeV), and shorter median tissue penetration depth (0.135 mm vs. 3.65 mm) may make it particularly suitable for treating conditions such as bone metastases, where minimizing collateral damage to radiation-sensitive structures like red bone marrow is critical.",
       "authors": "Davenport B, Mendelsohn R, Landsberger S.",
@@ -76,244 +129,187 @@
       "url": "https://doi.org/10.1016/j.ejrad.2026.113036"
     },
     {
-      "title": "Fraction-dependent dose dynamics and clinical safety in high-risk neuroblastoma treated with [177Lu]Lu-DOTATATE: results from the LuDO-N trial.",
-      "summary": "Neuroblastoma frequently overexpresses somatostatin receptors (SSTR), enabling molecular radiotherapy with [177Lu]Lu-DOTATATE (177Lu-DOTATATE). Based on prior studies suggesting that dose intensification is required to achieve objective responses, the LuDO-N trial employs a two-fraction, high-activity treatment regimen.",
-      "authors": "Park SWS, Sundquist F, Teles L, van Rooij R, Thor D, Karlsson K, Braat AJAT, Stenman J, Nilsson JN.",
+      "title": "High Somatostatin Receptor Expression in Alveolar Soft Part Sarcoma Detected by 68 Ga-DOTATOC PET/CT.",
+      "summary": "A patient with alveolar soft part sarcoma (ASPS) underwent FDG-PET/CT followed by a DOTATOC PET due to a suspicion of a pancreatic neuroendocrine tumor. DOTATOC PET showed no uptake in the pancreatic lesion but revealed high uptake in the primary ASPS in scapula and previously unrecognized metastases in the breast and skull, indicating high somatostatin receptor (SSTR) expression.",
+      "authors": "Gregersen T, Rose HK, Bærentzen S, Baad-Hansen T, Vendelbo MH.",
       "journal": "MED",
       "year": "2026",
-      "date": "2026-06-19",
-      "country": "Sweden",
-      "isotopes": [
-        "Lu-177"
-      ],
-      "url": "https://doi.org/10.1007/s00259-026-07984-2"
-    },
-    {
-      "title": "Effects of androgen receptor signaling inhibitors on absorbed doses in mCRPC patients undergoing [177Lu]Lu-PSMA-617 or [177Lu]Lu-PSMA-I&T therapy: dosimetry results.",
-      "summary": "Androgen receptor signaling inhibitors (ARSi) have significantly improved clinical outcomes in men with prostate cancer (PCa). Preliminary data suggest the potential for ARSi to enhance PSMA expression in patients with mCRPC.",
-      "authors": "Zahner J, Delker A, Ells Z, Nikolic AA, Holzgreve A, Siegmund SC, Tiling M, Zacherl MJ, Berg E, Aydogdu CD, Dierks A, Unterrainer M, Böning G, Stief C, Calais J, Lapa C, Werner RA, Casuscelli J, Unterrainer LM.",
-      "journal": "MED",
-      "year": "2026",
-      "date": "2026-06-11",
-      "country": "Germany",
-      "isotopes": [
-        "Lu-177"
-      ],
-      "url": "https://doi.org/10.1007/s00259-026-07967-3"
-    },
-    {
-      "title": "First-in-human EphA2-targeting PET imaging with the bicyclic radiotracer [68Ga]Ga-BCY18469 in pancreatic cancer patients: biodistribution, dosimetry and initial findings.",
-      "summary": "Erythropoietin-producing hepatocellular receptor A2 (EphA2) is overexpressed in various malignancies, including pancreatic ductal adenocarcinoma (PDAC), in which it correlates with poor prognosis. Although EphA2 is considered a promising target receptor for theranostic applications, suitable radiotracers for clinical imaging have been lacking. This study reports first clinical experiences with [68Ga]Ga-BCY18469, a bicyclic peptide radiotracer for EphA2-targeted PET imaging.",
-      "authors": "Eder AC, Wielenberg CF, Omrane MA, Klotsotyra A, Brüggemann K, El Fakiri M, Becker H, Quante M, Mix M, Eder M, Meyer PT, Freitag MT.",
-      "journal": "MED",
-      "year": "2026",
-      "date": "2026-06-10",
-      "country": "Germany",
+      "date": "2026-06-04",
+      "country": "Denmark",
       "isotopes": [
         "Ga-68"
       ],
-      "url": "https://doi.org/10.1007/s00259-026-07985-1"
+      "url": "https://doi.org/10.1097/rlu.0000000000006329"
     },
     {
-      "title": "Real-world outcomes of [177Lu]Lu-PSMA-I&T in [18F]FDG-positive metastatic castration-resistant prostate cancer: factors related to response and survival.",
-      "summary": "Little is known about predictors of response to radionuclide therapy with PSMA-ligands in patients with [18F]FDG-positive metastatic castration-resistant prostate cancer (mCRPC). We assessed the correlation between baseline characteristics, including dual tracer PET parameters, and response to [177Lu]Lu-PSMA-I&T in a cohort of patients with [18F]FDG-positive mCRPC.",
-      "authors": "Santo G, di Santo G, Kronthaler A, Farsad M, Rossetti LM, Lehmann P, Scherbauer F, Cicone F, Virgolini IJ.",
+      "title": "Laying the groundwork for future health economic evaluation of [18F]PSMA PET/CT in guiding treatment decisions for metastatic castration-resistant prostate cancer patients.",
+      "summary": "Recent study results of our group demonstrated that [18F]PSMA-1007 (PSMA) PET/CT outperforms PSA response in predicting overall survival in metastatic castration-resistant prostate cancer (mCRPC) patients. However, its health economic implications for guiding treatment decisions remained unclear. This post-hoc analysis explores the potential impact of PSMA PET/CT on treatment decisions and patient-level costs, highlighting its relevance for future health economic evaluations.",
+      "authors": "van Mossel S, van der Velden KJM, Kleiburg F, Bosch D, van der Hulle T, Koffijberg H, Kuppen MCP, van Oort IM, Saing S, de Geus-Oei LF, Heijmen L.",
       "journal": "MED",
       "year": "2026",
-      "date": "2026-06-06",
-      "country": "Austria",
-      "isotopes": [
-        "Lu-177",
-        "F-18"
-      ],
-      "url": "https://doi.org/10.1007/s00259-026-07972-6"
-    },
-    {
-      "title": "Is It time to move beyond FDG toward a more specific yet broadly applicable radiotracer such as FAPI? why yes-and why not.",
-      "summary": "Fluorine-18 fluorodeoxyglucose (18F-FDG) PET/CT remains the most widely used oncologic imaging modality due to its ability to exploit increased glucose metabolism, a fundamental hallmark shared by many malignancies.",
-      "authors": "Zirakchian Zadeh M.",
-      "journal": "MED",
-      "year": "2026",
-      "date": "2026-05-25",
-      "country": "USA",
+      "date": "2026-09-03",
+      "country": "The Netherlands",
       "isotopes": [
         "F-18"
       ],
-      "url": "https://doi.org/10.1007/s12149-026-02228-7"
+      "url": "https://doi.org/10.1016/j.ejrad.2026.113213"
     },
     {
-      "title": "Semiquantitative SSTR PET metrics show molecular-morphologic discordance after 177Lu-DOTATATE in gastroenteropancreatic neuroendocrine neoplasms: an exploratory paired target-lesion analysis.",
-      "summary": "To assess whether simple paired semiquantitative somatostatin receptor (SSTR) PET metrics identify treatment-related changes after 177Lu-DOTATATE in patients with gastroenteropancreatic neuroendocrine neoplasms (GEP-NENs) and to explore their relationship with single-lesion size measured on contrast-enhanced CT in an exploratory paired target-lesion framework.",
-      "authors": "Chiaravalloti A, Egidi M, D'Agostini A, Filippi L, Triumbari EKA, Bagni O, Schillaci O.",
+      "title": "Influence of increased injected activities up 9.0 GBq [177Lu]Lu-PSMA-I&T on absorbed doses to lesions and kidneys.",
+      "summary": "Administration activities of 177Lu-PSMA were chosen cautiously in the treatment of advanced prostate cancer. The primary aim was to investigate the association between increased injected activities, and the calculated absorbed doses (AD). In this single center, retrospective analysis, patients with PSMA-avid metastatic castration-resistant prostate cancer treated with [177Lu]Lu-PSMA-I&T were included.",
+      "authors": "Ells Z, Hempel L, Ells J, Wu M, Scheifele M, Schoell M, Siegmund SC, Zacherl M, Werner RA, Calais J, Dahlbom M, Böning G, Holzgreve A, Delker A, Unterrainer LM.",
       "journal": "MED",
       "year": "2026",
-      "date": "2026-05-18",
+      "date": "2026-09-11",
+      "country": "Germany",
+      "isotopes": [
+        "Lu-177"
+      ],
+      "url": "https://doi.org/10.1186/s40658-026-00932-x"
+    },
+    {
+      "title": "Baseline serum carcinoembryonic antigen (CEA) is an independent prognostic biomarker for metastatic castration-resistant prostate cancer (mCRPC) patients receiving 177Lu-PSMA therapy.",
+      "summary": "Purpose177Lu-PSMA is currently approved for metastatic castration-resistant prostate cancer (mCRPC). However, only a subset of eligible patients derives a meaningful clinical benefit from treatment.",
+      "authors": "Giunta EF, Marini I, Grassi I, Nicolini S, Foca F, Celli M, Caroli P, Sarnelli A, Brighi N, Schepisi G, Monti M, De Giorgi U, Lolli C, Sansovini M.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-09-11",
       "country": "Italy",
       "isotopes": [
         "Lu-177"
       ],
-      "url": "https://doi.org/10.1007/s12149-026-02231-y"
+      "url": "https://doi.org/10.1007/s00259-026-08173-x"
     },
     {
-      "title": "Energy-resolved imaging ofαparticles emitted by the decay products of Pb-212 using a YAP(Ce)-based imaging detector for targeted radionuclide therapy.",
-      "summary": "Lead-212 (Pb-212) is attracting considerable interest as a radionuclide fortargeted α-therapy, yet energy-resolved imaging ofαparticles originating from its decay chain has been technically difficult.Approach.To address this issue, we employed a YAP(Ce)-basedα-particle imaging detector to perform energy-resolved imaging ofαparticles emitted from Pb-212 progeny and evaluated its performance for energy-discriminativeα-particle imaging.Main The system provided a spatial…",
-      "authors": "Yamamoto S, Yoshino M, Tsukada K, Kikunaga H, Yokokita T, Shirasaki K, Nakanishi K, Kamada K, Yoshikawa A, Kataoka J.",
+      "title": "[18F]AlF-FAPI-74 PET/CT for preoperative assessment of the peritoneal cancer index and comparison with MRI-based, surgical and pathological assessment in colorectal cancer patients eligible for CRS-HIPEC: study protocol for a prospective observational proof-of-concept study.",
+      "summary": "Colorectal cancer patients with peritoneal metastases have a very poor prognosis. A minority of these patients is eligible for curative cytoreductive surgery (CRS) and hyperthermic intraperitoneal chemotherapy (HIPEC). The peritoneal cancer index (PCI) is an important criterion to select patients for CRS-HIPEC.",
+      "authors": "van den Bos M, Vogel WV, van Duijvenvoorde M, Kok NFM, Aalbers AGJ, Snaebjornsson P, Lacle MM, Willemse JRJ, Kool W, Hendrikx JJMA, de Hingh IHJT, van Grevenstein WMU, Boerma D, Milne AN, van den Hoven AF, Elias SG, Lam MGEH, Lahaye MJ, Kranenburg O.",
       "journal": "MED",
       "year": "2026",
-      "date": "2026-08-28",
-      "country": "Japan",
-      "isotopes": [
-        "Pb-212"
-      ],
-      "url": "https://doi.org/10.1088/2057-1976/ae9c48"
-    },
-    {
-      "title": "Dual-Threshold Contouring for [68Ga]Ga-DOTATATE PET/CT and Correlation with Overall Survival in Patients with Neuroendocrine Neoplasms.",
-      "summary": "Accurate contouring for [68Ga]Ga-DOTATATE PET/CT in neuroendocrine neoplasms (NENs) is challenging because of variable physiologic uptake in the liver, spleen, and other organs. This complicates absolute threshold algorithms using a single threshold, even if based on liver uptake (as suggested for [18F]FDG PET/CT by PERCIST).",
-      "authors": "Chan DL, Mokhtar S, Bernard EJ, Diakos C, Pavlakis N, Conner A, Sabahi Z, Willowson KP, Roach PJ, Bailey DL.",
-      "journal": "MED",
-      "year": "2026",
-      "date": "2026-08-27",
-      "country": "Wales",
-      "isotopes": [
-        "Ga-68"
-      ],
-      "url": "https://doi.org/10.2967/jnumed.125.271954"
-    },
-    {
-      "title": "A Preliminary Evaluation of 177Lu-PSMA-617-Based Targeted Radioligand Therapy with X-Ray Stimulated PSMA Relocation Using the PiggyBac Reporter-Gene-Engineered Orthotopic Prostate Tumor Model.",
-      "summary": "Background/ Because human prostate cancer (PCa) typically exhibits slow tumor growth, establishing reliable PCa tumor models is often time-consuming and unpredictable, thereby limiting the efficiency of preclinical theranostic research.",
-      "authors": "Chen YT, Huang KH, Wu CY, Lee YJ.",
-      "journal": "MED",
-      "year": "2026",
-      "date": "2026-08-14",
-      "country": "Taiwan",
-      "isotopes": [
-        "Lu-177"
-      ],
-      "url": "https://doi.org/10.3390/pharmaceutics18081009"
-    },
-    {
-      "title": "Comparative Study of NOTA-Derived Chelators: Synthesis, Al18F/177Lu Radiolabeling and Computational Analysis.",
-      "summary": "The development of hybrid bifunctional chelators (BFCs) capable of efficiently coordinating both diagnostic and therapeutic radionuclides remains a major challenge in theranostic radiopharmaceutical design. Herein, two novel hybrid NOTA-derived chelators, NO2A-2C-AHM and NODAGA-HM, were developed from the previously reported NO2A-AHM BFC to improve the coordination of 177Lu while preserving efficient Al18F labeling.",
-      "authors": "Dhimen A, Assfeld X, Karcher G, Collet C, Acherar S.",
-      "journal": "MED",
-      "year": "2026",
-      "date": "2026-08-19",
-      "country": "France",
-      "isotopes": [
-        "Lu-177"
-      ],
-      "url": "https://doi.org/10.3390/ijms27167421"
-    },
-    {
-      "title": "Differential Radiobiological Effects of Αlpha- and Beta-Minus-Emitter Targeted Radionuclide Therapy: DNA Damage and Survival.",
-      "summary": "Metastatic cancer remains a major challenge, demanding more effective and biologically informed therapeutic strategies. Targeted Radionuclide Therapy (TRT) holds significant promise, but its optimization is limited by insufficient understanding of treatment response and resistance. This work aims to enhance TRT efficacy and overcome radioresistance by dissecting how radionuclide properties, administered activity, and subcellular localization govern radiobiological outcomes.",
-      "authors": "Winter RC, Bauder-Wüst U, Schäfer M, Remde Y, Roscher M, Perez RL, Benešová-Schäfer M.",
-      "journal": "MED",
-      "year": "2026",
-      "date": "2026-08-26",
-      "country": "Germany",
-      "isotopes": [
-        "Ac-225",
-        "Lu-177"
-      ],
-      "url": "https://doi.org/10.1016/j.ijrobp.2026.08.036"
-    },
-    {
-      "title": "Biodistribution and dosimetry of the carbon-11 labelled PARP1-selective PET radiopharmaceutical [11C]AZ14193391.",
-      "summary": "Poly (ADP-ribose) polymerase-1 (PARP1) inhibitors are used for treatment of advanced breast, ovarian, and prostate cancer with germline or somatic BRCA1/2 mutations. However, not all patients respond to these drugs, and therapy-predictive biomarkers are needed to optimise the benefit-risk balance. The 11C-labelled PARP1-selective radiopharmaceutical [11C]AZ14193391 has emerged as a promising radioligand to identify eligible patients.",
-      "authors": "Törnblom A, He C, Bolin M, Tzortzakakis A, Fernebro J, Li C, Fridsten S, Altena R, Axelsson R, Siikanen J, Hindorf C.",
-      "journal": "MED",
-      "year": "2026",
-      "date": "2026-08-19",
-      "country": "Sweden",
-      "isotopes": [
-        "C-11"
-      ],
-      "url": "https://doi.org/10.1186/s13550-026-01481-1"
-    },
-    {
-      "title": "Comparative dosimetry study of PARaDIM and RT-PHITS with ICRP publication 128: calculation of organ doses from 18F-FDG radiopharmaceutical.",
-      "summary": "This study evaluates organ doses from ¹⁸F-FDG whole-body PET-CT using the phantom-based software PARaDIM and patient image-based software RT-PHITS and compares with reference data from ICRP Publication 128. Absorbed dose coefficients (mGy/MBq) were calculated using ICRP Publication 145 mesh-type phantoms in PARaDIM and 20 patient datasets (10 male, 10 female) from 'The Cancer Imaging Archives' website in RT-PHITS.",
-      "authors": "Sarker S, Han D, Baba S, Fujibuchi T.",
-      "journal": "MED",
-      "year": "2026",
-      "date": "2026-08-21",
-      "country": "Japan",
+      "date": "2026-09-09",
+      "country": "Netherlands",
       "isotopes": [
         "F-18"
       ],
-      "url": "https://doi.org/10.1007/s12194-026-01124-z"
+      "url": "https://doi.org/10.1136/bmjopen-2026-125722"
     },
     {
-      "title": "Intra-patient comparison of tracer uptake and biodistribution of [68Ga]Ga-FAPI-46 and [18F]AlF-FAPI-74.",
-      "summary": "To compare the tracer uptake and biodistribution of [68Ga]Ga-FAPI-46 and [18F]AlF-FAPI-74 in an intra-patient study design. This substudy of a large prospective trial included five patients with fibrotic lung disease who underwent both [68Ga]Ga-FAPI-46 and [18F]AlF-FAPI-74 PET/CT. Imaging was performed 60 min post-injection using EARL2-compliant reconstructions.",
-      "authors": "Deleu AL, Bondue B, Öztürk AA, Artigas C, Lacroix S, Vercauteren S, Marin C, Vanderlinden B, Taraji L, Lavis P, De Bontridder S, Wimana Z, Flamen P.",
+      "title": "Glypican-3-Targeted Paired Radiotheranostics in Orthotopic Liver Cancer Models.",
+      "summary": "Glypican-3 (GPC3), highly expressed in the most common liver cancer hepatocellular carcinoma (HCC) but absent from normal liver, represents an attractive tumor-selective target.",
+      "authors": "Lee W, Chung JY, Adler S, Basuli F, Baidoo K, Shi J, Ueda Y, Omiya S, Nambiar D, Makala H, Sheehan-Klenk J, Fayn S, Olkowski CP, King AP, Ruf B, Greten TF, Jacobson O, Choyke PL, Escorcia FE.",
       "journal": "MED",
       "year": "2026",
-      "date": "2026-08-21",
-      "country": "Belgium",
-      "isotopes": [
-        "Ga-68",
-        "F-18"
-      ],
-      "url": "https://doi.org/10.1007/s12149-026-02271-4"
-    },
-    {
-      "title": "68Ga-FAPI PET/CT for Differentiation of Malignant Peripheral Nerve Sheath Tumors, Neurofibromas, and Schwannomas.",
-      "summary": "Malignant peripheral nerve sheath tumors (MPNSTs) are aggressive soft-tissue sarcomas that can develop either de novo or as a result of malignant transformation of neurofibromas. Diagnostic modalities of choice, such as MRI or 18F-FDG PET/CT, show high sensitivity for the detection of MPNSTs but moderate specificity, as MPNSTs and benign peripheral nerve sheath tumors (BPNSTs) can initially present similar clinical and radiologic pictures.",
-      "authors": "Spektor AM, Fried M, Zapata Bonilla SA, Othman A, Kalasauskas D, Kersting D, Mildenberger P, Winter E, Zimmer S, Adami B, Hamacher R, Waldschütz AM, Eckert C, Conrad J, Sommer C, Herrmann K, Fendler WP, Brockmann MA, Schreckenberger M, Haberkorn U, Kindler T, Röhrich M.",
-      "journal": "MED",
-      "year": "2026",
-      "date": "2026-08-20",
-      "country": "Germany",
-      "isotopes": [
-        "Ga-68"
-      ],
-      "url": "https://doi.org/10.2967/jnumed.126.272348"
-    },
-    {
-      "title": "Toward Personalized Theranostics: A Modular PET Platform for Antibody-Based Imaging and Therapy.",
-      "summary": "The expansion of personalized medicine is encouraging the development of platforms capable of supporting individualized imaging and therapeutic strategies. The combination of antibodies, with their intrinsic selectivity, and a modular molecular probe provides a strong foundation for such approaches. In this context, a versatile platform enabling positron emission tomography (PET) imaging followed by copper-free click-based functionalization is developed.",
-      "authors": "Vivier D, Kple MG, Ariztia J, Leroux M, Moreau M, Claron M, Cheveau M, Laouafa A, Kownacka A, Petitot C, Simonet J, Dias AMM, Poty S, Truillet C, Collin B, Oudot A, Denat F.",
-      "journal": "MED",
-      "year": "2026",
-      "date": "2026-08-20",
-      "country": "France",
+      "date": "2026-09-09",
+      "country": "United States",
       "isotopes": [
         "Zr-89",
+        "Ac-225"
+      ],
+      "url": "https://doi.org/10.1158/1078-0432.ccr-26-1613"
+    },
+    {
+      "title": "Patient selection for primary staging with [99mTc]Tc-PSMA SPECT/CT: influence of combined PSA and ISUP grade on detection of metastatic disease.",
+      "summary": "The aim of this study was to examine the combined influence of initial PSA level (iPSA) and ISUP grade on the detection rates of [99mTc]Tc-PSMA SPECT/CT in patients undergoing primary staging of prostate cancer and to identify selection criteria.Patients and methodsIn this retrospective study, 91 patients underwent SPECT/CT following administration of 670 MBq (range, 470-792 MBq) [99mTc]Tc-MIP-1404.",
+      "authors": "Liepe K, Hoang TM, Dietrich I, Piechota HJ, Baehr M.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-09-09",
+      "country": "Germany",
+      "isotopes": [
+        "Tc-99m"
+      ],
+      "url": "https://doi.org/10.1007/s00259-026-08168-8"
+    },
+    {
+      "title": "Organ and tumor dosimetry of [161Tb]Tb-PSMA-617 radioligand therapy in patients with mCRPC.",
+      "summary": "Terbium-161 (161Tb) has emerged as a promising radionuclide for radioligand therapy (RLT) due to its emission of Auger and conversion electrons, which may support therapeutic efficacy through increased local energy deposition. Despite growing research efforts aimed at the clinical potential of 161Tb, dosimetric data, particularly for tumor lesions, remain scarce. To address this gap, we assessed tumor and organ dosimetry in mCRPC patients treated with [161Tb]Tb-PSMA-617.",
+      "authors": "Schaefer-Schuler A, Blickle A, Ganz S, Petto S, Burgard C, Speicher T, Bastian MB, Maus S, Bartholomä M, Ezziddin S, Rosar F.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-09-08",
+      "country": "Germany",
+      "isotopes": [
+        "Tb-161"
+      ],
+      "url": "https://doi.org/10.1007/s00259-026-08171-z"
+    },
+    {
+      "title": "External validation of the bellmunt risk score for survival prediction in mCRPC patients undergoing [177Lu]Lu-PSMA-617 therapy.",
+      "summary": "Purpose[177Lu]Lu-PSMA-617 is a standard-of-care therapy for metastatic castration-resistant prostate cancer (mCRPC). Given the heterogeneous clinical responses, accessible prognostic tools are needed. We recently demonstrated that the Bellmunt Risk Score (BRS)-comprising ECOG performance status >0, hemoglobin We retrospectively evaluated 243 mCRPC patients treated with [177Lu]Lu-PSMA-617 at an independent tertiary center. The BRS was calculated at baseline (range 0-3).",
+      "authors": "Büttner T, Wenzel M, Mandel P, Schmitt P, Hoffmann C, Marinova M, Essler M, Chun FKH, Ritter M, Groener D, Krausewitz P.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-09-08",
+      "country": "Germany",
+      "isotopes": [
         "Lu-177"
       ],
-      "url": "https://doi.org/10.1002/advs.76940"
+      "url": "https://doi.org/10.1007/s00259-026-08169-7"
     },
     {
-      "title": "Diagnostic value of [68Ga]Ga-FAPI-46 PET in comparison to [18F]FDG PET in triple-negative breast cancer and potential for theranostic application.",
-      "summary": "This single-center subgroup analysis of a prospective trial (NCT04571086) at University Hospital Essen investigated tumor uptake and detection rates of [68Ga]Ga-FAPI-46- versus [18F]FDG PET in triple-negative breast cancer (TNBC) patients undergoing initial or follow-up staging.",
-      "authors": "Küper AT, Ciuciulkaite I, Welt A, Vaz SC, Mavroeidi IA, Hamacher R, Demmert T, Pabst KM, Moraitis A, Djaileb L, Seifert R, Umutlu L, Schuler M, Herrmann K, Fendler WP, Kümmel S, Kersting D.",
+      "title": "One-step flow synthesis and [68Ga]Ga radiolabelling of metal phenolic network nanoparticles for in vivo PET tracking.",
+      "summary": "Metal-phenolic network (MPN) nanoparticles are growing in popularity as drug delivery vehicles due to their versatile binding interactions, with increased attention to their applications for positron emission tomography (PET) due to their inherent ability to coordinate radiometals. Whilst the ability to do this has only been shown with long-lived radionuclides such as 89Zr and 64Cu, the use of short-lived radionuclides remain unexplored due to the lengthy syntheses required.",
+      "authors": "Shepherd E, Carrascal Miniño A, Mishra A, Pellico J, Sengel J, T M de Rosales R, Surman AJ.",
       "journal": "MED",
       "year": "2026",
-      "date": "2026-08-03",
-      "country": "Germany",
+      "date": "2026-09-07",
+      "country": "UK",
       "isotopes": [
-        "Ga-68",
-        "F-18"
-      ],
-      "url": "https://doi.org/10.1038/s41598-026-61253-8"
-    },
-    {
-      "title": "Evaluation of the biodistribution of [99mTc]Tc-PSMA-GCK01 SPECT/CT in a prospective, intraindividual comparison with [68Ga]PSMA-11 PET/CT for phenotyping in mCRPC prior to PSMA-targeted radioligand therapy.",
-      "summary": "PSMA-PET/CT became an important means for prostate cancer management. The high-resolution and signal-to-noise ratio of PET is mandatory in primary staging or biochemical relapse that often present with tiny lesions. PSMA-PET is also used to select patients for PSMA-targeted radioligand-therapy, but scanner availability increasingly becomes a bottleneck.",
-      "authors": "Novruzov E, Mamlins E, Kabunda J, Cardinale J, Qebetu M, Kratochwil C, Feisthauer A, Martlbauer S, Kaoma CA, Sibiya S, de Bruin T, Mdanda S, Shungube M, Davis C, Smith L, Mzizi Y, Mokoala K, Ndlovu H, Ramonaheng K, Giesel FL, Sathekge MM.",
-      "journal": "MED",
-      "year": "2026",
-      "date": "2026-08-18",
-      "country": "Germany",
-      "isotopes": [
-        "Tc-99m",
         "Ga-68"
       ],
-      "url": "https://doi.org/10.1186/s13550-026-01501-0"
+      "url": "https://doi.org/10.1039/d6nr01151a"
+    },
+    {
+      "title": "The Return of Thallium-201 for American Patients: History, Radiopharmaceutical Features, and Current Applications.",
+      "summary": "Purpose of reviewAfter years of declining use of thallous chloride-201 (thallium) for myocardial perfusion imaging (MPI), commercial production in the U.S ceased in 2022. Recognizing unique patient-care roles that thallium can serve, it was reintroduced in July 2026.",
+      "authors": "Einstein AJ, Berman DS, Cohen YA, Green R, Mailman J, Dilsizian V.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-09-02",
+      "country": "USA",
+      "isotopes": [
+        "Tl-201"
+      ],
+      "url": "https://doi.org/10.1007/s11886-026-02411-2"
+    },
+    {
+      "title": "A room-temperature 89Zr4+ radiolabelling strategy for small extracellular vesicles with enhanced plasma stability for PET imaging.",
+      "summary": "Both for diagnostic purposes and regenerative medicine, it is essential to develop advanced imaging platforms capable of tracking the biodistribution of small extracellular vesicles (sEVs), as current methods are limited by inadequate resolution and sensitivity. In this study, we introduce a novel labeling strategy utilizing the radioisotope zirconium-89 (89Zr), which boasts a half-life of 78.4 h and is cost-effective to produce.",
+      "authors": "Banerjee A, Hrynchak I, Jesus C, Sereno J, Martins-Marques T, Silva M, Barão M, Ferreira MJ, Girao H, Abrunhosa A, Ferreira L.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-09-01",
+      "country": "Portugal",
+      "isotopes": [
+        "Zr-89"
+      ],
+      "url": "https://doi.org/10.1016/j.jconrel.2026.115324"
+    },
+    {
+      "title": "Comparative analysis of PSMA-RADS Version 2.0 versus bone uptake metastatic probability (BUMP) score for characterising focal bone uptake on [18F]PSMA-1007 PET/CT in prostate cancer - a multicentre evaluation.",
+      "summary": "Prostate-specific membrane antigen (PSMA) PET/CT is widely used in prostate cancer management, but unspecific bone uptake (UBU) remains a diagnostic challenge particularly with [18F]PSMA-1007. Bone uptake metastatic probability (BUMP) score - a composite imaging-clinical model, was compared with PSMA Reporting and Data System (PSMA-RADS, Version 2) for predicting skeletal metastases in UBU.",
+      "authors": "Cairns J, Arain S, Challapalli A, Stavropoulos A, Ali T, Ward D, Sage J, Ionescu G, Willaime JMY, Frood R, Bahl A, Petrides G, Scarsbrook A.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-09-01",
+      "country": "UK",
+      "isotopes": [
+        "F-18"
+      ],
+      "url": "https://doi.org/10.1007/s00259-026-08154-0"
+    },
+    {
+      "title": "An Open-Label Study Investigating the 5-HT2A Receptor Occupancy of Remlifanserin (ACP-204) With the PET Radioligand [18F]Altanserin in Healthy Male Participants.",
+      "summary": "Remlifanserin (ACP-204) is a selective 5-HT2A receptor inverse agonist that builds upon scientific findings of its structural analog, pimavanserin. This Phase 1, open-label study in healthy adults (N = 16) describes the central 5-HT2A receptor occupancy of remlifanserin at different doses and plasma concentrations using positron emission tomography imaging and radioligand [18F]altanserin, with pimavanserin as a reference molecule.",
+      "authors": "Burstein ES, Sandiego C, Raether B, Feng X, Dirks B, Darwish M, Zhang P, Russell DS, Rabiner EA, Pathak S.",
+      "journal": "MED",
+      "year": "2026",
+      "date": "2026-09-01",
+      "country": "USA",
+      "isotopes": [
+        "F-18"
+      ],
+      "url": "https://doi.org/10.1002/cpdd.70096"
     }
   ]
 }
